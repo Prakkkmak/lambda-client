@@ -9,37 +9,69 @@ const weapons = [
     "WEAPON_ASSAULTRIFLE", "WEAPON_CARBINERIFLE",
     "WEAPON_PUMPSHOTGUN"
 ];
-
+const keys = 
+{
+    'L' : 76,
+    'K' : 75,
+    'U' : 85,
+    'Numpad_0' : 96,
+    'Numpad_1' : 97,
+    'Numpad_2' : 98,
+    'Numpad_3' : 99,
+    'Numpad_4' : 100,
+    'Numpad_5' : 101,
+    'Numpad_6' : 102,
+    'Numpad_7' : 103,
+    'Numpad_8' : 104,
+    'Numpad_9' : 105
+};
 
 /* Init */
 game.setPedDefaultComponentVariation(game.playerPedId(), true);
-giveWeapons();
 
-/* Functions */
-function giveWeapons() {
-    let ped = game.playerPedId()
+//#region webviews
+let contextView = new alt.WebView("http://resources/lambda_client/client/html/context/context.html");
+let skinchangerView = new alt.WebView("http://resources/lambda_client/client/html/skinvalidation/skinvalidation.html");
 
-    for (const weapon of weapons) {
-        game.giveWeaponToPed(ped, game.getHashKey(weapon), 9999, false, false)
-    }
-}
+//#endregion
 
-/* Events */
-alt.onServer('giveAllWeapons', () => {
-    giveWeapons();
+let playerFreezed = false;
+
+//#region event_context
+contextView.on('chatmessage', (text) => {
+    //Evènement appelé un bouton de commande est cliqué
+    alt.emitServer('chatmessage', text);
 });
-
+//#endregion
+//#region event_skin
+skinchangerView.on('chatmessage', (text) => {
+    //Evènement appelé un bouton de commande est cliqué
+    alt.emitServer('chatmessage', text);
+});
+skinchangerView.on('skinchange', (text) => {
+    alt.emitServer('chatmessage', "!vetements "+text);
+});
 alt.onServer('setSkin', (args) => {
     alt.log(args);
     for (var i = 0; i < 11; i++) {
         game.setPedComponentVariation(game.playerPedId(), i + 1, args[i], 0, 0)
     }
 })
-
-var selected = 1;
-var skinenabled = true;
-var autorandom = false;
+//#endregion
+//#region event_general
 alt.on('keydown', (key) => {
+
+    //Touche de clavier enfoncée
+
+    if(key === keys.L)
+    {
+        setFreeze(true);
+        setFocusOn(contextView);
+    } else if(key === keys.U)
+    {
+        setFreeze(false);
+    }
+
     if (skinenabled) {
         if (key == 102) {
             alt.emitServer('chatmessage', "/vetement suivant " + selected);
@@ -79,31 +111,55 @@ alt.on('keydown', (key) => {
         }
 
     }
+});
+//#endregion
 
 
+alt.onServer('giveAllWeapons', () => {
+    giveWeapons();
 });
 
 
-alt.on('keydown', (key) => {
-    if (key == 96) {
-        if (skinenabled) {
-            skinenabled = false;
-            alt.emitServer('chatmessage', "Vous avez arreté la selection de skins: " + selected);
-        }
-        else {
-            skinenabled = true;
-            alt.emitServer('chatmessage', "Vous avez démarré la selection de skins: " + selected);
-        }
 
-    }
-    if (key == 103) {
-        if (autorandom) autorandom = false;
-        else autorandom = true;
-    }
+/* Functions */
+function giveWeapons() {
+    let ped = game.playerPedId()
 
-});
-var d = new Date();
-var n = d.getTime();
+    for (const weapon of weapons) {
+        game.giveWeaponToPed(ped, game.getHashKey(weapon), 9999, false, false)
+    }
+}
+/**
+ * Permet de bloquer les contrôles du joueur
+ *
+ * @param {boolean}   value           Est bloqué ou non.
+ */
+function setFreeze(value)
+{
+    if(!playerFreezed)
+    {
+        playerFreezed = value;
+        alt.setCamFrozen(value);
+        alt.toggleGameControls(!value);
+        alt.showCursor(value);
+    }
+}
+/**
+ * Permet de focus une WebView (cef)
+ *
+ * @param {WebView}   web           La WebView à focus.
+ */
+function setFocusOn(web)
+{
+    if(!playerFreezed)
+    {
+        web.focus(web);
+    }
+}
+
+
+let d = new Date();
+let n = d.getTime();
 alt.on('update', () => {
     if (autorandom) {
         d = new Date()
