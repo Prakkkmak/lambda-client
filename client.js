@@ -35,8 +35,11 @@ let skinchangerView = new alt.WebView("http://resources/lambda_client/client/htm
 
 //#endregion
 
-let playerFreezed = false;
 
+let autorandom = false;
+let skinenabled = false;
+let playerFreezed = false;
+giveWeapons();
 //#region event_context
 contextView.on('chatmessage', (text) => {
     //Evènement appelé un bouton de commande est cliqué
@@ -61,14 +64,14 @@ alt.onServer('setSkin', (args) => {
 alt.on('keydown', (key) => {
 
     //Touche de clavier enfoncée
-
+    /*
     if (key === keys.L) {
         setFreeze(true);
         setFocusOn(contextView);
     } else if (key === keys.U) {
         setFreeze(false);
     }
-
+    */
     if (skinenabled) {
         if (key == 102) {
             alt.emitServer('chatmessage', "/vetement suivant " + selected);
@@ -139,6 +142,10 @@ function setFreeze(value) {
         alt.showCursor(value);
     }
 }
+
+function setNativeFreeze(value) {
+    game.freezeEntityPosition(game.playerPedId(), value) // 428CA6DBD1094446 65C16D57
+}
 /**
  * Permet de focus une WebView (cef)
  *
@@ -171,9 +178,9 @@ alt.on('update', () => {
  */
 
 alt.onServer('freeze', (args) => {
-    setFreeze(true);
+    setNativeFreeze(true);
 });
 
 alt.onServer('unfreeze', (args) => {
-    setFreeze(false);
+    setNativeFreeze(false);
 });
