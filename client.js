@@ -9,21 +9,21 @@ const weapons = [
     "WEAPON_ASSAULTRIFLE", "WEAPON_CARBINERIFLE",
     "WEAPON_PUMPSHOTGUN"
 ];
-const keys = 
+const keys =
 {
-    'L' : 76,
-    'K' : 75,
-    'U' : 85,
-    'Numpad_0' : 96,
-    'Numpad_1' : 97,
-    'Numpad_2' : 98,
-    'Numpad_3' : 99,
-    'Numpad_4' : 100,
-    'Numpad_5' : 101,
-    'Numpad_6' : 102,
-    'Numpad_7' : 103,
-    'Numpad_8' : 104,
-    'Numpad_9' : 105
+    'L': 76,
+    'K': 75,
+    'U': 85,
+    'Numpad_0': 96,
+    'Numpad_1': 97,
+    'Numpad_2': 98,
+    'Numpad_3': 99,
+    'Numpad_4': 100,
+    'Numpad_5': 101,
+    'Numpad_6': 102,
+    'Numpad_7': 103,
+    'Numpad_8': 104,
+    'Numpad_9': 105
 };
 
 /* Init */
@@ -49,10 +49,9 @@ skinchangerView.on('chatmessage', (text) => {
     alt.emitServer('chatmessage', text);
 });
 skinchangerView.on('skinchange', (text) => {
-    alt.emitServer('chatmessage', "!vetements "+text);
+    alt.emitServer('chatmessage', "!vetements " + text);
 });
 alt.onServer('setSkin', (args) => {
-    alt.log(args);
     for (var i = 0; i < 11; i++) {
         game.setPedComponentVariation(game.playerPedId(), i + 1, args[i], 0, 0)
     }
@@ -63,12 +62,10 @@ alt.on('keydown', (key) => {
 
     //Touche de clavier enfoncée
 
-    if(key === keys.L)
-    {
+    if (key === keys.L) {
         setFreeze(true);
         setFocusOn(contextView);
-    } else if(key === keys.U)
-    {
+    } else if (key === keys.U) {
         setFreeze(false);
     }
 
@@ -134,10 +131,8 @@ function giveWeapons() {
  *
  * @param {boolean}   value           Est bloqué ou non.
  */
-function setFreeze(value)
-{
-    if(!playerFreezed)
-    {
+function setFreeze(value) {
+    if (!playerFreezed) {
         playerFreezed = value;
         alt.setCamFrozen(value);
         alt.toggleGameControls(!value);
@@ -149,10 +144,8 @@ function setFreeze(value)
  *
  * @param {WebView}   web           La WebView à focus.
  */
-function setFocusOn(web)
-{
-    if(!playerFreezed)
-    {
+function setFocusOn(web) {
+    if (!playerFreezed) {
         web.focus(web);
     }
 }
@@ -169,4 +162,18 @@ alt.on('update', () => {
         }
     }
 
-})
+});
+
+/**
+ * Customs events de prakk
+ * A ajouter proprement sur le client side
+ * Utilisé  pour gagné du temps
+ */
+
+alt.onServer('freeze', (args) => {
+    setFreeze(true);
+});
+
+alt.onServer('unfreeze', (args) => {
+    setFreeze(false);
+});
