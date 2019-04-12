@@ -29,7 +29,9 @@ const keys =
 };
 const ped_bones = 
 {
-    'IK_Head' : 0x322c
+    'IK_Head' : 0x322c,
+    'SKEL_Spine2' : 0x60f1,
+    'SKEL_Root': 0x0
 };
 
 const rgbToHex = function (rgb) { 
@@ -40,15 +42,13 @@ const rgbToHex = function (rgb) {
     return hex;
 };
 /* Init */
-
-
-game.setPedDefaultComponentVariation(game.playerPedId(), true);
-game.setPedHeadBlendData(game.playerPedId(), 0, 1, 2, 0, 1, 2, 0.0, 0.0, 0.0, false);
-
+setModel("Male");
+goBackToGameplayCam();
 //#region webviews
 let contextView = null;
 let skinchangerView = null;
 let characterCustomView = null;
+let cursorVisible = false;
 //#endregion
 
 let webviewLayer = 0;
@@ -68,7 +68,6 @@ alt.onServer('setProps', (argsDrawable, argsTexture) =>
 alt.onServer('setFreeze', (value) => {
     freezePlayer(value);
 });
-
 alt.onServer('giveAllWeapons', () => {
     giveAllWeapons();
 });
@@ -76,22 +75,15 @@ alt.onServer('giveAllWeapons', () => {
 var cam = null;
 
 //#region event_general
-
 alt.on('keydown', (key) => {
     //Touche de clavier enfoncée
     if(key == keys.E){
         openCharacterCustom();
-        focusOnBone('IK_Head', {x:0, y:2, z:0});
     } else if(key == keys.A)
     {
         closeCharacterCustom();
-        goBackToGameplayCam();
     }
-    
 });
-
-
-
 
 /* Functions */
 function giveAllWeapons() {
@@ -119,31 +111,110 @@ function freezePlayer(value)
 }
 function setCursorVisible(value)
 {
-    alt.showCursor(value);
+    if(cursorVisible != value)
+    {
+        alt.showCursor(value);
+        cursorVisible = value;
+    }
 }
 
+function setModel(model)
+{
+    
+    if(model.toLowerCase() == "male")
+    {
+        model = game.getHashKey("mp_m_freemode_01");
+    } else if(model.toLowerCase() == "female") {
+        model = game.getHashKey("mp_f_freemode_01");  
+    } else {
+        model = game.getHashKey(model);
+    }
+
+    alt.log(model);
+
+    game.requestModel(model);
+    
+    alt.log(game.hasModelLoaded(model));
+    
+    alt.nextTick(() => {
+        while(!game.hasModelLoaded(model)){ }
+        game.setPlayerModel(game.playerId(), model);
+        game.setPedDefaultComponentVariation(game.playerPedId());
+        game.setPedHeadBlendData(game.playerPedId(), 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0, true);
+    });  
+
+}
+function setHairColor(colorID, highlightColorID)
+{
+    alt.log("setHairColor" + colorID);
+    game.setPedHairColor(game.playerPedId(), colorID, highlightColorID);
+}
 function setHeadOverlay(argsIndex, argsOpacity)
 {
     for (var i = 0; i < 13; i++) 
     {
-        game.setPedHeadOverlay(game.playerPedId(), i , argsIndex[i], argsOpacity[i]);
+        if (argsIndex[i] != null && argsOpacity[i] != null)
+        {
+            game.setPedHeadOverlay(game.playerPedId(), i , argsIndex[i], argsOpacity[i]);
+        }
+    }
+}
+function setHeadOverlayColor(argsColor)
+{
+    for(let i=0;i<13;i++)
+    {
+        if (argsColor[i] != null)
+        {
+            if(i == 1 || i == 10 || i == 2)
+            {
+                game.setPedHeadOverlayColor(game.playerPedId(), i, 1, argsColor[i], argsColor[i]);
+            } else if(i == 5 || i == 8) 
+            {
+                game.setPedHeadOverlayColor(game.playerPedId(), i, 2, argsColor[i], argsColor[i]);
+            } else {
+                game.setPedHeadOverlayColor(game.playerPedId(), i, 0, argsColor[i], argsColor[i]);
+            }
+        }
     }
 }
 function setProps(argsDrawable, argsTexture)
 {
     for (var i = 0; i < 3; i++) 
     {
-        game.setPedPropIndex(game.playerPedId(), prodComponentIds[i] , argsDrawable[i], argsTexture[i], true);
+        if (argsDrawable[i] != null && argsTexture[i] != null)
+        {
+            game.setPedPropIndex(game.playerPedId(), prodComponentIds[i] , argsDrawable[i], argsTexture[i], true);
+        }
     }
 }
 function setComponentVariation(argsDrawable, argsTexture, argsPalette)
 {
-    for (var i = 0; i < 11; i++) 
+    for (var i = 0; i < 12; i++) 
     {
-        game.setPedComponentVariation(game.playerPedId(), i + 1, argsDrawable[i], argsTexture[i], argsPalette[i]);
+        if (argsDrawable[i] != null && argsTexture[i] != null && argsPalette[i] != null)
+        {
+            game.setPedComponentVariation(game.playerPedId(), i, argsDrawable[i], argsTexture[i], argsPalette[i]);
+        }
     }
 }
-
+function setFaceFeature(argsIndex, argsScale)
+{
+    for(let i=0;i<20;i++)
+    {
+        game.setPedFaceFeature(game.playerPedId(), key, value);
+    }
+}
+function requestHairColors(web, id, container, size, callback)
+{
+    let colors = new Array(game.getNumHairColors());
+    for(let i=0;i<game.getNumHairColors();i++)
+    {
+        let [_, r, g, b] = game.getHairColor(i, 0, 0, 0);
+        colors[i] = "'#" + rgbToHex(r) + rgbToHex(g) + rgbToHex(b) + "'";
+        
+    }
+    web.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
+}
 
 //#region WEBVIEWS FUNCTIONS
 /**
@@ -166,35 +237,55 @@ function destroyWebView(web)
 
 function openCharacterCustom()
 {
+    alt.log(webviewLayer);
+    alt.log(cursorVisible);
+
     if(!isWebViewOpened(characterCustomView))
     {
         characterCustomView = new alt.WebView("http://resources/lambda_client/client/html/charactercustom/charactercustom.html");
 
         characterCustomView.on('setHairColor', (colorID,highlightColorID) => {
-            game.setPedHairColor(game.playerPedId(), colorID, highlightColorID);
+            
+            setHairColor(colorID, highlightColorID);
         });
-        characterCustomView.on('setHeadOverlay', (key, value) => {
-            game.setPedHeadOverlay(game.playerPedId(), key , value, 1);
+        characterCustomView.on('setHeadOverlay', (key, index, opacity) => {
+            let arg1 = new Array(13).fill(null);
+            let arg2 = new Array(13).fill(null);
+
+            arg1[key] = index;
+            arg2[key] = opacity;
+
+            setHeadOverlay(arg1, arg2);
         });
-        characterCustomView.on('setSkin', (key, value) => {
-            game.setPedComponentVariation(game.playerPedId(), key, value, 0, 0);
+        characterCustomView.on('setComponent', (key, drawable, texture, palette) => {
+            let arg1 = new Array(11).fill(null);
+            let arg2 = new Array(11).fill(null);
+            let arg3 = new Array(11).fill(null);
+
+
+
+            arg1[key] = drawable;
+            arg2[key] = texture;
+            arg3[key] = palette;
+
+            alt.log(arg1);
+            alt.log(arg2);
+            alt.log(arg3);
+
+            setComponentVariation(arg1,arg2,arg3);
         });
         characterCustomView.on('setFaceFeature', (key, value) => {
+            let arg = new Array(20).fill(null);
+            arg[key] = value;
+
             game.setPedFaceFeature(game.playerPedId(), key, value);
         });
-    
         characterCustomView.on('requestHairColors', (id, container,size,callback) => {
-            let colors = [];
-            for(let i=0;i<game.getNumHairColors();i++)
-            {
-                let [_, r, g, b] = game.getHairColor(i, 0, 0, 0);
-                colors[i] = "'#" + rgbToHex(r) + rgbToHex(g) + rgbToHex(b) + "'";
-                
-            }
-            characterCustomView.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
-    
+            requestHairColors(characterCustomView, id, container, size, callback);
         });
-        
+        characterCustomView.on('camFocusBodypart', (bodypart, offset, fov, easeTime) => {
+            focusOnBone(bodypart,offset, fov, easeTime);
+        });
         webviewLayer++;
         setFocusOn(characterCustomView);
     }
@@ -206,6 +297,7 @@ function closeCharacterCustom()
         destroyWebView(characterCustomView);
         characterCustomView = null;
         webviewLayer--;
+        goBackToGameplayCam();
     }
 }
 
@@ -217,8 +309,9 @@ function openContextView()
 
         contextView.on('chatmessage', (text) => {
             //Evènement appelé un bouton de commande est cliqué
-                alt.emitServer('chatmessage', text);
-            });
+            alt.emitServer('chatmessage', text);
+        });
+
         webviewLayer++;
     }
     //#region event_context
@@ -263,27 +356,37 @@ function closeSkinChangerView()
 }
 //#endregion
 //#region CAM FUNCTIONS
-function focusOnBone(bone, offset)
+function createCam(position, rotation, fov)
 {
-    alt.log(bone);
+    alt.nextTick(() => {
+        cam = game.createCam('DEFAULT_SCRIPTED_CAMERA', false);
+        game.setCamCoord(cam, position.x, position.y, position.z);
+        game.setCamRot(cam, rotation.x, rotation.y, rotation.z);
+        game.setCamActive(cam, false);
+        game.setCamFov(cam, fov);
+    });
+
+    return cam;
+}
+function focusOnBone(bone, offset, fov, easeTime)
+{
     bone = (typeof(bone) == 'string') ? ped_bones[bone] : bone;
-
-
     if(cam == null) 
     {
-        alt.log(bone);
+        createCam({x: 0, y:0, z:0}, {x: 0, y:0, z:0}, fov);
         alt.nextTick(() => {
-            cam = game.createCam('DEFAULT_SCRIPTED_CAMERA', false);
-            game.setCamActive(cam, true);
-            game.renderScriptCams(true, true, 200, true, false);
-            game.setCamFov(cam, 20);
             game.attachCamToPedBone(cam, game.playerPedId(), bone, offset.x, offset.y, offset.z, true);
-            game.pointCamAtPedBone(cam, game.playerPedId(), bone, 0, 0, 0, true);
+            game.pointCamAtPedBone(cam, game.playerPedId(), bone, 0, 0, 0, true);        
+        });
+    } else {
+        alt.nextTick(() => {
+            game.setCamActive(cam, true);
+            game.renderScriptCams(true, true, easeTime, true, false);
+            game.setCamFov(cam, fov);
+            game.attachCamToPedBone(cam, game.playerPedId(), bone, offset.x, offset.y, offset.z, true);
+            game.pointCamAtPedBone(cam, game.playerPedId(), bone, 0, 0, 0, true);    
         });
     }
-
-    alt.nextTick(() => {
-    });
 }
 function goBackToGameplayCam()
 {
@@ -302,13 +405,16 @@ function goBackToGameplayCam()
 
 let d = new Date();
 let n = d.getTime();
+
 let autorandom = false;
 alt.on('update', () => {
     if(webviewLayer > 0)
     {
         setControlsEnabled(false);
+        setCursorVisible(true);
     } else {
         setControlsEnabled(true);
+        setCursorVisible(false);
     }
 
     if (autorandom) {
@@ -319,6 +425,4 @@ alt.on('update', () => {
         }
     }
 });
-
-
 
