@@ -4,18 +4,20 @@
         <meta charset="utf-8">
         <link href="css/style.css" rel="stylesheet">
         <link href="css/lambda_ui.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+        <link href="css/fonts/Roboto-Regular.ttf" rel="stylesheet">
         <script src="anime.min.js"></script>
     </head>
 
     <body>
         <div class="wrapper">
             <div id="category">
-                <button id="head" onclick="showOneMenu('head');"> <img height=64 width=64 src="https://img.icons8.com/cotton/2x/search--v2.png"> </button>
+                <button id="identity" onclick="showOneMenu('identity');"> <img height=64 width=64 src="https://img.icons8.com/cotton/2x/search--v2.png"> </button>
+                <button id="facetraits" onclick="showOneMenu('facetraits');"> <img height=64 width=64 src="https://img.icons8.com/cotton/2x/search--v2.png"> </button>
+                <button id="hair" onclick="showOneMenu('hair');"> <img height=64 width=64 src="https://img.icons8.com/cotton/2x/search--v2.png"> </button>
             </div>
-            
+
             <div id="container">
-                <div id="head" class="menu">
+                <div id="facetraits" class="menu">
                    
                     <div class="container-header">
                         <span>Visage</span>
@@ -25,22 +27,6 @@
                         <div data-selected=0 id="hair-color" class="color-picker" onclick="alt.emit('requestHairColors','test','.flex-container#hair-color', 28, '(color, id) => { document.querySelector(\'.color-picker#hair-color\').style.backgroundColor=color; document.querySelector(\'#hair-color\').dataset.selected = id; alt.emit(\'setHairColor\', id, 0); }')"></div>
                         <span>Couleur primaire</span>
                     </div> -->
-                    <div class="flex-container">
-                        <input type="text">
-                        <span>Nom du joueur</span>
-                    </div>
-                    <div class="flex-container">
-                        <button onclick=" this.nextElementSibling.dataset.value--; updateComponent('component', 'hair', this.nextElementSibling.dataset.value);  ">&#9664;</button>
-                        <span data-value=0>Coupe de cheveux</span>
-                        <button onclick=" this.previousElementSibling.dataset.value++; updateComponent('component', 'hair', this.previousElementSibling.dataset.value);  ">&#9654;</button>
-                    </div>
-                    <div class="flex-container">
-                        <div data-selected=0 id="hair-color" class="color-picker" onclick="alt.emit('requestHairColors','hair-color','.flex-container#hair-color', 28, '(color, id) => { document.querySelector(\'.color-picker#hair-color\').style.backgroundColor=color; document.querySelector(\'#hair-color\').dataset.selected = id; alt.emit(\'setHairColor\', id, 0); }')"></div>
-                        <span>Couleur primaire</span>
-                    </div>
-                    <div id="hair-color" class="flex-container">
-
-                    </div>
                     
                     <div class="flex-container">
                         <input type="range" onchange="updateComponent('facefeature', 'nose_width', this.value);" min=0.0 value=0.5 max=1.0 step=0.1>
@@ -124,6 +110,26 @@
                         <span>Epaisseur de la nuque</span>
                     </div>
 
+                </div>
+                <div id="hair" class="menu">
+                    <div class="flex-container">
+                        <button onclick=" this.nextElementSibling.dataset.value--; updateComponent('component', 'hair', this.nextElementSibling.dataset.value);  ">&#9664;</button>
+                        <span data-value=0>Coupe de cheveux</span>
+                        <button onclick=" this.previousElementSibling.dataset.value++; updateComponent('component', 'hair', this.previousElementSibling.dataset.value);  ">&#9654;</button>
+                    </div>
+                    <div class="flex-container">
+                        <div data-selected=0 id="hair-color" class="color-picker" onclick="alt.emit('requestHairColors','hair-color','.flex-container#hair-color', 28, '(color, id) => { document.querySelector(\'.color-picker#hair-color\').style.backgroundColor=color; document.querySelector(\'#hair-color\').dataset.selected = id; alt.emit(\'setHairColor\', id, 0); }')"></div>
+                        <span>Couleur primaire</span>
+                    </div>
+                    <div id="hair-color" class="flex-container">
+
+                    </div>
+                </div>
+                <div id="identity" class="menu">
+                    <div class="flex-container">
+                        <input type="text">
+                        <span>Nom du joueur</span>
+                    </div>
                 </div>
             </div>
 

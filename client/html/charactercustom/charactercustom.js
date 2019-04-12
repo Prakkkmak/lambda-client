@@ -43,9 +43,39 @@ const facefeature_indices = {
 };
 
 const menus = [
-    "head"
+    "identity",
+    "facetraits",
+    "hair"
 ];
-
+const campositions = [
+    {
+        bone: "SKEL_Spine2",
+        fov: 30,
+        offset: {
+            x: 0,
+            y: 5, 
+            z: 0
+        }
+    },
+    {
+        bone: "IK_Head",
+        fov: 20,
+        offset: {
+            x: 0,
+            y: 2, 
+            z: 0
+        }
+    },
+    {
+        bone: "IK_Head",
+        fov: 20,
+        offset: {
+            x: 1,
+            y: 1, 
+            z: 0.5
+        }
+    }
+];
 function showOneMenu(menu_id)
 {
     menus.forEach((menu) => {
@@ -60,6 +90,7 @@ function showOneMenu(menu_id)
 }
 function showMenu(menu_id)
 {
+    if(campositions[menus.indexOf(menu_id)] != null) alt.emit('camFocusBodypart', campositions[menus.indexOf(menu_id)].bone, campositions[menus.indexOf(menu_id)].offset, campositions[menus.indexOf(menu_id)].fov, 500);
     document.querySelector('.menu#'+menu_id).style.display = 'block';
 }
 function hideMenu(menu_id)
@@ -73,7 +104,7 @@ function updateComponent(type,key, value)
         alt.emit('setHeadOverlay', headoverlay_indices[key], value);
     } else if(type == "component")
     {
-        alt.emit('setSkin', component_indices[key], value);
+        alt.emit('setComponent', component_indices[key], value, 0, 0);
     } else if(type == "facefeature")
     {
         alt.emit('setFaceFeature', facefeature_indices[key], value);
@@ -240,4 +271,6 @@ async function add_colorpicker(colorpicker_id, container, el_height, elements, c
     return div;
 }
 
-showOneMenu(menus[0]);
+document.body.onload=()=>{
+    showOneMenu('identity');
+}

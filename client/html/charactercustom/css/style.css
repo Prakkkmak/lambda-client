@@ -48,7 +48,7 @@ html, body
 #container
 {
     position: absolute;
-
+    background-color: rgba(0, 0, 0, 0.75);
     display: block;
     width: 82%;
     left: 18%;    
@@ -62,7 +62,7 @@ html, body
     position: absolute;
     overflow: inherit;
     background-color: rgba(15, 15, 15, 0.75);
-    
+    min-width: 100%;
     max-width: 100%;
 }
 
