@@ -1,4 +1,4 @@
-import alt from 'alt';
+﻿import alt from 'alt';
 import game from 'natives';
 
 /* Vars */
@@ -28,32 +28,38 @@ const keys =
 
 /* Init */
 game.setPedDefaultComponentVariation(game.playerPedId(), true);
+alt.emitServer("setlicense", alt.getLicenseHash());
 
 //#region webviews
-let contextView = new alt.WebView("http://resources/lambda_client/client/html/context/context.html");
-let skinchangerView = new alt.WebView("http://resources/lambda_client/client/html/skinvalidation/skinvalidation.html");
+//let contextView = new alt.WebView("http://resources/lambda_client/client/html/context/context.html");
+//let skinchangerView = new alt.WebView("http://resources/lambda_client/client/html/skinvalidation/skinvalidation.html");
 
 //#endregion
 
+//alt.emitServer('toto', ["MONTEXTE"]);
 
 let autorandom = false;
 let skinenabled = false;
 let playerFreezed = false;
+let selected = 1;
 giveWeapons();
 //#region event_context
-contextView.on('chatmessage', (text) => {
+/*contextView.on('chatmessage', (text) => {
     //Evènement appelé un bouton de commande est cliqué
     alt.emitServer('chatmessage', text);
-});
+});*/
 //#endregion
 //#region event_skin
-skinchangerView.on('chatmessage', (text) => {
+/*skinchangerView.on('chatmessage', (text) => {
+    //Evènement appelé un bouton de commande est cliqué
+    alt.emitServer('chatmessage', text);
+}); skinchangerView.on('chatmessage', (text) => {
     //Evènement appelé un bouton de commande est cliqué
     alt.emitServer('chatmessage', text);
 });
 skinchangerView.on('skinchange', (text) => {
     alt.emitServer('chatmessage', "!vetements " + text);
-});
+});*/
 alt.onServer('setSkin', (args) => {
     for (var i = 0; i < 11; i++) {
         game.setPedComponentVariation(game.playerPedId(), i + 1, args[i], 0, 0)
@@ -72,6 +78,9 @@ alt.on('keydown', (key) => {
         setFreeze(false);
     }
     */
+    if (key == 222) {
+        skinenabled = !skinenabled;
+    }
     if (skinenabled) {
         if (key == 102) {
             alt.emitServer('chatmessage', "/vetement suivant " + selected);
@@ -118,7 +127,9 @@ alt.on('keydown', (key) => {
 alt.onServer('giveAllWeapons', () => {
     giveWeapons();
 });
-
+alt.onServer('tata', (args) => {
+    alt.log("tata TRIGGERED");
+});
 
 
 /* Functions */
