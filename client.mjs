@@ -1,6 +1,7 @@
 import alt from 'alt';
 import game from 'natives';
 
+
 /* Vars */
 const weapons = [
     "WEAPON_KNIFE", "WEAPON_BAT", "WEAPON_BOTTLE", "WEAPON_WRENCH",
@@ -30,10 +31,48 @@ const keys =
 const ped_bones = 
 {
     'IK_Head' : 0x322c,
+    'SKEL_Head ' : 0x796E,
+    'FACIAL_facialRoot' : 0xFE2C, 
     'SKEL_Spine2' : 0x60f1,
     'SKEL_Root': 0x0
 };
 
+//#region webviews
+let contextView = null;
+let skinchangerView = null;
+let characterCustomView = null;
+//#endregion
+let cursorVisible = false;
+
+class SpotLight
+{
+
+    constructor(_x,_y,_z) 
+    {
+        this.position = 
+        {
+            x:_x,
+            y:_y,
+            z:_z
+        };
+        this.direction = 
+        {
+            x:0,
+            y:0,
+            z:0
+        };
+        this.color =
+        {
+            r: 255,
+            g: 0,
+            b: 255
+        };
+        this.brightness = 100;
+        this.distance = 255;
+        this.hardness = 0;
+        this.radius = 13;
+    }
+};
 const rgbToHex = function (rgb) { 
     var hex = Number(rgb).toString(16);
     if (hex.length < 2) {
@@ -41,15 +80,12 @@ const rgbToHex = function (rgb) {
     }
     return hex;
 };
+let spotlights = [];
+
 /* Init */
 setModel("Male");
 goBackToGameplayCam();
-//#region webviews
-let contextView = null;
-let skinchangerView = null;
-let characterCustomView = null;
-let cursorVisible = false;
-//#endregion
+
 
 let webviewLayer = 0;
 
@@ -71,17 +107,32 @@ alt.onServer('setFreeze', (value) => {
 alt.onServer('giveAllWeapons', () => {
     giveAllWeapons();
 });
+alt.onServer('loadipl', (ipl) => {
+    loadIPL(ipl);
+});
+alt.onServer('unloadipl', (ipl) => {
+    unloadIPL(ipl);
+});
 //#endregion
 var cam = null;
-
+let skinenabled = false;
 //#region event_general
 alt.on('keydown', (key) => {
     //Touche de clavier enfoncée
     if(key == keys.E){
         openCharacterCustom();
+
     } else if(key == keys.A)
     {
         closeCharacterCustom();
+    }
+
+    if(skinenabled)
+    {
+        vetementChanger(key);
+    } else if(key == 222)
+    {
+        skinenabled = !skinenabled;
     }
 });
 
@@ -120,7 +171,6 @@ function setCursorVisible(value)
 
 function setModel(model)
 {
-    
     if(model.toLowerCase() == "male")
     {
         model = game.getHashKey("mp_m_freemode_01");
@@ -130,19 +180,13 @@ function setModel(model)
         model = game.getHashKey(model);
     }
 
-    alt.log(model);
-
     game.requestModel(model);
-    
-    alt.log(game.hasModelLoaded(model));
-    
-    alt.nextTick(() => {
-        while(!game.hasModelLoaded(model)){ }
+        
+    alt.setTimeout(() => {
         game.setPlayerModel(game.playerId(), model);
         game.setPedDefaultComponentVariation(game.playerPedId());
-        game.setPedHeadBlendData(game.playerPedId(), 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0, true);
-    });  
-
+        game.setPedHeadBlendData(game.playerPedId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, true);
+    }, 100);
 }
 function setHairColor(colorID, highlightColorID)
 {
@@ -286,6 +330,9 @@ function openCharacterCustom()
         characterCustomView.on('camFocusBodypart', (bodypart, offset, fov, easeTime) => {
             focusOnBone(bodypart,offset, fov, easeTime);
         });
+        characterCustomView.on('setModel', (model) => {
+            setModel(model);
+        });
         webviewLayer++;
         setFocusOn(characterCustomView);
     }
@@ -355,6 +402,48 @@ function closeSkinChangerView()
 
 }
 //#endregion
+//#region KEY CONTROLS
+function vetementChanger(key)
+{
+    if (key == 102) {
+        alt.emitServer('chatmessage', "/vetement suivant " + selected);
+    }
+    if (key == 100) {
+        alt.emitServer('chatmessage', "/vetement precedent " + selected);
+    }
+    if (key == 104) {
+        if (selected < 11) {
+            selected++;
+        }
+        else {
+            selected = 1;
+        }
+        alt.emitServer('chatmessage', "Slot selectioné: " + selected);
+    }
+    if (key == 98) {
+        if (selected > 1) {
+            selected--;
+        }
+        else {
+            selected = 11;
+        }
+        alt.emitServer('chatmessage', "Slot selectioné: " + selected);
+    }
+    if (key == 99) {
+        alt.emitServer('chatmessage', "/vetement valider");
+    }
+    if (key == 97) {
+        alt.emitServer('chatmessage', "/vetement mauvais");
+    }
+    if (key == 101) {
+        alt.emitServer('chatmessage', "/vetement tester");
+    }
+    if (key == 105) {
+        alt.emitServer('chatmessage', "/vetement gen");
+    }
+
+}
+//#endregion
 //#region CAM FUNCTIONS
 function createCam(position, rotation, fov)
 {
@@ -402,7 +491,29 @@ function goBackToGameplayCam()
     }
 }
 //#endregion
+//#region LIGHT FUNCTIONS
+function createLight(id)
+{
+    spotlights[id] = new SpotLight(game.getEntityCoords(game.playerPedId()).x, game.getEntityCoords(game.playerPedId()).y, game.getEntityCoords(game.playerPedId()).z);
+}
+function renderLights()
+{
+    spotlights.forEach((light) => {
+        game.drawSpotLight(light.position.x, light.position.y, light.position.z, light.direction.x, light.direction.y, light.direction.z, light.color.r, light.color.g, light.color.b, light.distance, light.brightness, light.hardness, light.radius, 1);
+    });
+}
+//#endregion
 
+//#region IPL FUNCTION
+function loadIPL(ipl)
+{
+    game.RequestIpl(ipl);
+}
+function unloadIPL(ipl)
+{
+    game.removeIpl(ipl);
+}
+//#endregion
 let d = new Date();
 let n = d.getTime();
 
@@ -424,5 +535,7 @@ alt.on('update', () => {
             alt.emitServer('chatmessage', "/vetement ale");
         }
     }
+
+    renderLights();
 });
 
