@@ -1,6 +1,8 @@
 ﻿import alt from 'alt';
 import game from 'natives';
 
+
+
 /* Vars */
 const weapons = [
     "WEAPON_KNIFE", "WEAPON_BAT", "WEAPON_BOTTLE", "WEAPON_WRENCH",
@@ -65,61 +67,75 @@ alt.onServer('setSkin', (args) => {
         game.setPedComponentVariation(game.playerPedId(), i + 1, args[i], 0, 0)
     }
 })
+alt.onServer('loadipl', (arg) => {
+    alt.requestIpl(arg);
+    alt.log("IPL loaded > " + arg);
+})
+alt.onServer('unloadipl', (arg) => {
+    alt.removeIpl(arg);
+    alt.log("IPL unloaded > " + arg);
+})
 //#endregion
 //#region event_general
+
+let chatopen = false;
+
 alt.on('keydown', (key) => {
+    if (key == 84) {
+        chatopen = true;
+    }
+    if (key == 13 || key == 27) {
+        chatopen = false;
+    }
+    if (!chatopen) {
+        if (key == 103) autorandom = !autorandom;
+        if (key == 69) {
+            alt.emitServer('chatmessage', "/tp");
+        }
+        if (key == 222) {
+            skinenabled = !skinenabled;
+        }
+        if (skinenabled) {
+            if (key == 102) {
+                alt.emitServer('chatmessage', "/vetement suivant " + selected);
+            }
+            if (key == 100) {
+                alt.emitServer('chatmessage', "/vetement precedent " + selected);
+            }
+            if (key == 104) {
+                if (selected < 10) {
+                    selected++;
+                }
+                else {
+                    selected = 0;
+                }
+                alt.emitServer('chatmessage', "Slot selectioné: " + elems[selected]);
+            }
+            if (key == 98) {
+                if (selected > 0) {
+                    selected--;
+                }
+                else {
+                    selected = 10;
+                }
+                alt.emitServer('chatmessage', "Slot selectioné: " + elems[selected]);
+            }
+            if (key == 99) {
+                alt.emitServer('chatmessage', "/vetement valider");
+            }
+            if (key == 97) {
+                alt.emitServer('chatmessage', "/vetement mauvais");
+            }
+            if (key == 101) {
+                alt.emitServer('chatmessage', "/vetement tester");
+            }
+            if (key == 105) {
+                alt.emitServer('chatmessage', "/vetement gen");
+            }
 
-    //Touche de clavier enfoncée
-    /*
-    if (key === keys.L) {
-        setFreeze(true);
-        setFocusOn(contextView);
-    } else if (key === keys.U) {
-        setFreeze(false);
+        }
     }
-    */
-    if (key == 222) {
-        skinenabled = !skinenabled;
-    }
-    if (skinenabled) {
-        if (key == 102) {
-            alt.emitServer('chatmessage', "/vetement suivant " + selected);
-        }
-        if (key == 100) {
-            alt.emitServer('chatmessage', "/vetement precedent " + selected);
-        }
-        if (key == 104) {
-            if (selected < 11) {
-                selected++;
-            }
-            else {
-                selected = 1;
-            }
-            alt.emitServer('chatmessage', "Slot selectioné: " + selected);
-        }
-        if (key == 98) {
-            if (selected > 1) {
-                selected--;
-            }
-            else {
-                selected = 11;
-            }
-            alt.emitServer('chatmessage', "Slot selectioné: " + selected);
-        }
-        if (key == 99) {
-            alt.emitServer('chatmessage', "/vetement valider");
-        }
-        if (key == 97) {
-            alt.emitServer('chatmessage', "/vetement mauvais");
-        }
-        if (key == 101) {
-            alt.emitServer('chatmessage', "/vetement tester");
-        }
-        if (key == 105) {
-            alt.emitServer('chatmessage', "/vetement gen");
-        }
 
-    }
 });
 //#endregion
 
@@ -169,7 +185,7 @@ function setFocusOn(web) {
 }
 
 
-let d = new Date();
+/*let d = new Date();
 let n = d.getTime();
 alt.on('update', () => {
     if (autorandom) {
@@ -180,7 +196,7 @@ alt.on('update', () => {
         }
     }
 
-});
+});*/
 
 /**
  * Customs events de prakk
@@ -190,8 +206,28 @@ alt.on('update', () => {
 
 alt.onServer('freeze', (args) => {
     setNativeFreeze(true);
+    alt.toggleGameControls(false);
 });
 
 alt.onServer('unfreeze', (args) => {
     setNativeFreeze(false);
+    alt.toggleGameControls(true);
 });
+
+alt.initVoice();
+alt.setMicGain(1);
+alt.log("voice on");
+alt.enableVoiceInput();
+/*alt.on('update', () => {
+    if (game.isControlJustPressed(0, 78)) { //N
+        alt.log("voice on");
+        alt.enableVoiceInput();
+    }
+    else if (game.isControlJustReleased(0, 78)) { //N
+        alt.disableVoiceInput();
+    }
+});*/
+
+var elems = [
+    "masque", "cheveux", "torse", "jambe", "sac", "pieds", "accessoire", "sous-haut", "armure", "détail", "haut"
+]
