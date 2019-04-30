@@ -122,6 +122,12 @@ alt.onServer('unloadIpl', (ipl) => {
     unloadIPL(ipl);
     alt.log("IPL unloaded > " + ipl);
 });
+alt.onServer('openView', (viewName) => {
+    if(viewName == 'characterCustom')
+    {
+        openCharacterCustom();
+    }
+});
 //#endregion
 
 
@@ -139,10 +145,7 @@ alt.on('keydown', (key) => {
     }
     if(!chatopen)
     {
-        if(key == keys.E){
-            openCharacterCustom();
-    
-        } else if(key == keys.A)
+        if(key == keys.A)
         {
             closeCharacterCustom();
         }
@@ -225,7 +228,7 @@ function setModel(model)
 }
 function setHairColor(colorID, highlightColorID)
 {
-    alt.log("setHairColor" + colorID);
+    alt.log("setHairColor " + colorID);
     game.setPedHairColor(game.playerPedId(), colorID, highlightColorID);
 }
 function setHeadOverlay(argsIndex, argsOpacity)
@@ -290,8 +293,8 @@ function requestHairColors(web, id, container, size, callback)
     {
         let [_, r, g, b] = game.getHairColor(i, 0, 0, 0);
         colors[i] = "'#" + rgbToHex(r) + rgbToHex(g) + rgbToHex(b) + "'";
-        
     }
+
     web.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
 }
 
@@ -316,12 +319,9 @@ function destroyWebView(web)
 
 function openCharacterCustom()
 {
-    alt.log(webviewLayer);
-    alt.log(cursorVisible);
-
     if(!isWebViewOpened(characterCustomView))
     {
-        characterCustomView = new alt.WebView("http://resources/lambda_client/client/html/charactercustom/charactercustom.html");
+        characterCustomView = new alt.WebView("http://resources/lambda-client/client/html/charactercustom/charactercustom.html");
 
         characterCustomView.on('setHairColor', (colorID,highlightColorID) => {
             
@@ -362,6 +362,7 @@ function openCharacterCustom()
         characterCustomView.on('setModel', (model) => {
             setModel(model);
         });
+        
         webviewLayer++;
         setFocusOn(characterCustomView);
     }
@@ -381,7 +382,7 @@ function openContextView()
 {
     if(!isWebViewOpened(contextView)) 
     {
-        contextView = new alt.WebView('http://resources/lambda_client/client/html/context/context.html')
+        contextView = new alt.WebView('http://resources/lambda-client/client/html/context/context.html')
 
         contextView.on('chatmessage', (text) => {
             //Evènement appelé un bouton de commande est cliqué
@@ -408,7 +409,7 @@ function openSkinChangerView()
 {
     if(!isWebViewOpened(skinchangerView))
     {
-        skinchangerView = new alt.WebView('http://resources/lambda_client/client/html/skinchanger/skinchanger.html');
+        skinchangerView = new alt.WebView('http://resources/lambda-client/client/html/skinchanger/skinchanger.html');
 
         skinchangerView.on('chatmessage', (text) => {
             //Evènement appelé un bouton de commande est cliqué
@@ -436,7 +437,6 @@ function vetementChanger(key)
 {
     if (key == 102) {
         alt.emitServer('chatmessage', "/vetement suivant " + selected);
-        console.log(key);
     }
     if (key == 100) {
         alt.emitServer('chatmessage', "/vetement precedent " + selected);
@@ -481,7 +481,7 @@ function createCam(position, rotation, fov)
         cam = game.createCam('DEFAULT_SCRIPTED_CAMERA', false);
         game.setCamCoord(cam, position.x, position.y, position.z);
         game.setCamRot(cam, rotation.x, rotation.y, rotation.z);
-        game.setCamActive(cam, false);
+        game.setCamActive(cam, true);
         game.setCamFov(cam, fov);
     });
 
@@ -495,7 +495,8 @@ function focusOnBone(bone, offset, fov, easeTime)
         createCam({x: 0, y:0, z:0}, {x: 0, y:0, z:0}, fov);
         alt.nextTick(() => {
             game.attachCamToPedBone(cam, game.playerPedId(), bone, offset.x, offset.y, offset.z, true);
-            game.pointCamAtPedBone(cam, game.playerPedId(), bone, 0, 0, 0, true);        
+            game.pointCamAtPedBone(cam, game.playerPedId(), bone, 0, 0, 0, true);    
+            game.renderScriptCams(true, true, easeTime, true, false);
         });
     } else {
         alt.nextTick(() => {
