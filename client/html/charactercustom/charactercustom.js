@@ -116,7 +116,7 @@ async function add_colorpicker(colorpicker_id, container, el_height, elements, c
 {
     let el_width = el_height*(443.12/512);
     
-    container =  typeof(container) == "string" ? document.querySelector(container) : container;
+    container = typeof(container) == "string" ? document.querySelector(container) : container;
 
     //calculate the width of all hexagons
     let ts = 1;
