@@ -58,8 +58,8 @@ const campositions = [
         }
     },
     {
-        bone: "IK_Head",
-        fov: 20,
+        bone: "FACIAL_facialRoot",
+        fov: 15,
         offset: {
             x: 0,
             y: 2, 
@@ -76,6 +76,7 @@ const campositions = [
         }
     }
 ];
+
 function showOneMenu(menu_id)
 {
     menus.forEach((menu) => {
@@ -271,6 +272,6 @@ async function add_colorpicker(colorpicker_id, container, el_height, elements, c
     return div;
 }
 
-document.body.onload=()=>{
+window.addEventListener('load', () => {
     showOneMenu('identity');
-}
+});

@@ -17,6 +17,9 @@ const keys =
     'U' : 85,
     'E' : 69,
     'A' : 65,
+    'T' : 84,
+    'Esc' : 27,
+    'Enter' : 13,
     'Numpad_0' : 96,
     'Numpad_1' : 97,
     'Numpad_2' : 98,
@@ -26,7 +29,8 @@ const keys =
     'Numpad_6' : 102,
     'Numpad_7' : 103,
     'Numpad_8' : 104,
-    'Numpad_9' : 105
+    'Numpad_9' : 105,
+    'power2' : 222
 };
 const ped_bones = 
 {
@@ -36,6 +40,7 @@ const ped_bones =
     'SKEL_Spine2' : 0x60f1,
     'SKEL_Root': 0x0
 };
+var elems = ["masque", "cheveux", "torse", "jambe", "sac", "pieds", "accessoire", "sous-haut", "armure", "détail", "haut"];
 
 //#region webviews
 let contextView = null;
@@ -80,14 +85,13 @@ const rgbToHex = function (rgb) {
     }
     return hex;
 };
+
 let spotlights = [];
+let cam = null;
+let webviewLayer = 0;
 
 /* Init */
-setModel("Male");
-goBackToGameplayCam();
-
-
-let webviewLayer = 0;
+start();
 
 alt.onServer('setComponent', (argsDrawable, argsTexture, argsPalette) => 
 {
@@ -107,38 +111,66 @@ alt.onServer('setFreeze', (value) => {
 alt.onServer('giveAllWeapons', () => {
     giveAllWeapons();
 });
+alt.onServer('setWorldTime', (h,m,s) => {
+    alt.setClockTime(h, m, s);
+});
 alt.onServer('loadipl', (ipl) => {
     loadIPL(ipl);
+    alt.log("IPL loaded > " + ipl);
 });
 alt.onServer('unloadipl', (ipl) => {
     unloadIPL(ipl);
+    alt.log("IPL unloaded > " + ipl);
 });
 //#endregion
-var cam = null;
+
+
+let chatopen = false;
 let skinenabled = false;
 //#region event_general
 alt.on('keydown', (key) => {
     //Touche de clavier enfoncée
-    if(key == keys.E){
-        openCharacterCustom();
-
-    } else if(key == keys.A)
-    {
-        closeCharacterCustom();
+    if (key == keys.T) {
+        chatopen = true;
     }
-
-    if(skinenabled)
+    if (key == keys.Enter || key == keys.Esc) {
+        chatopen = false;
+    }
+    if(chatopen)
     {
-        vetementChanger(key);
-    } else if(key == 222)
-    {
-        skinenabled = !skinenabled;
+        if(key == keys.E){
+            openCharacterCustom();
+    
+        } else if(key == keys.A)
+        {
+            closeCharacterCustom();
+        }
+    
+        if(skinenabled)
+        {
+            vetementChanger(key);
+        } else if(key == keys.power2)
+        {
+            skinenabled = !skinenabled;
+        }
     }
 });
 
+function start()
+{
+    setModel("Male");
+    goBackToGameplayCam();
+    alt.emitServer("setlicense", alt.getLicenseHash());
+    
+    alt.initVoice();
+    alt.setMicGain(1);
+    alt.log("voice on");
+    alt.enableVoiceInput();
+    
+}
 /* Functions */
 function giveAllWeapons() {
-    let ped = game.playerPedId()
+    let ped = game.playerPedId();
 
     for (const weapon of weapons) {
         game.giveWeaponToPed(ped, game.getHashKey(weapon), 9999, false, false)
@@ -158,7 +190,8 @@ function setControlsEnabled(value)
 }
 function freezePlayer(value)
 {
-    game.freezeEntityPosition(value);
+    game.freezeEntityPosition(game.playerPedId(),value);
+    setControlsEnabled(value);
 }
 function setCursorVisible(value)
 {
@@ -300,21 +333,15 @@ function openCharacterCustom()
             arg2[key] = opacity;
 
             setHeadOverlay(arg1, arg2);
-        });
+        }); 
         characterCustomView.on('setComponent', (key, drawable, texture, palette) => {
             let arg1 = new Array(11).fill(null);
             let arg2 = new Array(11).fill(null);
             let arg3 = new Array(11).fill(null);
 
-
-
             arg1[key] = drawable;
             arg2[key] = texture;
             arg3[key] = palette;
-
-            alt.log(arg1);
-            alt.log(arg2);
-            alt.log(arg3);
 
             setComponentVariation(arg1,arg2,arg3);
         });
@@ -412,22 +439,22 @@ function vetementChanger(key)
         alt.emitServer('chatmessage', "/vetement precedent " + selected);
     }
     if (key == 104) {
-        if (selected < 11) {
+        if (selected < 10) {
             selected++;
         }
         else {
-            selected = 1;
+            selected = 0;
         }
-        alt.emitServer('chatmessage', "Slot selectioné: " + selected);
+        alt.emitServer('chatmessage', "Slot selectioné: " + elems[selected]);
     }
     if (key == 98) {
-        if (selected > 1) {
+        if (selected > 0) {
             selected--;
         }
         else {
-            selected = 11;
+            selected = 10;
         }
-        alt.emitServer('chatmessage', "Slot selectioné: " + selected);
+        alt.emitServer('chatmessage', "Slot selectioné: " + elems[selected]);
     }
     if (key == 99) {
         alt.emitServer('chatmessage', "/vetement valider");
@@ -492,6 +519,7 @@ function goBackToGameplayCam()
 }
 //#endregion
 //#region LIGHT FUNCTIONS
+
 function createLight(id)
 {
     spotlights[id] = new SpotLight(game.getEntityCoords(game.playerPedId()).x, game.getEntityCoords(game.playerPedId()).y, game.getEntityCoords(game.playerPedId()).z);
@@ -502,9 +530,9 @@ function renderLights()
         game.drawSpotLight(light.position.x, light.position.y, light.position.z, light.direction.x, light.direction.y, light.direction.z, light.color.r, light.color.g, light.color.b, light.distance, light.brightness, light.hardness, light.radius, 1);
     });
 }
-//#endregion
 
-//#region IPL FUNCTION
+//#endregion
+//#region IPL FUNCTIONS
 function loadIPL(ipl)
 {
     game.RequestIpl(ipl);
@@ -514,10 +542,7 @@ function unloadIPL(ipl)
     game.removeIpl(ipl);
 }
 //#endregion
-let d = new Date();
-let n = d.getTime();
 
-let autorandom = false;
 alt.on('update', () => {
     if(webviewLayer > 0)
     {
@@ -527,15 +552,5 @@ alt.on('update', () => {
         setControlsEnabled(true);
         setCursorVisible(false);
     }
-
-    if (autorandom) {
-        d = new Date()
-        if (d.getTime() - n > 3000) {
-            n = d.getTime();
-            alt.emitServer('chatmessage', "/vetement ale");
-        }
-    }
-
-    renderLights();
 });
 
