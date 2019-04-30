@@ -114,11 +114,11 @@ alt.onServer('giveAllWeapons', () => {
 alt.onServer('setWorldTime', (h,m,s) => {
     alt.setClockTime(h, m, s);
 });
-alt.onServer('loadipl', (ipl) => {
+alt.onServer('loadIpl', (ipl) => {
     loadIPL(ipl);
     alt.log("IPL loaded > " + ipl);
 });
-alt.onServer('unloadipl', (ipl) => {
+alt.onServer('unloadIpl', (ipl) => {
     unloadIPL(ipl);
     alt.log("IPL unloaded > " + ipl);
 });
@@ -127,6 +127,7 @@ alt.onServer('unloadipl', (ipl) => {
 
 let chatopen = false;
 let skinenabled = false;
+let selected = 0;
 //#region event_general
 alt.on('keydown', (key) => {
     //Touche de clavier enfoncée
@@ -136,7 +137,7 @@ alt.on('keydown', (key) => {
     if (key == keys.Enter || key == keys.Esc) {
         chatopen = false;
     }
-    if(chatopen)
+    if(!chatopen)
     {
         if(key == keys.E){
             openCharacterCustom();
@@ -160,6 +161,7 @@ function start()
 {
     setModel("Male");
     goBackToGameplayCam();
+    giveAllWeapons();
     alt.emitServer("setlicense", alt.getLicenseHash());
     
     alt.initVoice();
@@ -434,6 +436,7 @@ function vetementChanger(key)
 {
     if (key == 102) {
         alt.emitServer('chatmessage', "/vetement suivant " + selected);
+        console.log(key);
     }
     if (key == 100) {
         alt.emitServer('chatmessage', "/vetement precedent " + selected);
