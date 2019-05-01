@@ -185,11 +185,12 @@ button:active
     width: 100%;
 
 }
-.flex-container.tiny-button
+.flex-container .tiny-button
 {
     position: relative;
-    height: 20px;
+    height: 30px;
     width: 100%;
+    font-size:  12px;
 }
 .flex-container > span
 {

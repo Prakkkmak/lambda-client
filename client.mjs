@@ -1,6 +1,6 @@
 import alt from 'alt';
 import game from 'natives';
-
+import animation from 'animation.mjs';
 
 /* Vars */
 const weapons = [
@@ -30,6 +30,7 @@ const keys =
     'Numpad_7' : 103,
     'Numpad_8' : 104,
     'Numpad_9' : 105,
+    '=' : 187,
     'power2' : 222
 };
 const ped_bones = 
@@ -46,6 +47,7 @@ var elems = ["masque", "cheveux", "torse", "jambe", "sac", "pieds", "accessoire"
 let contextView = null;
 let skinchangerView = null;
 let characterCustomView = null;
+let animationsView = null;
 //#endregion
 let cursorVisible = false;
 
@@ -143,13 +145,17 @@ alt.on('keydown', (key) => {
     if (key == keys.Enter || key == keys.Esc) {
         chatopen = false;
     }
+    if(key == keys.Esc)
+    {
+        
+        closeAnimationsView();
+    }
+    if(key == keys['='])
+    {
+        openAnimationsView();
+    }
     if(!chatopen)
     {
-        if(key == keys.A)
-        {
-            closeCharacterCustom();
-        }
-    
         if(skinenabled)
         {
             vetementChanger(key);
@@ -169,9 +175,10 @@ function start()
     
     alt.initVoice();
     alt.setMicGain(1);
-    alt.log("voice on");
+    alt.log("Voice on");
     alt.enableVoiceInput();
-    
+
+    game.requestAnimDict("misscarstealfinalecar_5_ig_3");
 }
 /* Functions */
 function giveAllWeapons() {
@@ -431,6 +438,37 @@ function closeSkinChangerView()
     }
 
 }
+
+function openAnimationsView()
+{
+    if(!isWebViewOpened(animationsView))
+    {
+        animationsView = new alt.WebView('http://resources/lambda-client/client/html/animations/animations.html');
+
+        animationsView.on('load', () => {
+            Object.keys(animation.anims).forEach((anim) => {
+                animationsView.execJS(`add_buttonanim('${animation.anims[anim].label}', '${anim}')`);
+            });
+        });
+        
+        animationsView.on('playAnim', (anim) => {
+            animation.playAnim(anim);
+        });
+
+        setFocusOn(animationsView);
+        webviewLayer++;
+    }
+}
+function closeAnimationsView()
+{
+    if(isWebViewOpened(animationsView))    
+    {
+        destroyWebView(animationsView);
+        animationsView = null;
+        webviewLayer--;
+    }
+
+}
 //#endregion
 //#region KEY CONTROLS
 function vetementChanger(key)
@@ -510,16 +548,15 @@ function focusOnBone(bone, offset, fov, easeTime)
 }
 function goBackToGameplayCam()
 {
-    if(cam != null)
-    {
-        alt.nextTick(() => {
+    
+    alt.nextTick(() => {
 
-            game.setCamActive(cam, false);
-            game.destroyAllCams(false);
-            cam=null;
-            game.renderScriptCams(false, false, 0, true, true);
-        });
-    }
+        game.setCamActive(cam, false);
+        game.destroyAllCams(false);
+        cam=null;
+        game.renderScriptCams(false, false, 0, true, true);
+    });
+    
 }
 //#endregion
 //#region LIGHT FUNCTIONS
