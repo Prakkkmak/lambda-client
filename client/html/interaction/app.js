@@ -28,3 +28,12 @@ function add_right_button(texte) {
         alt.emitServer('chatmessage', '/refuser');
     })
 }
+
+function add_interaction(question,content,buttonL,buttonR){
+
+    add_content(content);
+    add_question(question);
+    add_left_button(buttonL);
+    add_right_button(buttonR);
+
+}
