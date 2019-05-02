@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="rapportBug">
+      <h2>Rapport de bug</h2>
+
+      <form action="" onsubmit="return false" id="usrform">
+        <textarea name="comment" id="texte" form="usrform" class="textarea" placeholder="Description de votre bug ..." required></textarea>
+
+        <div class="radio" id="categorie">
+          <div id="radioo">
+            <input type="radio" name="categorie" id="bugue" value="bug" />
+            <label for="bugue">Bug</label>
+          </div>
+          <div id="radioo">
+            <input type="radio" name="categorie" id="glitch" value="glitch" />
+            <label for="glitch">Glitch</label>
+          </div>
+          <div id="radioo">
+            <input type="radio" name="categorie" id="autre" value="autre" checked />
+            <label for="autre">Autre</label>
+          </div>
+        </div>
+
+        <div class="radio" id="importance">
+          <p>Importance</p>
+          <input type="radio" name="importance" id="haute" value="haute" />
+          <label for="haute">Haute</label>
+          <input type="radio" name="importance" id="moyenne" value="moyenne" checked />
+          <label for="moyenne">Moyenne</label>
+          <input type="radio" name="importance" id="basse" value="basse" />
+          <label for="basse">Basse</label>
+        </div>
+
+        <input type="submit" onclick="bug()" class="button" />
+      </form>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
