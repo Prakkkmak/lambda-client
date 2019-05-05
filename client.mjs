@@ -2,6 +2,8 @@ import alt from 'alt';
 import game from 'natives';
 import animation from 'animation.mjs';
 
+game.setPedDefaultComponentVariation(game.playerPedId(), true);
+
 /* Vars */
 const weapons = [
     "WEAPON_KNIFE", "WEAPON_BAT", "WEAPON_BOTTLE", "WEAPON_WRENCH",
@@ -521,12 +523,12 @@ function unloadIPL(ipl) {
 //#endregion
 
 alt.on('update', () => {
-    if (webviewLayer > 0) {
+    /*if (webviewLayer > 0) {
         setControlsEnabled(false);
         setCursorVisible(true);
     } else {
         setControlsEnabled(true);
         setCursorVisible(false);
-    }
+    }*/
 });
 
