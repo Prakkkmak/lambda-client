@@ -1,9 +1,7 @@
 import alt from 'alt';
 import game from 'natives';
-import animation from 'animation.mjs';
-
-game.setPedDefaultComponentVariation(game.playerPedId(), true);
-
+import animation from 'client/mjs/animation.mjs';
+import cef from 'client/mjs/cefmanager.mjs'; 
 /* Vars */
 const weapons = [
     "WEAPON_KNIFE", "WEAPON_BAT", "WEAPON_BOTTLE", "WEAPON_WRENCH",

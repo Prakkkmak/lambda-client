@@ -1,11 +1,13 @@
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
-const headoverlay_indices = {
+const headoverlay_indices = 
+{
     "blemishes": 0,
     "facialhair" : 1,
     "eyebrows": 2
 };
-const component_indices = {
+const component_indices = 
+{
     "face": 0,
     "mask": 1,
     "hair": 2,
@@ -19,7 +21,8 @@ const component_indices = {
     "decals": 10,
     "tops": 11
 };
-const facefeature_indices = {
+const facefeature_indices = 
+{
     "nose_width" : 0,
     "nose_peak_hight" : 1,
     "nose_peak_lenght" : 2,
