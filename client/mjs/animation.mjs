@@ -1,13 +1,12 @@
 import game from 'natives';
+import alt from 'alt';
 
 let  eAnimationFlags=
 {
-    ANIM_FLAG_NORMAL : 0,
-    ANIM_FLAG_REPEAT : 1,
-    ANIM_FLAG_STOP_LAST_FRAME : 2,
-    ANIM_FLAG_UPPERBODY : 16,
-    ANIM_FLAG_ENABLE_PLAYER_CONTROL : 32,
-    ANIM_FLAG_CANCELABLE : 120,
+    ANIM_FLAG_NORMAL : 8,
+    ANIM_FLAG_LOOP : 9,
+    ANIM_FLAG_UPPER_NORMAL : 48,
+    ANIM_FLAG_UPPER_LOOP : 49
 };
 
 const anims = {
@@ -31,7 +30,7 @@ const anims = {
     'gesture_shrug_hard' : {dic : "gestures@f@standing@casual", anim : "gesture_shrug_hard", label : "Shrug", category : "Gesture"},
     'gesture_what_hard' : {dic : "gestures@f@standing@casual", anim : "gesture_what_hard", label : "What", category : "Gesture"},
     'gesture_nod_yes_hard' : {dic : "gestures@f@standing@casual", anim : "gesture_nod_yes_hard", label : "Yes", category : "Gesture"},
-    'gesture_you_hard' : {dic : "gestures@f@standing@casual", anim : "gesture_you_hard", label : "You", category : "Gesture"},
+    'gesture_you_hard' : {dic : "gestures@f@standing@casual", anim : "gesture_you_hard", label : "You", category : "Gesture"}
 };
 
 const scens = {
@@ -121,11 +120,49 @@ const scens = {
     'WORLD_HUMAN_STRIP_WATCH_STAND' : {scen : "WORLD_HUMAN_STRIP_WATCH_STAND", label : "Watch Stripper", category : "Hobby"},
     'WORLD_HUMAN_MUSCLE_FREE_WEIGHTS' : {scen : "WORLD_HUMAN_MUSCLE_FREE_WEIGHTS", label : "Weights", category : "Hobby"},
     'WORLD_HUMAN_WELDING' : {scen : "WORLD_HUMAN_WELDING", label : "Welding", category : "Jobs"},
-    'WORLD_HUMAN_YOGA' : {scen : "WORLD_HUMAN_YOGA", label : "Yoga", category : "Hobby"},
+    'WORLD_HUMAN_YOGA' : {scen : "WORLD_HUMAN_YOGA", label : "Yoga", category : "Hobby"}
 };
 
-export function playAnim (anim)
+export function playAnim (anim, dict, animFlag)
 {
-    game.taskPlayAnim(game.playerPedId(), anims[anim].dic, anims[anim].anim, 8, 1, -1, eAnimationFlags.ANIM_FLAG_CANCELABLE, 0, 0, 0, 0);
+    if (arguments.length == 2)
+    {
+        if(game.hasAnimDictLoaded(dict))
+        {
+            game.taskPlayAnim(game.playerPedId(), dict, anim, 8, 1, -1, eAnimationFlags.ANIM_FLAG_NORMAL, 0, 0, 0, 0);
+        } else {
+            loadAnimDict(dict).then(() => {
+                game.taskPlayAnim(game.playerPedId(), dict, anim, 8, 1, -1, eAnimationFlags.ANIM_FLAG_NORMAL, 0, 0, 0, 0);
+            });
+        }
+    } else if (arguments.length == 3)
+    {
+        if(game.hasAnimDictLoaded(dict))
+        {
+            game.taskPlayAnim(game.playerPedId(), dict, anim, 8, 1, -1, animFlag, 0, 0, 0, 0);
+        } else {
+            loadAnimDict(dict).then(() => {
+                game.taskPlayAnim(game.playerPedId(), dict, anim, 8, 1, -1, animFlag, 0, 0, 0, 0);
+            });
+        }
+    }
 }
-export default {anims, scens, playAnim};
+export function loadAnimDict(dict)
+{
+    game.requestAnimDict(dict);
+    return new Promise((resolve, reject) => {
+        let check = alt.setInterval(() => {
+            
+            if(game.hasAnimDictLoaded(dict))
+            {
+                alt.clearInterval(check);
+                alt.log('Anim dict loaded');
+                resolve(true);
+            } else {
+                alt.log('loading...');
+            }
+            
+        },(5));
+    });
+}
+export default {anims, scens, playAnim, loadAnimDict, eAnimationFlags};

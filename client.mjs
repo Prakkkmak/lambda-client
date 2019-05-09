@@ -46,7 +46,7 @@ var elems = ["masque", "cheveux", "torse", "jambe", "sac", "pieds", "accessoire"
 //#region webviews
 let contextView = null;
 let skinchangerView = null;
-let characterCustomView = null;
+
 let animationsView = null;
 //#endregion
 let cursorVisible = false;
@@ -88,10 +88,10 @@ const rgbToHex = function (rgb) {
 
 let spotlights = [];
 let cam = null;
-let webviewLayer = 0;
 
 /* Init */
 start();
+
 
 alt.onServer('setComponent', (argsDrawable, argsTexture, argsPalette) => {
     setComponentVariation(argsDrawable, argsTexture, argsPalette);
@@ -121,8 +121,14 @@ alt.onServer('unloadIpl', (ipl) => {
 });
 alt.onServer('openView', (viewName) => {
     if (viewName == 'characterCustom') {
-        openCharacterCustom();
+        loadCharacterCustom();
     }
+});
+alt.onServer('loadAnimDict', (dict) => {
+    animation.loadAnimDict(dict);
+});
+alt.onServer('playAnim', (dict, anim, flag) => {
+    animation.playAnim(dict, anim);
 });
 //#endregion
 
@@ -139,14 +145,9 @@ alt.on('keydown', (key) => {
     if (key == keys.Enter || key == keys.Esc) {
         chatopen = false;
     }
-    if (key == keys.Esc) {
-
-        closeAnimationsView();
-    }
-    if (key == keys['=']) {
-        openAnimationsView();
-    }
-    if (!chatopen) {
+    
+    if (!chatopen) 
+    {
         if (skinenabled) {
             vetementChanger(key);
         } else if (key == keys.power2) {
@@ -251,7 +252,7 @@ function setComponentVariation(argsDrawable, argsTexture, argsPalette) {
     if (argsTexture == null) argsTexture = new Array(12).fill(0);
     if (argsPalette == null) argsPalette = new Array(12).fill(0);
     for (var i = 0; i < 12; i++) {
-        game.setPedComponentVariation(game.playerPedId(), i + 1, argsDrawable[i], argsTexture[i], argsPalette[i]);
+        game.setPedComponentVariation(game.playerPedId(), i, argsDrawable[i], argsTexture[i], argsPalette[i]);
     }
 }
 function setFaceFeature(argsIndex, argsScale) {
@@ -269,151 +270,7 @@ function requestHairColors(web, id, container, size, callback) {
     web.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
 }
 
-//#region WEBVIEWS FUNCTIONS
-/**
- * Permet de focus une WebView (cef)
- *
- * @param {WebView}   web           La WebView à focus.
- */
-function setFocusOn(web) {
-    web.focus();
-}
-function isWebViewOpened(web) {
-    return web != null;
-}
-function destroyWebView(web) {
-    web.destroy();
-}
 
-function openCharacterCustom() {
-    if (!isWebViewOpened(characterCustomView)) {
-        characterCustomView = new alt.WebView("http://resources/lambda-client/client/html/charactercustom/charactercustom.html");
-
-        characterCustomView.on('setHairColor', (colorID, highlightColorID) => {
-
-            setHairColor(colorID, highlightColorID);
-        });
-        characterCustomView.on('setHeadOverlay', (key, index, opacity) => {
-            let arg1 = new Array(13).fill(null);
-            let arg2 = new Array(13).fill(null);
-
-            arg1[key] = index;
-            arg2[key] = opacity;
-
-            setHeadOverlay(arg1, arg2);
-        });
-        characterCustomView.on('setComponent', (key, drawable, texture, palette) => {
-            let arg1 = new Array(11).fill(null);
-            let arg2 = new Array(11).fill(null);
-            let arg3 = new Array(11).fill(null);
-
-            arg1[key] = drawable;
-            arg2[key] = texture;
-            arg3[key] = palette;
-
-            setComponentVariation(arg1, arg2, arg3);
-        });
-        characterCustomView.on('setFaceFeature', (key, value) => {
-            let arg = new Array(20).fill(null);
-            arg[key] = value;
-
-            game.setPedFaceFeature(game.playerPedId(), key, value);
-        });
-        characterCustomView.on('requestHairColors', (id, container, size, callback) => {
-            requestHairColors(characterCustomView, id, container, size, callback);
-        });
-        characterCustomView.on('camFocusBodypart', (bodypart, offset, fov, easeTime) => {
-            focusOnBone(bodypart, offset, fov, easeTime);
-        });
-        characterCustomView.on('setModel', (model) => {
-            setModel(model);
-        });
-
-        webviewLayer++;
-        setFocusOn(characterCustomView);
-    }
-}
-function closeCharacterCustom() {
-    if (isWebViewOpened(characterCustomView)) {
-        destroyWebView(characterCustomView);
-        characterCustomView = null;
-        webviewLayer--;
-        goBackToGameplayCam();
-    }
-}
-
-function openContextView() {
-    if (!isWebViewOpened(contextView)) {
-        contextView = new alt.WebView('http://resources/lambda-client/client/html/context/context.html')
-
-        contextView.on('chatmessage', (text) => {
-            //Evènement appelé un bouton de commande est cliqué
-            alt.emitServer('chatmessage', text);
-        });
-
-        webviewLayer++;
-    }
-    //#region event_context
-    //#endregion
-}
-function closeContextView() {
-    if (isWebViewOpened(contextView)) {
-        destroyWebView(contextView);
-        contextView = null;
-        webviewLayer--;
-    }
-
-}
-
-function openSkinChangerView() {
-    if (!isWebViewOpened(skinchangerView)) {
-        skinchangerView = new alt.WebView('http://resources/lambda-client/client/html/skinchanger/skinchanger.html');
-
-        skinchangerView.on('chatmessage', (text) => {
-            //Evènement appelé un bouton de commande est cliqué
-            alt.emitServer('chatmessage', text);
-        });
-        skinchangerView.on('skinchange', (text) => {
-            alt.emitServer('chatmessage', "!vetements " + text);
-        });
-        webviewLayer++;
-    }
-}
-function closeSkinChangerView() {
-    if (isWebViewOpened(skinchangerView)) {
-        destroyWebView(skinchangerView);
-        skinchangerView = null;
-        webviewLayer--;
-    }
-
-}
-
-function openAnimationsView() {
-    if (!isWebViewOpened(animationsView)) {
-        animationsView = new alt.WebView('http://resources/lambda-client/client/html/animations/animations.html');
-
-        animationsView.on('load', () => {
-            Object.keys(animation.anims).forEach((anim) => {
-                animationsView.execJS(`add_buttonanim('${animation.anims[anim].label}', '${anim}')`);
-            });
-        });
-
-        animationsView.on('playAnim', (anim) => {
-            animation.playAnim(anim);
-        });
-
-        setFocusOn(animationsView);
-        webviewLayer++;
-    }
-}
-function closeAnimationsView() {
-    if (isWebViewOpened(animationsView)) {
-        destroyWebView(animationsView);
-        animationsView = null;
-        webviewLayer--;
-    }
-
-}
 //#endregion
 //#region KEY CONTROLS
 function vetementChanger(key) {
@@ -513,20 +370,99 @@ function renderLights() {
 //#endregion
 //#region IPL FUNCTIONS
 function loadIPL(ipl) {
-    game.RequestIpl(ipl);
+    game.requestIpl(ipl);
 }
 function unloadIPL(ipl) {
     game.removeIpl(ipl);
 }
 //#endregion
 
+
+function loadCharacterCustom() {
+
+    let events = {};
+    events['setHairColor'] = (colorID, highlightColorID) => {setHairColor(colorID, highlightColorID);};
+    events['setHeadOverlay'] = (key, index, opacity) => {
+        let arg1 = new Array(13).fill(null);
+        let arg2 = new Array(13).fill(null);
+
+        arg1[key] = index;
+        arg2[key] = opacity;
+
+        setHeadOverlay(arg1, arg2);
+    };
+    events['setComponent'] = (key, drawable, texture, palette) => {
+        let arg1 = new Array(11).fill(null);
+        let arg2 = new Array(11).fill(null);
+        let arg3 = new Array(11).fill(null);
+
+        arg1[key] = drawable;
+        arg2[key] = texture;
+        arg3[key] = palette;
+
+        setComponentVariation(arg1, arg2, arg3);
+    };
+    events['setFaceFeature'] = (key, value) => {
+        let arg = new Array(20).fill(null);
+        arg[key] = value;
+
+        game.setPedFaceFeature(game.playerPedId(), key, value);
+    };
+    events['requestHairColors'] = (id, container, size, callback) => {requestHairColors(cef.getView('charactercustom').view, id, container, size, callback);};
+    events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => {focusOnBone(bodypart, offset, fov, easeTime);};
+    events['setModel'] = (model) => {setModel(model);};
+    
+    cef.createView('charactercustom', 'charactercustom/charactercustom.html', true, true, events);
+    
+}
+function loadContextView() {
+    let events = {};
+    events['chatmessage'] = (text) => { alt.emitServer('chatmessage', text); };
+
+    cef.createView('context', 'context/context.html', false, true, events);
+
+}
+function loadSkinChangerView() {
+    let events = {};
+    events['chatmessage'] = (text) => { alt.emitServer('chatmessage', text); };
+    events['skinchange'] = (text) => { alt.emitServer('chatmessage', "!vetements " + text); };
+
+    cef.createView('skinchanger', 'skinchanger/skinchanger.html', true, true, events);
+}
+function loadAnimationsView() {
+    let events = {};
+    events['load'] = () => { Object.keys(animation.anims).forEach((anim) => { cef.getView('animationview').execJS(`add_buttonanim('${animation.anims[anim].label}', '${anim}')`); }) };
+    events['playAnim'] = (anim) => { animation.playAnim(anim); };
+
+    cef.createView('animationview', 'animations/animations.html', true, true, events);
+}
+loadAnimationsView();
+loadCharacterCustom();
+loadContextView();
+loadAnimationsView();
+
+
+let checkCefControls = alt.setInterval(() => {
+    let changeControl = false;
+
+    let i = 0;
+    while (!changeControl && i < cef.cefs.length)
+    {
+        if(cef.cefs[i].isOpened())
+        {
+            if (cef.cefs[i].freeze)
+                changeControl = true;
+
+        }
+        i++;
+    }
+
+    alt.toggleGameControls(!changeControl);
+
+
+}, 50);
+
 alt.on('update', () => {
-    /*if (webviewLayer > 0) {
-        setControlsEnabled(false);
-        setCursorVisible(true);
-    } else {
-        setControlsEnabled(true);
-        setCursorVisible(false);
-    }*/
+    
 });
 
