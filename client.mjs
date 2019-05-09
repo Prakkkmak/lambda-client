@@ -1,7 +1,7 @@
 import alt from 'alt';
 import game from 'natives';
 import animation from 'client/mjs/animation.mjs';
-import cef from 'client/mjs/cefmanager.mjs'; 
+import cef from 'client/mjs/cefmanager.mjs';
 /* Vars */
 const weapons = [
     "WEAPON_KNIFE", "WEAPON_BAT", "WEAPON_BOTTLE", "WEAPON_WRENCH",
@@ -41,7 +41,7 @@ const ped_bones =
     'SKEL_Spine2': 0x60f1,
     'SKEL_Root': 0x0
 };
-var elems = ["masque", "cheveux", "torse", "jambe", "sac", "pieds", "accessoire", "sous-haut", "armure", "détail", "haut"];
+var elems = ["tete", "masque", "cheveux", "torse", "jambe", "sac", "pieds", "accessoire", "sous-haut", "armure", "détail", "haut"];
 
 //#region webviews
 let contextView = null;
@@ -145,9 +145,8 @@ alt.on('keydown', (key) => {
     if (key == keys.Enter || key == keys.Esc) {
         chatopen = false;
     }
-    
-    if (!chatopen) 
-    {
+
+    if (!chatopen) {
         if (skinenabled) {
             vetementChanger(key);
         } else if (key == keys.power2) {
@@ -381,7 +380,7 @@ function unloadIPL(ipl) {
 function loadCharacterCustom() {
 
     let events = {};
-    events['setHairColor'] = (colorID, highlightColorID) => {setHairColor(colorID, highlightColorID);};
+    events['setHairColor'] = (colorID, highlightColorID) => { setHairColor(colorID, highlightColorID); };
     events['setHeadOverlay'] = (key, index, opacity) => {
         let arg1 = new Array(13).fill(null);
         let arg2 = new Array(13).fill(null);
@@ -408,12 +407,12 @@ function loadCharacterCustom() {
 
         game.setPedFaceFeature(game.playerPedId(), key, value);
     };
-    events['requestHairColors'] = (id, container, size, callback) => {requestHairColors(cef.getView('charactercustom').view, id, container, size, callback);};
-    events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => {focusOnBone(bodypart, offset, fov, easeTime);};
-    events['setModel'] = (model) => {setModel(model);};
-    
+    events['requestHairColors'] = (id, container, size, callback) => { requestHairColors(cef.getView('charactercustom').view, id, container, size, callback); };
+    events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => { focusOnBone(bodypart, offset, fov, easeTime); };
+    events['setModel'] = (model) => { setModel(model); };
+
     cef.createView('charactercustom', 'charactercustom/charactercustom.html', true, true, events);
-    
+
 }
 function loadContextView() {
     let events = {};
@@ -441,15 +440,14 @@ loadCharacterCustom();
 loadContextView();
 loadAnimationsView();
 
-
+/*
 let checkCefControls = alt.setInterval(() => {
+
     let changeControl = false;
 
     let i = 0;
-    while (!changeControl && i < cef.cefs.length)
-    {
-        if(cef.cefs[i].isOpened())
-        {
+    while (!changeControl && i < cef.cefs.length) {
+        if (cef.cefs[i].isOpened()) {
             if (cef.cefs[i].freeze)
                 changeControl = true;
 
@@ -463,6 +461,7 @@ let checkCefControls = alt.setInterval(() => {
 }, 50);
 
 alt.on('update', () => {
-    
+
 });
 
+*/
