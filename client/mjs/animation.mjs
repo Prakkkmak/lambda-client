@@ -123,7 +123,7 @@ const scens = {
     'WORLD_HUMAN_YOGA' : {scen : "WORLD_HUMAN_YOGA", label : "Yoga", category : "Hobby"}
 };
 
-export function playAnim (anim, dict, animFlag)
+export function playAnim (dict, anim, animFlag)
 {
     if (arguments.length == 2)
     {

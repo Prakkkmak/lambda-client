@@ -128,7 +128,7 @@ alt.onServer('loadAnimDict', (dict) => {
     animation.loadAnimDict(dict);
 });
 alt.onServer('playAnim', (dict, anim, flag) => {
-    animation.playAnim(dict, anim);
+    animation.playAnim(dict, anim, flag);
 });
 //#endregion
 
@@ -440,7 +440,7 @@ loadCharacterCustom();
 loadContextView();
 loadAnimationsView();
 
-/*
+
 let checkCefControls = alt.setInterval(() => {
 
     let changeControl = false;
@@ -455,7 +455,13 @@ let checkCefControls = alt.setInterval(() => {
         i++;
     }
 
-    alt.toggleGameControls(!changeControl);
+    if(chatopen)
+    {
+        alt.toggleGameControls(false);
+    } else 
+    {
+        alt.toggleGameControls(!changeControl);
+    }
 
 
 }, 50);
@@ -464,4 +470,3 @@ alt.on('update', () => {
 
 });
 
-*/
