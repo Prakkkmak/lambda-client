@@ -147,11 +147,13 @@ alt.on('keydown', (key) => {
     }
 
     if (!chatopen) {
-        if (skinenabled) {
-            vetementChanger(key);
-        } else if (key == keys.power2) {
+        if (key == keys.power2) {
             skinenabled = !skinenabled;
         }
+        else if (skinenabled) {
+            vetementChanger(key);
+        }
+        
     }
 });
 
