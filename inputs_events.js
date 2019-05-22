@@ -34,7 +34,9 @@ const inputs_action = {
     100: skin_changer.previousSelected,
     101: skin_changer.save,
     102: skin_changer.nextSelected,
+    103: skin_changer.previousSelectedTexture,
     104: skin_changer.selectNext,
+    105: skin_changer.nextSelectedTexture,
     187: base.ragdoll,
     222: character.openCharacterCustom
 }
