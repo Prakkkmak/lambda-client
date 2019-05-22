@@ -3,6 +3,31 @@ import alt from 'alt';
 import game from 'natives';
 import * as skin_changer from "modules/skin/uis/skin_changer"
 import * as base from "modules/base/main";
+import * as character from 'modules/character/main';
+
+const key_codes =
+{
+    'L': 76,
+    'K': 75,
+    'U': 85,
+    'E': 69,
+    'A': 65,
+    'T': 84,
+    'Esc': 27,
+    'Enter': 13,
+    'Numpad_0': 96,
+    'Numpad_1': 97,
+    'Numpad_2': 98,
+    'Numpad_3': 99,
+    'Numpad_4': 100,
+    'Numpad_5': 101,
+    'Numpad_6': 102,
+    'Numpad_7': 103,
+    'Numpad_8': 104,
+    'Numpad_9': 105,
+    '=': 187,
+    'power2': 222
+};
 
 const inputs_action = {
     98: skin_changer.selectPrevious,
@@ -11,6 +36,7 @@ const inputs_action = {
     102: skin_changer.nextSelected,
     104: skin_changer.selectNext,
     187: base.ragdoll,
+    222: character.openCharacterCustom
 }
 
 let input_enabled = false;
