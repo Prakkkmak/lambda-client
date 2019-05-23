@@ -93,6 +93,7 @@ export function enableControls()
         }
 
         alt.toggleGameControls(true);
+        controls = true;
     }
 }
 

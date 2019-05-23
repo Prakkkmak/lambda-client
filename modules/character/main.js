@@ -1,6 +1,15 @@
 import game from 'natives';
 import * as cef from 'modules/cef/main';
 import * as skin from 'modules/skin/main'
+
+const rgbToHex = function (rgb) {
+    var hex = Number(rgb).toString(16);
+    if (hex.length < 2) {
+        hex = "0" + hex;
+    }
+    return hex;
+};
+
 export function loadCharacterCustom() {
 
     let events = {};
@@ -30,7 +39,7 @@ export function loadCharacterCustom() {
             colors[i] = "'#" + rgbToHex(r) + rgbToHex(g) + rgbToHex(b) + "'";
         }
 
-        web.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
+        cef.getView('charactercustom').view.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
     };
     events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => { 
         focusOnBone(bodypart, offset, fov, easeTime); 
@@ -60,4 +69,4 @@ export function openCharacterCustom()
 }
 
 
-character.loadCharacterCustom();
+loadCharacterCustom();
