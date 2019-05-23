@@ -1,8 +1,10 @@
 import alt from 'alt';
 import game from 'natives';
+
 import * as cef from 'modules/cef/main';
 import * as skin from 'modules/skin/main';
 import * as camera from 'modules/camera/main';
+import * as anim from 'modules/anim/main';
 
 const rgbToHex = function (rgb) {
     var hex = Number(rgb).toString(16);
@@ -78,12 +80,10 @@ export function loadCharacterCustom() {
 export function openCharacterCustom()
 {
     cef.getView('charactercustom').open();
-    skin.setModel('male').then(() => {
-        alt.log('LoadCharacter');
-        skin.setHeadBlendData(0,21,0,15,0,0);
-        game.setPedDefaultComponentVariation(game.playerPedId());
-    });
-
+}
+export function testAnim()
+{
+    anim.playAnim('mp_character_creation@lineup@male_a', 'loop');
 }
 
 

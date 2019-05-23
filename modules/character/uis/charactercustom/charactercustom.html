@@ -23,6 +23,13 @@
                     <div class="container-header">
                         <span>Identité</span>
                     </div>
+                    
+                    <div class="flex-container">
+                        <button onclick="alt.emit('setModel', 'male');">&#9794;</button>
+                        <span>Sexe</span>
+                        <button onclick="alt.emit('setModel', 'female');">&#9792;</button>
+                    </div>
+
                     <div class="flex-container">
                         <input type="text">
                         <span>Nom</span>
@@ -32,11 +39,7 @@
                         <span>Prénom</span>
                     </div>
 
-                    <div class="flex-container">
-                        <button onclick="alt.emit('setModel', 'male');">&#9794;</button>
-                        <span>Sexe</span>
-                        <button onclick="alt.emit('setModel', 'female');">&#9792;</button>
-                    </div>
+
                 </div>
                 <div id="facetraits" class="menu" style="display: none">
                    
@@ -49,27 +52,27 @@
                     </div>
                     <div id="nose" class="dropdown-content" style="display: none;">
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'nose_width', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'nose_width', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Largeur du nez</span>
                         </div>
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'nose_peak_hight', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'nose_peak_hight', -this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Hauteur du nez</span>
                         </div>
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'nose_peak_lenght', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'nose_peak_lenght', -this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Longueur de la pointe du nez</span>
                         </div>
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'nose_bone_high', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'nose_bone_high', -this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Hauteur de l'os du nez</span>
                         </div>
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'nose_peak_lowering', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'nose_peak_lowering', -this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Abaissement de la pointe du nez</span>
                         </div>
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'nose_bone_twist', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'nose_bone_twist', -this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Torsion de l'os du nez</span>
                         </div>
                     </div>
@@ -80,11 +83,11 @@
 
                     <div id="eyebrown" class="dropdown-content" style="display: none;">
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'eyebrown_high', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'eyebrown_high', -this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Hauteur des sourcils</span>
                         </div>
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'eyebrown_forward', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'eyebrown_forward', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Avancement des sourcils</span>
                         </div>
                     </div>
@@ -95,21 +98,18 @@
 
                     <div id="cheeks" class="dropdown-content" style="display: none;">
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'cheeks_bone_high', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'cheeks_bone_high', -this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Hauteur de l'os des joues</span>
                         </div>
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'cheeks_bone_width', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'cheeks_bone_width', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Largeur de l'os des joues</span>
                         </div>
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'cheeks_width', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'cheeks_width', -this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Largeur des joues</span>
                         </div>
-                        <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'lips_thickness', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
-                            <span>Epaisseur des joues</span>
-                        </div>
+                        
                     </div>
 
                     <div id="eyes" class="dropdown-button" onclick="document.querySelector('.dropdown-content#eyes').style.display = (document.querySelector('.dropdown-content#eyes').style.display == 'block') ? 'none':'block';">
@@ -125,37 +125,48 @@
     
                         </div>
                         <div class="flex-container">
-                            <input type="range" onchange="updateComponent('facefeature', 'eyes_opening', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                            <input type="range" onchange="updateComponent('facefeature', 'eyes_opening', -this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                             <span>Ouverture des yeux</span>
                         </div>                    
                     </div>
-                    <div class="flex-container">
-                        <input type="range" onchange="updateComponent('facefeature', 'jaw_bone_width', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
-                        <span>Largeur de l'os de la mâchoire</span>
-                    </div>
-                    <div class="flex-container">
-                        <input type="range" onchange="updateComponent('facefeature', 'jaw_bone_back_lenght', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
-                        <span>Longueur de la mâchoire</span>
-                    </div>
-                    <div class="flex-container">
-                        <input type="range" onchange="updateComponent('facefeature', 'chimp_bone_lowering', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
-                        <span>Abaissement du menton</span>
+
+                    <div id="jaw" class="dropdown-button" onclick="document.querySelector('.dropdown-content#jaw').style.display = (document.querySelector('.dropdown-content#jaw').style.display == 'block') ? 'none':'block';">
+                        Mâchoire et menton
                     </div>
 
-                    <div class="flex-container">
-                        <input type="range" onchange="updateComponent('facefeature', 'chimp_bone_lenght', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
-                        <span>Longueur du menton</span>
+                    <div id="jaw" class="dropdown-content" style="display: none;">
+                        <div class="flex-container">
+                            <input type="range" onchange="updateComponent('facefeature', 'jaw_bone_width', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
+                            <span>Largeur de l'os de la mâchoire</span>
+                        </div>
+                        <div class="flex-container">
+                            <input type="range" onchange="updateComponent('facefeature', 'jaw_bone_back_lenght', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
+                            <span>Longueur de la mâchoire</span>
+                        </div>
+                        <div class="flex-container">
+                            <input type="range" onchange="updateComponent('facefeature', 'chimp_bone_lowering', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
+                            <span>Abaissement du menton</span>
+                        </div>
+    
+                        <div class="flex-container">
+                            <input type="range" onchange="updateComponent('facefeature', 'chimp_bone_lenght', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
+                            <span>Longueur du menton</span>
+                        </div>
+                        <div class="flex-container">
+                            <input type="range" onchange="updateComponent('facefeature', 'chimp_bone_width', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
+                            <span>Largeur du menton</span>
+                        </div>
+                        <div class="flex-container">
+                            <input type="range" onchange="updateComponent('facefeature', 'chimp_hole', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
+                            <span>Fossette du menton</span>
+                        </div>
                     </div>
                     <div class="flex-container">
-                        <input type="range" onchange="updateComponent('facefeature', 'chimp_bone_width', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
-                        <span>Largeur du menton</span>
+                        <input type="range" onchange="updateComponent('facefeature', 'lips_thickness', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
+                        <span>Epaisseur des lèvres</span>
                     </div>
                     <div class="flex-container">
-                        <input type="range" onchange="updateComponent('facefeature', 'chimp_hole', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
-                        <span>Fossette du menton</span>
-                    </div>
-                    <div class="flex-container">
-                        <input type="range" onchange="updateComponent('facefeature', 'neck_thikness', this.value);" min=0.0 value=0.5 max=1.0 step=0.01>
+                        <input type="range" onchange="updateComponent('facefeature', 'neck_thikness', this.value);" min=-1.0 value=0.0 max=1.0 step=0.1>
                         <span>Epaisseur de la nuque</span>
                     </div>
 

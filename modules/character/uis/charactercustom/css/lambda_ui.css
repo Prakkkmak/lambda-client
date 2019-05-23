@@ -215,5 +215,6 @@ button:active
     margin: 1pt;
     flex: 0 0.2 75%;
     margin-left: 10px;
-    margin-bottom: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

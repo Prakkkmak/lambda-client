@@ -195,7 +195,26 @@ export function setFaceFeature(index, value) {
     game.setPedFaceFeature(game.playerPedId(), index, value);
 }
 
+export function setModel(model)
+{
+    if(model.toLowerCase() == 'male')
+    {
+        model = game.getHashKey('mp_m_freemode_01')
+    } else if(model.toLowerCase() == 'female')
+    {
+        model = game.getHashKey('mp_f_freemode_01')
+    } else {
+        model = game.getHashKey(model);
+    }
+    return new Promise((resolve, reject) => {
+        base.loadModel(model).then(() => {
+            game.setPlayerModel(game.playerId(), model);
+            resolve(true);
+            
+        });
+    });
 
+}
 /*
 //TODO ==>
 
