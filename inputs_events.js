@@ -29,6 +29,9 @@ const key_codes =
     'power2': 222
 };
 
+let chat_open = false;
+let input_enabled = false;
+
 const inputs_action = {
     97: skin_changer.previousSelectedPalette,
     98: skin_changer.selectPrevious,
@@ -44,13 +47,25 @@ const inputs_action = {
     65: character.testAnim
 }
 
-let input_enabled = false;
+function openChat() {
+    chat_open = true;
+}
+function closeChat() {
+    chat_open = false;
+}
+
 
 alt.on('keydown', (key) => {
     if (key == 222) {
         input_enabled = !input_enabled;
         if (input_enabled) alt.emit('chatmessage', null, "Vous avez activé les touches");
         else alt.emit('chatmessage', null, "Vous avez désactivé les touches");
+    }
+    if (key == 84) {
+        chat_open = !chat_open;
+    }
+    if (key == 27) {
+        chat_open = false;
     }
     if (input_enabled && inputs_action[key]) {
         alt.log("Action : " + key + " triggered");
