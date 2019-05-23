@@ -5,7 +5,9 @@ import * as skin_changer from "modules/skin/uis/skin_changer"
 import * as base from "modules/base/main";
 
 const inputs_action = {
+    97: skin_changer.previousSelectedPalette,
     98: skin_changer.selectPrevious,
+    99: skin_changer.nextSelectedPalette,
     100: skin_changer.previousSelected,
     101: skin_changer.save,
     102: skin_changer.nextSelected,

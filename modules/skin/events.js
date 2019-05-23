@@ -16,8 +16,10 @@ alt.onServer('setHeadData', (args) => {
 });
 
 alt.onServer('setHairColor', (color, color2) => {
-    alt.log(color + "^          ^" + color2);
     skin.setHairColor(color, color2);
+});
+alt.onServer('setEyeColor', (color) => {
+    skin.setEyeColor(color);
 });
 
 alt.onServer('setShape', (mother, father, mix) => {
@@ -25,4 +27,13 @@ alt.onServer('setShape', (mother, father, mix) => {
 });
 alt.onServer('setSkin', (mother, father, mix) => {
     skin.setHeadBlendData(skin.currentHeadBlendData.shapeMother, skin.currentHeadBlendData.shapeFather, mother, father, skin.currentHeadBlendData.shapeMix, mix)
+});
+
+alt.onServer('setFaceFeatures', (args) => {
+    skin.setFaceFeatures(args);
+    alt.log("FEATURES = " + args);
+});
+alt.onServer('setHeadOverlays', (args) => {
+    skin.setHeadOverlays(args);
+    alt.log("OVERLAYS = " + args);
 });
