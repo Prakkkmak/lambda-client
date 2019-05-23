@@ -1,10 +1,12 @@
 import game from 'natives';
 import * as cef from 'modules/cef/main';
-
+import * as skin from 'modules/skin/main'
 export function loadCharacterCustom() {
 
     let events = {};
-    events['setHairColor'] = (colorID, highlightColorID) => { setHairColor(colorID, highlightColorID); };
+    events['setHairColor'] = (colorID, highlightColorID) => { 
+        skin.setHairColor(colorID, highlightColorID); 
+    };
     events['setHeadOverlay'] = (key, index, opacity) => {
         let arg1 = new Array(13).fill(null);
         let arg2 = new Array(13).fill(null);
@@ -15,23 +17,24 @@ export function loadCharacterCustom() {
         setHeadOverlay(arg1, arg2);
     };
     events['setComponent'] = (key, drawable, texture, palette) => {
-        let arg1 = new Array(11).fill(null);
-        let arg2 = new Array(11).fill(null);
-        let arg3 = new Array(11).fill(null);
-
-        arg1[key] = drawable;
-        arg2[key] = texture;
-        arg3[key] = palette;
-
-        setComponentVariation(arg1, arg2, arg3);
+        
+        skin.setComponentVariation(key, drawable, texture, palette);
     };
     events['setFaceFeature'] = (key, value) => {
-        let arg = new Array(20).fill(null);
-        arg[key] = value;
-        setFaceFeature(arg);
+        skin.setFaceFeature(key, value);
     };
-    events['requestHairColors'] = (id, container, size, callback) => { requestHairColors(cef.getView('charactercustom').view, id, container, size, callback); };
-    events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => { focusOnBone(bodypart, offset, fov, easeTime); };
+    events['requestHairColors'] = (id, container, size, callback) => { 
+        let colors = new Array(game.getNumHairColors());
+        for (let i = 0; i < game.getNumHairColors(); i++) {
+            let [_, r, g, b] = game.getHairColor(i, 0, 0, 0);
+            colors[i] = "'#" + rgbToHex(r) + rgbToHex(g) + rgbToHex(b) + "'";
+        }
+
+        web.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
+    };
+    events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => { 
+        focusOnBone(bodypart, offset, fov, easeTime); 
+    };
     events['setModel'] = (model) => { 
         setModel(model); 
         if(model.toLowerCase() == 'male')
@@ -42,11 +45,10 @@ export function loadCharacterCustom() {
         }
     }
     events['setEyeColor'] = (value) => {
-        setEyeColor(value);
+        skin.setEyeColor(value);
     };
     events['close'] = (c) => {
         cef.getView(c).close();
-        goBackToGameplayCam();
     };
     cef.createView('charactercustom', 'character/uis/charactercustom/charactercustom.html', events,[cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 

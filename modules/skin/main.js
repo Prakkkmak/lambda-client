@@ -17,6 +17,11 @@ for (let i = 0; i < 5; i++) {
     }
 }
 
+export let currentFaceFeatures = [];
+for (let i = 0; i < 20; i++) {
+    currentFaceFeatures[i] = 0;
+}
+
 export let currentHeadBlendData = {
     shapeMother: 0,
     shapeFather: 0,
@@ -43,8 +48,11 @@ export function saveSkin() {
     alt.emitServer('setskin', a);
     alt.log(currentHeadBlendData);
     alt.emitServer('setheaddata', currentHeadBlendData.shapeMother, currentHeadBlendData.shapeFather,
-        currentHeadBlendData.skinMother, currentHeadBlendData.skinFather, currentHeadBlendData.shapeMix, currentHeadBlendData.skinMix);
+    currentHeadBlendData.skinMother, currentHeadBlendData.skinFather, currentHeadBlendData.shapeMix, currentHeadBlendData.skinMix);
+    alt.emitServer('setfacefeatures', currentFaceFeatures);
+    alt.emitServer('seteyecolor', game.getPedEyeColor(game.playerPedId()))
 }
+
 export function setComponentVariations(args) { // Array of elements
     for (let i = 0; i < currentComponentVariation.length; i++) {
         currentComponentVariation[i].drawable = args[i * 3];
@@ -55,7 +63,6 @@ export function setComponentVariations(args) { // Array of elements
         setComponentVariation(i, currentComponentVariation[i].drawable, currentComponentVariation[i].texture, currentComponentVariation[i].palette);
     }
 }
-
 export function setComponentVariation(index, drawable, texture, palette) { // Array of elements
     if (drawable < 0) drawable = 0;
     if (texture < 0) texture = 0;
@@ -66,6 +73,7 @@ export function setComponentVariation(index, drawable, texture, palette) { // Ar
     currentComponentVariation[index].palette = palette;
     game.setPedComponentVariation(game.playerPedId(), index, drawable, texture, palette);
 }
+
 export function setProps(args) {
     for (let i = 0; i < currentPropIndex.length; i++) {
         currentPropIndex[i].drawable = args[i * 2];
@@ -75,7 +83,6 @@ export function setProps(args) {
         setProp(i, currentPropIndex[i].drawable, currentPropIndex[i].texture);
     }
 }
-
 export function setProp(index, drawable, texture) {
     if (drawable < 0) drawable = 0;
     if (texture < 0) texture = 0;
@@ -84,6 +91,7 @@ export function setProp(index, drawable, texture) {
     currentPropIndex[index].texture = texture;
     game.setPedPropIndex(game.playerPedId(), index, drawable, texture, true);
 }
+
 export function setHairColor(colorID, highlightColorID) {
     alt.log("caca " + colorID + " " + highlightColorID);
     game.setPedHairColor(game.playerPedId(), colorID, highlightColorID);
@@ -98,9 +106,30 @@ export function setHeadBlendData(shapeMother, shapeFather, skinMother, skinFater
         shapeMix: shapeMix,
         skinMix: skinMix
     }
+    
     game.setPedHeadBlendData(game.playerPedId(), shapeMother, shapeFather, 0, skinMother, skinFater, 0, shapeMix, skinMix, 0, false);
 }
 
+export function setFaceFeatures(args)
+{
+    for(let i=0;i<20;i++)
+    {
+        setFaceFeature( i, args[i]);
+    }
+}
+export function setFaceFeature(index, value)
+{
+    if(index < 0) index = 0;
+    if(index > 20) index = 20;
+
+    game.setPedFaceFeature(game.playerPedId(), index, value);
+    currentFaceFeatures[index] = value;
+}
+
+export function setEyeColor(color)
+{
+    game.setPedEyeColor(game.playerPedId(), color)
+}
 /*
 //TODO ==>
 
@@ -113,15 +142,4 @@ export function setHeadOverlays(args) {
 export function setHeadOverlay(index, value, opacity) {
     game.setPedHeadOverlay(game.playerPedId(), index, value, opacity);
 }
-
-
-
-export function setFaceFeatures(args) {
-    for (let i = 0; i < 40; i += 2) {
-        game.setPedFaceFeature(game.playerPedId(), args[i], args[i + 1]);
-    }
-}
-
-export function setFaceFeature(index, value) {
-    game.setPedFaceFeature(game.playerPedId(), index, value);
-}*/
+*/
