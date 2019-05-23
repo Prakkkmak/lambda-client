@@ -38,7 +38,7 @@
                         <button onclick="alt.emit('setModel', 'female');">&#9792;</button>
                     </div>
                 </div>
-                <div id="facetraits" class="menu">
+                <div id="facetraits" class="menu" style="display: none">
                    
                     <div class="container-header">
                         <span>Visage</span>
@@ -118,7 +118,7 @@
                     
                     <div id="eyes" class="dropdown-content" style="display: none;">
                         <div class="flex-container">
-                            <div data-selected=0 id="eye-color" class="color-picker" onclick="add_colorpicker('eye-color', '.flex-container#eye-color', 28, eye_colors, (c, id) => {updateComponent('eyes', 'eyes', id); }); event.stopPropagation(); "></div>
+                            <div data-selected=0 id="eye-color" class="color-picker" onclick="add_colorpicker('eye-color', '.flex-container#eye-color', 28, eye_colors, (c, id) => {updateComponent('eyes', 'eyes', id); document.querySelector('.color-picker#hair-color').style.backgroundColor=c;}); event.stopPropagation(); "></div>
                             <span>Couleur des yeux</span>
                         </div>
                         <div id="eye-color" class="flex-container">
@@ -160,7 +160,7 @@
                     </div>
 
                 </div>
-                <div id="hair" class="menu">
+                <div id="hair" class="menu" style="display: none">
                     <div class="container-header">
                         <span>Cheveux</span>
                     </div>

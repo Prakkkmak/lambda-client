@@ -1,7 +1,8 @@
 import alt from 'alt';
 import game from 'natives';
 import * as cef from 'modules/cef/main';
-import * as skin from 'modules/skin/main'
+import * as skin from 'modules/skin/main';
+import * as camera from 'modules/camera/main';
 
 const rgbToHex = function (rgb) {
     var hex = Number(rgb).toString(16);
@@ -42,9 +43,9 @@ export function loadCharacterCustom() {
 
         cef.getView('charactercustom').view.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
     };
-    // events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => { 
-    //     focusOnBone(bodypart, offset, fov, easeTime); 
-    // };
+    events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => { 
+        camera.focusOnBone(bodypart, offset, fov, easeTime); 
+    };
     events['setModel'] = (model) => { 
         skin.setModel(model).then(() => {
 
@@ -66,7 +67,10 @@ export function loadCharacterCustom() {
     };
     events['close'] = (c) => {
         cef.getView(c).close();
+        camera.goBackToGameplayCam();
     };
+
+
     cef.createView('charactercustom', 'character/uis/charactercustom/charactercustom.html', events,[cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 
 }
@@ -74,6 +78,12 @@ export function loadCharacterCustom() {
 export function openCharacterCustom()
 {
     cef.getView('charactercustom').open();
+    skin.setModel('male').then(() => {
+        alt.log('LoadCharacter');
+        skin.setHeadBlendData(0,21,0,15,0,0);
+        game.setPedDefaultComponentVariation(game.playerPedId());
+    });
+
 }
 
 
