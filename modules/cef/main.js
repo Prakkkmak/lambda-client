@@ -124,14 +124,19 @@ export function toggleConsole()
     }
 }
 
-if(!alt.gameControlsEnabled())
-{
-    alt.log('console opened');
-
-    openConsole();
-} else {
-    alt.log('console closed');
-}
+alt.onServer('playerReady',() => {
+    
+});
+alt.setTimeout(() => {
+    if(!alt.gameControlsEnabled())
+    {
+        alt.log('console opened');
+    
+        openConsole();
+    } else {
+        alt.log('console closed');
+    }
+}, 2000)
 
 export class CEF
 {
