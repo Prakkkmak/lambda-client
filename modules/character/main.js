@@ -18,23 +18,23 @@ export function loadCharacterCustom() {
 
     let events = {};
     events['setHairColor'] = (colorID, highlightColorID) => { 
-        skin.setHairColor(colorID, highlightColorID); 
+        skin.setHairColor(Number(colorID), Number(highlightColorID)); 
     };
     events['setHeadOverlay'] = (key, index, opacity) => {
         let arg1 = new Array(13).fill(null);
         let arg2 = new Array(13).fill(null);
 
-        arg1[key] = index;
-        arg2[key] = opacity;
+        arg1[Number(key)] = Number(index);
+        arg2[Number(key)] = Number(opacity);
 
         setHeadOverlay(arg1, arg2);
     };
     events['setComponent'] = (key, drawable, texture, palette) => {
         
-        skin.setComponentVariation(key, drawable, texture, palette);
+        skin.setComponentVariation(key, Number(drawable), Number(texture), Number(palette));
     };
     events['setFaceFeature'] = (key, value) => {
-        skin.setFaceFeature(key, value);
+        skin.setFaceFeature(Number(key), Number(value));
     };
     events['requestHairColors'] = (id, container, size, callback) => { 
         let colors = new Array(game.getNumHairColors());
@@ -65,13 +65,12 @@ export function loadCharacterCustom() {
         
     }
     events['setEyeColor'] = (value) => {
-        skin.setEyeColor(value);
+        skin.setEyeColor(Number(value));
     };
     events['close'] = (c) => {
         cef.getView(c).close();
         camera.goBackToGameplayCam();
     };
-
 
     cef.createView('charactercustom', 'character/uis/charactercustom/charactercustom.html', events,[cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 
