@@ -1,5 +1,6 @@
 import alt from 'alt';
 import game from 'natives';
+import * as base from 'modules/base/main';
 
 export let currentComponentVariation = [];
 for (let i = 0; i < 12; i++) {
@@ -28,6 +29,11 @@ for (let i = 0; i < 13; i++) {
         firstcolor: 0,
         secondcolor: 0
     }
+}
+
+export let currentFaceFeatures = [];
+for (let i = 0; i < 20; i++) {
+    currentFaceFeatures[i] = 0;
 }
 
 export let currentHeadBlendData = {
@@ -75,6 +81,7 @@ export function saveSkin() {
 
     alt.emitServer('setskin', a);
 }
+
 export function setComponentVariations(args) { // Array of elements
     for (let i = 0; i < currentComponentVariation.length; i++) {
         currentComponentVariation[i].drawable = args[i * 3];
@@ -85,7 +92,6 @@ export function setComponentVariations(args) { // Array of elements
         setComponentVariation(i, currentComponentVariation[i].drawable, currentComponentVariation[i].texture, currentComponentVariation[i].palette);
     }
 }
-
 export function setComponentVariation(index, drawable, texture, palette) { // Array of elements
     if (drawable < 0) drawable = 0;
     if (texture < 0) texture = 0;
@@ -96,6 +102,7 @@ export function setComponentVariation(index, drawable, texture, palette) { // Ar
     currentComponentVariation[index].palette = palette;
     game.setPedComponentVariation(game.playerPedId(), index, drawable, texture, palette);
 }
+
 export function setProps(args) {
     for (let i = 0; i < currentPropIndex.length; i++) {
         currentPropIndex[i].drawable = args[i * 2];
@@ -105,7 +112,6 @@ export function setProps(args) {
         setProp(i, currentPropIndex[i].drawable, currentPropIndex[i].texture);
     }
 }
-
 export function setProp(index, drawable, texture) {
     if (drawable < 0) drawable = 0;
     if (texture < 0) texture = 0;
@@ -114,6 +120,7 @@ export function setProp(index, drawable, texture) {
     currentPropIndex[index].texture = texture;
     game.setPedPropIndex(game.playerPedId(), index, drawable, texture, true);
 }
+
 export function setHairColor(colorID, highlightColorID) {
     if (colorID < 0) colorID = 0;
     if (highlightColorID < 0) highlightColorID = 0
@@ -139,6 +146,7 @@ export function setHeadBlendData(shapeMother, shapeFather, skinMother, skinFater
         shapeMix: shapeMix,
         skinMix: skinMix
     }
+    
     game.setPedHeadBlendData(game.playerPedId(), shapeMother, shapeFather, 0, skinMother, skinFater, 0, shapeMix, skinMix, 0, false);
 }
 
