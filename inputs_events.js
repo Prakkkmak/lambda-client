@@ -27,7 +27,8 @@ const key_codes =
     'Numpad_8': 104,
     'Numpad_9': 105,
     '=': 187,
-    'power2': 222
+    'power2': 222,
+    'F8': 119
 };
 
 let chat_open = false;
@@ -44,8 +45,7 @@ const inputs_action = {
     104: skin_changer.selectNext,
     105: skin_changer.nextSelectedTexture,
     187: base.ragdoll,
-    76: character.openCharacterCustom,
-    65: character.testAnim
+    76: character.openCharacterCustom
 }
 
 function openChat() {
@@ -73,6 +73,10 @@ alt.on('keydown', (key) => {
         inputs_action[key]();
     }
 
+    if (key == 119)
+    {
+        cef.toggleConsole();
+    }
 });
 
 export function input_check() {

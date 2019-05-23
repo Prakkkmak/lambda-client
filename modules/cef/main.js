@@ -1,9 +1,9 @@
 import alt from 'alt';
 
-var opened_cefs = [];
+var loaded_cefs = [];
 var cursor = false;
 var controls = true;
-var console = false;
+var altConsole = false;
 
 export const eCefFlags = {
     FREEZE_PLAYER: 'freeze',
@@ -13,7 +13,7 @@ export const eCefFlags = {
 export function createView(id, path, events, flags)
 {
     let found = false;
-    opened_cefs.forEach((cef) => {
+    loaded_cefs.forEach((cef) => {
         if(cef.id === id)    
         {
             found = true;
@@ -22,29 +22,29 @@ export function createView(id, path, events, flags)
 
     if(!found)
     {
-        opened_cefs.push(new CEF(id, path, events, flags));
+        loaded_cefs.push(new CEF(id, path, events, flags));
     } else {
         alt.log('CEF id already taken');
     }
 }
 export function isOpened(id)
 {
-    for(let i=0;i<opened_cefs.length;i++)
+    for(let i=0;i<loaded_cefs.length;i++)
     {
-        if(opened_cefs[i].id === id)    
+        if(loaded_cefs[i].id === id)    
         {
-            if(opened_cefs[i].view != null) return true;
+            if(loaded_cefs[i].view != null) return true;
         }
     }
     return false;
 }
 export function getView(id)
 {
-    for(let i=0;i<opened_cefs.length;i++)
+    for(let i=0;i<loaded_cefs.length;i++)
     {
-        if(opened_cefs[i].id === id)
+        if(loaded_cefs[i].id === id)
         {
-            return opened_cefs[i];
+            return loaded_cefs[i];
         }
     }
 
@@ -62,16 +62,17 @@ export function hideCursor()
 {
     if(cursor)
     {
-        for(let i=0;i<opened_cefs.length;i++)
+        for(let i=0;i<loaded_cefs.length;i++)
         {
-            if(opened_cefs[i].isOpened() && opened_cefs[i].hasFlag(eCefFlags.SHOW_CURSOR))
+            if(loaded_cefs[i].isOpened() && loaded_cefs[i].hasFlag(eCefFlags.SHOW_CURSOR))
             {
+                
                 return;
             }
         }
         alt.showCursor(false);
         cursor = false;
-        }
+    }
 }
 export function disableControls()
 {
@@ -85,10 +86,13 @@ export function enableControls()
 {
     if(!controls)
     {
-        for(let i=0;i<opened_cefs.length;i++)
+        for(let i=0;i<loaded_cefs.length;i++)
         {
-            if(opened_cefs[i].isOpened() && opened_cefs[i].hasFlag(eCefFlags.FREEZE_PLAYER))
+            if(loaded_cefs[i].isOpened() && loaded_cefs[i].hasFlag(eCefFlags.FREEZE_PLAYER))
             {
+                alt.setTimeout(() => {
+                    alt.toggleGameControls(false);
+                }, 100);
                 return;
             }
         }
@@ -97,7 +101,37 @@ export function enableControls()
         controls = true;
     }
 }
+export function openConsole()
+{
+    disableControls();
+    alt.log('Open Console');
+    altConsole = true;
+}
+export function closeConsole()
+{
+    enableControls();
+    alt.log('Close Console');
+    altConsole = false;
+}
+export function toggleConsole()
+{
+    if(altConsole)
+    {
+        closeConsole();
+    } else 
+    {
+        openConsole();
+    }
+}
 
+if(!alt.gameControlsEnabled())
+{
+    alt.log('console opened');
+
+    openConsole();
+} else {
+    alt.log('console closed');
+}
 
 export class CEF
 {

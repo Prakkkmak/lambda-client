@@ -80,10 +80,6 @@ export function openCharacterCustom()
 {
     cef.getView('charactercustom').open();
 }
-export function testAnim()
-{
-    anim.playAnim('mp_character_creation@lineup@male_a', 'loop');
-}
 
 
 loadCharacterCustom();

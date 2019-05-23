@@ -169,8 +169,8 @@ export function setHeadOverlay(i, index, opacity, firstcolor, secondcolor) {
     currentHeadOverlay[i].opacity = opacity;
     currentHeadOverlay[i].firstcolor = firstcolor;
     currentHeadOverlay[i].secondcolor = secondcolor;
-    alt.log("VALUE " + index)
-    alt.log("VALUE " + opacity)
+    // alt.log("VALUE " + index)
+    // alt.log("VALUE " + opacity)
     game.setPedHeadOverlay(game.playerPedId(), i, index, opacity);
     var colortype = 0;
     if (i == 2 || i == 1 || i == 10) colortype = 1;
@@ -190,8 +190,8 @@ export function setFaceFeature(index, value) {
     if (value < -1) value = -1;
     if (value > 1) value = 1;
     currentFaceFeature[index] = value;
-    alt.log("VALUE " + index)
-    alt.log("VALUE " + value)
+    // alt.log("VALUE " + index)
+    // alt.log("VALUE " + value)
     game.setPedFaceFeature(game.playerPedId(), index, value);
 }
 
