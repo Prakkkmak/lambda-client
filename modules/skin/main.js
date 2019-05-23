@@ -1,5 +1,6 @@
 import alt from 'alt';
 import game from 'natives';
+import * as base from 'modules/base/main';
 
 export let currentComponentVariation = [];
 for (let i = 0; i < 12; i++) {
@@ -129,6 +130,27 @@ export function setFaceFeature(index, value)
 export function setEyeColor(color)
 {
     game.setPedEyeColor(game.playerPedId(), color)
+}
+
+export function setModel(model )
+{
+    if(model.toLowerCase() == 'male')
+    {
+        model = game.getHashKey('mp_m_freemode_01')
+    } else if(model.toLowerCase() == 'female')
+    {
+        model = game.getHashKey('mp_f_freemode_01')
+    } else {
+        model = game.getHashKey(model);
+    }
+    return new Promise((resolve, reject) => {
+        base.loadModel(model).then(() => {
+            game.setPlayerModel(game.playerId(), model);
+            resolve(true);
+            
+        });
+    });
+
 }
 /*
 //TODO ==>

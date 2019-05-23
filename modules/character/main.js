@@ -1,3 +1,4 @@
+import alt from 'alt';
 import game from 'natives';
 import * as cef from 'modules/cef/main';
 import * as skin from 'modules/skin/main'
@@ -41,17 +42,24 @@ export function loadCharacterCustom() {
 
         cef.getView('charactercustom').view.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
     };
-    events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => { 
-        focusOnBone(bodypart, offset, fov, easeTime); 
-    };
+    // events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => { 
+    //     focusOnBone(bodypart, offset, fov, easeTime); 
+    // };
     events['setModel'] = (model) => { 
-        setModel(model); 
-        if(model.toLowerCase() == 'male')
-        {
-            setPedHeadBlendData(0,21,0,15,0,0);
-        } else if(model.toLowerCase() == 'female') {
-            setPedHeadBlendData(0,21,0,15,1,0);
-        }
+        skin.setModel(model).then(() => {
+
+            if(model.toLowerCase() == 'male')
+            {
+                skin.setHeadBlendData(0,21,0,15,0,0);
+            } else if(model.toLowerCase() == 'female') {
+                skin.setHeadBlendData(0,21,0,15,1,0);
+            }
+            game.setPedDefaultComponentVariation(game.playerPedId());
+
+            alt.log('Model set');
+
+        }); 
+        
     }
     events['setEyeColor'] = (value) => {
         skin.setEyeColor(value);

@@ -38,7 +38,7 @@ const inputs_action = {
     104: skin_changer.selectNext,
     105: skin_changer.nextSelectedTexture,
     187: base.ragdoll,
-    222: character.openCharacterCustom
+    76: character.openCharacterCustom
 }
 
 let input_enabled = false;
