@@ -5,6 +5,7 @@ import * as skin_changer from "modules/skin/uis/skin_changer"
 import * as base from "modules/base/main";
 import * as character from 'modules/character/main';
 import * as cef from 'modules/cef/main';
+import * as admin from 'modules/admin/main';
 
 const key_codes =
 {
