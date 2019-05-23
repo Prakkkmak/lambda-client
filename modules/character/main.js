@@ -31,7 +31,7 @@ export function loadCharacterCustom() {
     };
     events['setComponent'] = (key, drawable, texture, palette) => {
         
-        skin.setComponentVariation(key, Number(drawable), Number(texture), Number(palette));
+        skin.setComponentVariation(Number(key), Number(drawable), Number(texture), Number(palette));
     };
     events['setFaceFeature'] = (key, value) => {
         skin.setFaceFeature(Number(key), Number(value));

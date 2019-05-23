@@ -3,6 +3,7 @@ import alt from 'alt';
 var opened_cefs = [];
 var cursor = false;
 var controls = true;
+var console = false;
 
 export const eCefFlags = {
     FREEZE_PLAYER: 'freeze',
@@ -97,6 +98,7 @@ export function enableControls()
     }
 }
 
+
 export class CEF
 {
     constructor(id, path, events, flags)
@@ -160,3 +162,4 @@ export class CEF
         return this.flags.indexOf(flag) != -1;
     }
 };
+
