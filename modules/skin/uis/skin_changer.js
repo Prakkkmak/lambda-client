@@ -65,7 +65,7 @@ function changeSelected(dec) {
             skin.currentComponentVariation[i].texture,
             skin.currentComponentVariation[i].palette);
         alt.emit('chatmessage', 'skin manager',
-            selected_strings[i] +
+            selected_strings[selected] +
             " : " +
             skin.currentComponentVariation[i].drawable +
             "," +
@@ -79,7 +79,7 @@ function changeSelected(dec) {
             skin.currentPropIndex[i].drawable += dec,
             skin.currentPropIndex[i].texture);
         alt.emit('chatmessage', 'skin manager',
-            selected_strings[i] +
+            selected_strings[selected] +
             " : " +
             skin.currentPropIndex[i].drawable +
             "," +
@@ -128,7 +128,7 @@ function changeSelectedTexture(dec) {
             skin.currentComponentVariation[i].texture += dec,
             skin.currentComponentVariation[i].palette);
         alt.emit('chatmessage', 'skin manager',
-            selected_strings[i] +
+            selected_strings[selected] +
             " : " +
             skin.currentComponentVariation[i].drawable +
             "," +
@@ -142,7 +142,7 @@ function changeSelectedTexture(dec) {
             skin.currentPropIndex[i].drawable,
             skin.currentPropIndex[i].texture += dec);
         alt.emit('chatmessage', 'skin manager',
-            selected_strings[i] +
+            selected_strings[selected] +
             " : " +
             skin.currentPropIndex[i].drawable +
             "," +

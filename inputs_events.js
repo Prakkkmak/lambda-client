@@ -63,12 +63,12 @@ alt.on('keydown', (key) => {
         else alt.emit('chatmessage', null, "Vous avez désactivé les touches");
     }
     if (key == 84) {
-        chat_open = !chat_open;
+        if (!chat_open) chat_open = true;
     }
-    if (key == 27) {
+    if (key == 27 || key == 15) {
         chat_open = false;
     }
-    if (input_enabled && inputs_action[key]) {
+    if (input_enabled && !chat_open && inputs_action[key]) {
         alt.log("Action : " + key + " triggered");
         inputs_action[key]();
     }
