@@ -34,6 +34,7 @@ const key_codes =
 
 let chat_open = false;
 let input_enabled = false;
+let isDisabled = false;
 
 const inputs_action = {
     97: skin_changer.previousSelectedPalette,
@@ -56,7 +57,10 @@ function closeChat() {
     chat_open = false;
 }
 
+alt.on('disableKeys', (bool) => {
+    isDisabled = bool;
 
+})
 alt.on('keydown', (key) => {
     if (key == 222) {
         input_enabled = !input_enabled;
@@ -66,16 +70,18 @@ alt.on('keydown', (key) => {
     if (key == 84) {
         if (!chat_open) chat_open = true;
     }
-    if (key == 27 || key == 15) {
+    if (key == 13 || key == 27) {
         chat_open = false;
     }
-    if (input_enabled && !chat_open && inputs_action[key]) {
-        alt.log("Action : " + key + " triggered");
+    alt.log("is disabler =" + isDisabled);
+    alt.log("is input_enabled =" + input_enabled);
+    alt.log("is chat_open =" + chat_open);
+    alt.log("is disable KAKAKAKA " + (isDisabled == false));
+    if (input_enabled && !chat_open && !isDisabled && inputs_action[key]) {
         inputs_action[key]();
     }
 
-    if (key == 119)
-    {
+    if (key == 119) {
         cef.toggleConsole();
     }
 });

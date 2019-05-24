@@ -9,7 +9,10 @@ export function putHandcuff() {
     game.clearPedTasksImmediately(player);
     playAnim(anim.dict, anim.name, 49);
     game.setEnableHandcuffs(player, true);
+    alt.log("ici")
     game.setCurrentPedWeapon(player, game.getHashKey("WEAPON_UNARMED"), true);
+
+    game.setPedPathCanUseLadders(player, false)
     handcuffed = true;
 }
 export function removeHandcuff() {
