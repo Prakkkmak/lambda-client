@@ -1,3 +1,5 @@
+/// <reference path="../../definitions/altv-client.d.ts" />
+
 import game from 'natives';
 import alt from 'alt';
 
@@ -13,7 +15,12 @@ export const ped_bones =
 var cam = null;
 
 export function createCam(position, rotation, fov) {
+    
     alt.nextTick(() => {
+        if(cam != null)
+        {
+            game.destroyAllCams(false);
+        }
         cam = game.createCam('DEFAULT_SCRIPTED_CAMERA', false);
         game.setCamCoord(cam, position.x, position.y, position.z);
         game.setCamRot(cam, rotation.x, rotation.y, rotation.z);
