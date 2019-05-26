@@ -2,12 +2,12 @@ import alt from 'alt';
 import game from 'natives';
 import * as admin from 'modules/admin/main';
 
-alt.onServer('godMode', (state) => {
+alt.onServer('invicibility', (state) => {
     if(state)
     {
-        admin.enableGodMode();
+        admin.enableInvicibility();
     } else {
-        admin.disableGodMode();
+        admin.disableInvicibility();
     }
 });
 

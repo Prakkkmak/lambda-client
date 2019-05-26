@@ -6,16 +6,6 @@ import * as skin from 'modules/skin/main';
 import * as camera from 'modules/camera/main';
 import * as anim from 'modules/anim/main';
 
-
-
-
-export function setSpeed(mul)
-{
-    game.setRunSprintMultiplierForPlayer(game.playerId(), mul);
-    game.setSwimMultiplierForPlayer(game.playerId(), mul);
-}
-
-
 const rgbToHex = function (rgb) {
     var hex = Number(rgb).toString(16);
     if (hex.length < 2) {
@@ -24,7 +14,11 @@ const rgbToHex = function (rgb) {
     return hex;
 };
 
-
+export function setSpeed(mul)
+{
+    game.setRunSprintMultiplierForPlayer(game.playerId(), mul);
+    game.setSwimMultiplierForPlayer(game.playerId(), mul);
+}
 
 export function loadCharacterCustom() {
 
@@ -92,6 +86,5 @@ export function openCharacterCustom()
 {
     cef.getView('charactercustom').open();
 }
-
 
 loadCharacterCustom();
