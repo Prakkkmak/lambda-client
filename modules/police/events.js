@@ -4,6 +4,7 @@
 import alt from 'alt';
 import game from 'natives';
 import * as police from "modules/police/main"
+const anim = { dict: 'mp_arresting', name: 'idle' }
 alt.onServer('setHandcuff', (value) => {
     if (value == undefined) {
         value = !police.handcuffed;
@@ -19,11 +20,16 @@ alt.onServer('setHandcuff', (value) => {
 });
 alt.on('update', () => {
     if (police.handcuffed) {
-
+        alt.log(game.isEntityPlayingAnim(game.playerPedId(), anim.dict, anim.name, 3))
+        if (!game.isEntityPlayingAnim(game.playerPedId(), anim.dict, anim.name, 3)) {
+            police.putHandcuff();
+        }
+        game.setPedPathCanUseLadders(game.playerPedId(), false)
         game.disableControlAction(0, 142, true) // MeleeAttackAlternat
         game.disableControlAction(0, 24, true) //Shoot 
         game.disableControlAction(0, 92, true) //Shoot in car
         game.disableControlAction(0, 75, true) // Leave Vehicle
+        game.disableControlAction(0, 45, true) // Leave Vehicle
         if (game.isPedInAnyVehicle(game.playerPedId(), false)) {
             game.disableControlAction(0, 59, true)
         }
