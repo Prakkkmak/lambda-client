@@ -29,14 +29,3 @@ export function disableHighSpeed()
 {
     character.setSpeed(1.00);
 }
-
-export function enableGodMode()
-{
-    enableInvicibility();
-    enableHighSpeed();
-}
-export function disableGodMode()
-{
-    disableInvicibility();
-    disableHighSpeed();
-}
