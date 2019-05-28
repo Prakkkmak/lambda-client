@@ -12,51 +12,132 @@ export const ped_bones =
     'SKEL_Root': 0x0
 };
 
-var cam = null;
+var cam = [];
 
-export function createCam(position, rotation, fov) {
-    
-    alt.nextTick(() => {
-        if(cam != null)
-        {
-            game.destroyAllCams(false);
-        }
-        cam = game.createCam('DEFAULT_SCRIPTED_CAMERA', false);
-        game.setCamCoord(cam, position.x, position.y, position.z);
-        game.setCamRot(cam, rotation.x, rotation.y, rotation.z);
-        game.setCamActive(cam, true);
-        game.setCamFov(cam, fov);
-    });
+export class Camera 
+{
+    constructor(id, position, rotation, fov)
+    {
+        
+        this.id = id;
 
-    return cam;
-}
-export function focusOnBone(bone, offset, fov, easeTime) {
-    bone = (typeof (bone) == 'string') ? ped_bones[bone] : bone;
-    if (cam == null) {
-        createCam({ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, fov);
         alt.nextTick(() => {
-            game.attachCamToPedBone(cam, alt.getLocalPlayer().scriptID, bone, offset.x, offset.y, offset.z, true);
-            game.pointCamAtPedBone(cam, alt.getLocalPlayer().scriptID, bone, 0, 0, 0, true);
-            game.renderScriptCams(true, true, easeTime, true, false);
-        });
-    } else {
-        alt.nextTick(() => {
-            game.setCamActive(cam, true);
-            game.renderScriptCams(true, true, easeTime, true, false);
-            game.setCamFov(cam, fov);
-            game.attachCamToPedBone(cam, alt.getLocalPlayer().scriptID, bone, offset.x, offset.y, offset.z, true);
-            game.pointCamAtPedBone(cam, alt.getLocalPlayer().scriptID, bone, 0, 0, 0, true);
+            if(doesCamExist(id))
+            {
+                game.destroyCam(cam[id].cam,false);
+            }
+            this.cam = game.createCam('DEFAULT_SCRIPTED_CAMERA', false);
+            this.setPosition(position.x, position.y, position.z);
+            this.setRotation(rotation.x, rotation.y, rotation.z);
+            this.setFov(fov);
+            game.setCamActive(this.cam, true);
+
+
+            cam[id] = this;
         });
     }
+
+    focusOnBone(bone, offset, fov, easeTime) 
+    {
+        bone = (typeof (bone) == 'string') ? ped_bones[bone] : bone;
+        alt.nextTick(() => {
+            this.setFov(fov);
+            game.attachCamToPedBone(this.cam, alt.getLocalPlayer().scriptID, bone, offset.x, offset.y, offset.z, true);
+            game.pointCamAtPedBone(this.cam, alt.getLocalPlayer().scriptID, bone, 0, 0, 0, true);
+            game.renderScriptCams(true, true, easeTime, true, false);
+        });
+    }
+
+    setPosition(position)
+    {
+        game.setCamCoord(this.cam, position.x, position.y, position.z);
+    }
+
+    setRotation(rotation)
+    {
+        game.setCamRot(this.cam, rotation.x, rotation.y, rotation.z);
+    }
+
+    setFov(fov)
+    {
+        game.setCamFov(this.cam, fov);
+    }
+
+    destroy()
+    {
+        game.destroyCam(this.cam, false);
+        
+        for( var i = 0; i < cam.length; i++)
+        { 
+            if ( cam[i].id === this.id) {
+              cam.splice(i, 1); 
+            }
+        }
+    }
+
+    renderCam() 
+    {
+        game.setCamActive(this.cam, true);
+        game.renderScriptCams(true, true, 500, true, false);
+    }
 }
+
+
+export function createCam(id, position = {x:0,y:0,z:0}, rotation= {x:0,y:0,z:0}, fov=30) {
+    if(doesCamExist(id))
+    {
+        let c = getCam(id);
+        c.setPosition(position.x, position.y, position.z);
+        c.setRotation(rotation.x, rotation.y, rotation.z);
+        c.setFov(fov);
+
+        return getCam(id);
+    } else 
+    {
+        return new Camera(id, position, rotation, fov);
+    }
+}
+export function getCam(camID)
+{
+    for(let i=0;i<cam.length;i++)
+    {
+       if(cam[i].id == camID) return cam[i]; 
+    }
+
+    return undefined;
+}
+export function doesCamExist(camID)
+{
+    for(let i=0;i<cam.length;i++)
+    {
+       if(cam[i].id == camID) return true; 
+    }
+
+    return false;
+}
+
 export function goBackToGameplayCam() {
 
     alt.nextTick(() => {
-
-        game.setCamActive(cam, false);
-        game.destroyAllCams(false);
-        cam = null;
         game.renderScriptCams(false, false, 0, true, true);
     });
 
+}
+export function getGameplayCamDirVector()
+{
+    let rotation = game.getGameplayCamRot();
+
+    let Z = rotation.z; 
+    let num = Z * 0.0174532924;    
+    let X = rotation.x;    
+    let num2 = X * 0.0174532924;    
+    let num3 = Math.abs(Math.cos(num2));   
+    
+    let dir = {        
+        x : (((-Math.sin(num))) * num3),        
+        y : ((Math.cos(num)) * num3),        
+        z : Math.sin(num2)
+    };
+
+    return dir;
 }

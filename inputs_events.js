@@ -1,11 +1,14 @@
 /// <reference path="definitions/altv-client.d.ts" />
 import alt from 'alt';
 import game from 'natives';
+
 import * as skin_changer from "modules/skin/uis/skin_changer"
+import * as skin from 'modules/skin/main';
 import * as base from "modules/base/main";
 import * as character from 'modules/character/main';
 import * as cef from 'modules/cef/main';
 import * as admin from 'modules/admin/main';
+import * as physics from 'modules/physics/main';
 
 const key_codes =
 {
@@ -47,9 +50,8 @@ const inputs_action = {
     104: skin_changer.selectNext,
     105: skin_changer.nextSelectedTexture,
     187: base.ragdoll,
-    76: character.openCharacterCustom,
-    65: admin.disableInvisibility,
-    69: admin.enableInvisibility
+    76: skin.openCharacterCustom,
+    85: admin.dashToCam
 }
 
 function openChat() {
@@ -62,7 +64,7 @@ function closeChat() {
 alt.on('disableKeys', (bool) => {
     isDisabled = bool;
 
-})
+});
 alt.on('keydown', (key) => {
     if (key == 222) {
         input_enabled = !input_enabled;

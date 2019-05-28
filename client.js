@@ -13,7 +13,7 @@ import 'modules/police/events';
 import 'modules/interior/events';
 import 'modules/character/events';
 import 'modules/camera/events';
-
+import 'modules/physics/events';
 
 game.setPedDefaultComponentVariation(game.playerPedId());
 alt.emitServer("setlicense", alt.getLicenseHash());

@@ -2,6 +2,7 @@ import alt from 'alt';
 import game from 'natives';
 
 import * as character from 'modules/character/main';
+import * as camera from 'modules/camera/main';
 
 export function enableInvisibility()
 {
@@ -21,11 +22,17 @@ export function disableInvicibility()
     game.setPlayerInvincible(game.playerId(), false);
 }
 
+export function dashToCam()
+{
+    let dir = camera.getGameplayCamDirVector(game.getGameplayCamRot(0));
+    character.applyStrongForceToPed(dir, 25);
+}
+
 export function enableHighSpeed()
 {
-    character.setSpeed(1.49);
+    character.setPedSpeed(1.49);
 }
 export function disableHighSpeed()
 {
-    character.setSpeed(1.00);
+    character.setPedSpeed(1.00);
 }
