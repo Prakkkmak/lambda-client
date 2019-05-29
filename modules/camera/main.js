@@ -9,7 +9,8 @@ export const ped_bones =
     'SKEL_Head ': 0x796E,
     'FACIAL_facialRoot': 0xFE2C,
     'SKEL_Spine2': 0x60f1,
-    'SKEL_Root': 0x0
+    'SKEL_Root': 0x0,
+    'SKEL_L_Clavicle' : 0xfcd9
 };
 
 var cam = [];
@@ -33,18 +34,25 @@ export class Camera
             game.setCamActive(this.cam, true);
 
 
-            cam[id] = this;
+            cam.push(this);
         });
     }
 
-    focusOnBone(bone, offset, fov, easeTime) 
+    focusOnBone(bone, offset, fov, easeTime, ped=alt.getLocalPlayer().scriptID) 
     {
         bone = (typeof (bone) == 'string') ? ped_bones[bone] : bone;
         alt.nextTick(() => {
             this.setFov(fov);
-            game.attachCamToPedBone(this.cam, alt.getLocalPlayer().scriptID, bone, offset.x, offset.y, offset.z, true);
-            game.pointCamAtPedBone(this.cam, alt.getLocalPlayer().scriptID, bone, 0, 0, 0, true);
+            game.pointCamAtPedBone(this.cam, ped, bone, 0, 0, 0, true);
             game.renderScriptCams(true, true, easeTime, true, false);
+        });
+    }
+
+    focusOnEntity(entity, offset, offsetPoint = {x:0,y:0,z:0}, relative = true)
+    {
+        alt.nextTick(() => {
+            game.pointCamAtEntity(this.cam, entity, offsetPoint.x, offsetPoint.y, offsetPoint.z, true);
+            game.renderScriptCams(true, true, 500, true, false);
         });
     }
 
@@ -101,7 +109,10 @@ export function getCam(camID)
 {
     for(let i=0;i<cam.length;i++)
     {
-       if(cam[i].id == camID) return cam[i]; 
+       if(cam[i].id == camID) 
+       {
+           return cam[i];
+       } 
     }
 
     return undefined;

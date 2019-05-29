@@ -1,6 +1,9 @@
 import game from 'natives';
 import alt from 'alt';
 
+export const playerPedId = alt.getLocalPlayer().scriptID;
+
+
 export function freeze(value) {
     game.freezeEntityPosition(game.playerPedId(), value);
     //setControlsEnabled(value);

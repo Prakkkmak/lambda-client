@@ -9,6 +9,7 @@ import * as character from 'modules/character/main';
 import * as cef from 'modules/cef/main';
 import * as admin from 'modules/admin/main';
 import * as physics from 'modules/physics/main';
+import * as camera from 'modules/camera/main';
 
 const key_codes =
 {
@@ -51,7 +52,15 @@ const inputs_action = {
     105: skin_changer.nextSelectedTexture,
     187: base.ragdoll,
     76: skin.openCharacterCustom,
-    85: admin.dashToCam
+    85: admin.dashToCam,
+    69: admin.testSpecMode,
+    65: () => {
+        admin.disableSpecMode();
+        admin.disableInvisibility();
+        camera.goBackToGameplayCam();
+    },
+    
+    75: admin.enableInvisibility
 }
 
 function openChat() {
