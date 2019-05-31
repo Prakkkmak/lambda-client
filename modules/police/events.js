@@ -28,10 +28,14 @@ alt.on('update', () => {
         game.disableControlAction(0, 142, true) // MeleeAttackAlternat
         game.disableControlAction(0, 24, true) //Shoot 
         game.disableControlAction(0, 92, true) //Shoot in car
-        game.disableControlAction(0, 75, true) // Leave Vehicle
-        game.disableControlAction(0, 45, true) // Leave Vehicle
+        //game.disableControlAction(0, 75, true) // Leave Vehicle
+        game.disableControlAction(0, 45, true) // Reload
+        game.disableControlAction(0, 140, true) // alternative
+        game.disableControlAction(0, 141, true) // alternative
+        game.disableControlAction(0, 142, true) // alternative
+        game.disableControlAction(0, 143, true) // alternative
         if (game.isPedInAnyVehicle(game.playerPedId(), false)) {
-            game.disableControlAction(0, 59, true)
+            game.disableControlAction(0, 59, true) // droiger gauche veh
         }
     }
 

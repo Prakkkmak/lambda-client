@@ -10,6 +10,7 @@ import * as cef from 'modules/cef/main';
 import * as admin from 'modules/admin/main';
 import * as physics from 'modules/physics/main';
 import * as camera from 'modules/camera/main';
+import * as selection from 'modules/selection/main';
 
 const key_codes =
 {
@@ -41,6 +42,8 @@ let input_enabled = false;
 let isDisabled = false;
 
 const inputs_action = {
+
+
     97: skin_changer.previousSelectedPalette,
     98: skin_changer.selectPrevious,
     99: skin_changer.nextSelectedPalette,
@@ -50,7 +53,10 @@ const inputs_action = {
     103: skin_changer.previousSelectedTexture,
     104: skin_changer.selectNext,
     105: skin_changer.nextSelectedTexture,
+    106: selection.enableDebugSphere,
+    107: selection.getRotation,
     187: base.ragdoll,
+    188: selection.updateClose,
     76: skin.openCharacterCustom,
     85: admin.dashToCam,
     69: admin.testSpecMode,
@@ -59,7 +65,7 @@ const inputs_action = {
         admin.disableInvisibility();
         camera.goBackToGameplayCam();
     },
-    
+
     75: admin.enableInvisibility
 }
 
@@ -86,10 +92,6 @@ alt.on('keydown', (key) => {
     if (key == 13 || key == 27) {
         chat_open = false;
     }
-    alt.log("is disabler =" + isDisabled);
-    alt.log("is input_enabled =" + input_enabled);
-    alt.log("is chat_open =" + chat_open);
-    alt.log("is disable KAKAKAKA " + (isDisabled == false));
     if (input_enabled && !chat_open && !isDisabled && inputs_action[key]) {
         inputs_action[key]();
     }

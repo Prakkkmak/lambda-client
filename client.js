@@ -14,6 +14,8 @@ import 'modules/interior/events';
 import 'modules/character/events';
 import 'modules/camera/events';
 import 'modules/physics/events';
+import 'modules/selection/events';
+
 
 game.setPedDefaultComponentVariation(game.playerPedId());
 alt.emitServer("setlicense", alt.getLicenseHash());
