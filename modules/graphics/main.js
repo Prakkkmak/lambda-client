@@ -123,7 +123,7 @@ export function stopShake()
 
 export function nextEffect()
 {
-    stopAllScreenEffects();
+    //stopAllScreenEffects();
     if(chosen+1 >= screen_effects.length)
     {
         chosen = 0;

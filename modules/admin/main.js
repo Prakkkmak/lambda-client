@@ -5,6 +5,8 @@ import * as character from 'modules/character/main';
 import * as camera from 'modules/camera/main';
 import * as physics from 'modules/physics/main';
 
+let invicible = false;
+
 let spec = false;
 let specCamOffset = 
 {
@@ -23,6 +25,16 @@ export function disableInvisibility()
 {
     game.setEntityVisible(game.playerPedId(), true);
 }
+export function toggleInvisibility()
+{
+    if(game.isEntityVisible())
+    {
+        enableInvisibility();
+    } else
+    {
+        disableInvisibility();
+    }
+}
 
 export function enableInvicibility()
 {
@@ -32,6 +44,18 @@ export function disableInvicibility()
 {
     game.setEntityInvincible(game.playerId(), false);
 }
+export function toggleInvicibility()
+{
+    if(invicible)
+    {
+        disableInvicibility();
+
+    } else
+    {
+        enableInvicibility();    
+    }
+}
+
 
 export function enableNoClip()
 {
@@ -40,6 +64,16 @@ export function enableNoClip()
 export function disableNoClip()
 {
     game.setEntityCollision(game.playerPedId(), true, true);
+}
+export function toggleNoClip()
+{
+    if(game.getEntityCollisonDisabled(game.playerPedId()))
+    {
+        disableNoClip();
+    } else
+    {
+        enableNoClip();    
+    }
 }
 
 export function enableFastRun()
@@ -50,6 +84,7 @@ export function disableFastRun()
 {
     character.setPedSpeed(1.00);
 }
+
 
 export function enableSpecMode(entity)
 {
@@ -95,11 +130,6 @@ export function testSpecMode()
     if(retvalue)
     {
         enableSpecMode(player);
-    } else if(alt.vehicles.length > 0)
-    {
-        let random = Math.round(Math.random() * alt.vehicles.length);
-
-        
     }
 }
 
@@ -137,6 +167,6 @@ alt.on('update', () => {
         });
 
 
-        game.setEntityCoords(game.playerPedId(), pos.x, pos.y, pos.z + 10, false, false, false, false);
+        game.setEntityCoords(game.playerPedId(), pos.x, pos.y, pos.z - 10, false, false, false, false);
     }
 });
