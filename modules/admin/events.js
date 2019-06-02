@@ -19,3 +19,7 @@ alt.onServer('invisibility', (state) => {
         admin.disableInvisibility();
     }
 });
+
+alt.onServer('spec', (playerName) => {
+    
+});

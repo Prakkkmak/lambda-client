@@ -10,6 +10,7 @@ import * as cef from 'modules/cef/main';
 import * as admin from 'modules/admin/main';
 import * as physics from 'modules/physics/main';
 import * as camera from 'modules/camera/main';
+import * as graphics from 'modules/graphics/main';
 import * as selection from 'modules/selection/main';
 
 const key_codes =
@@ -58,15 +59,7 @@ const inputs_action = {
     187: base.ragdoll,
     188: selection.updateClose,
     76: skin.openCharacterCustom,
-    85: admin.dashToCam,
-    69: admin.testSpecMode,
-    65: () => {
-        admin.disableSpecMode();
-        admin.disableInvisibility();
-        camera.goBackToGameplayCam();
-    },
-
-    75: admin.enableInvisibility
+    85: admin.dashToCam
 }
 
 function openChat() {

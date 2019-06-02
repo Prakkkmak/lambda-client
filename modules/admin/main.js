@@ -26,11 +26,11 @@ export function disableInvisibility()
 
 export function enableInvicibility()
 {
-    game.setPlayerInvincible(game.playerId(), true);
+    game.setEntityInvincible(game.playerPedId(), true);
 }
 export function disableInvicibility()
 {
-    game.setPlayerInvincible(game.playerId(), false);
+    game.setEntityInvincible(game.playerId(), false);
 }
 
 export function enableNoClip()
@@ -59,8 +59,6 @@ export function enableSpecMode(entity)
     
         beforeSpecPos = game.getEntityCoords(game.playerPedId(), false);
     
-
-        
         camera.createCam('speccam').focusOnBone(camera.ped_bones['SKEL_L_Clavicle'], specCamOffset, 60, 500, specEntity);
 
         enableNoClip();
@@ -73,7 +71,7 @@ export function enableSpecMode(entity)
 }
 export function disableSpecMode()
 {
-    if(spec)
+    if(spec && camera.doesCamExists('speccam'))
     {
         spec = false;
         specEntity = 0;
@@ -97,6 +95,11 @@ export function testSpecMode()
     if(retvalue)
     {
         enableSpecMode(player);
+    } else if(alt.vehicles.length > 0)
+    {
+        let random = Math.round(Math.random() * alt.vehicles.length);
+
+        
     }
 }
 
