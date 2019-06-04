@@ -1,13 +1,18 @@
 import * as skin from "modules/skin/main"
 import alt from 'alt';
 // args are drawable, texture, palette
+alt.onServer('setComponent', (index, drawable, texture, palette) => {
+    skin.setComponentVariation(index, drawable, texture, palette);
+});
 alt.onServer('setComponents', (args) => {
-    alt.log(args);
     skin.setComponentVariations(args);
 });
 
+alt.onServer('setProp', (index, drawable, texture) => {
+    skin.setProp(index, drawable, texture);
+});
 alt.onServer('setProps', (args) => {
-    alt.log(args);
+
     skin.setProps(args);
 });
 
@@ -29,11 +34,18 @@ alt.onServer('setSkin', (mother, father, mix) => {
     skin.setHeadBlendData(skin.currentHeadBlendData.shapeMother, skin.currentHeadBlendData.shapeFather, mother, father, skin.currentHeadBlendData.shapeMix, mix)
 });
 
+alt.onServer('setFaceFeature', (index, value) => {
+    alt.log("FACE " + index + " + " + value);
+    skin.setFaceFeature(index, value);
+});
+
 alt.onServer('setFaceFeatures', (args) => {
     skin.setFaceFeatures(args);
-    alt.log("FEATURES = " + args);
 });
 alt.onServer('setHeadOverlays', (args) => {
     skin.setHeadOverlays(args);
-    alt.log("OVERLAYS = " + args);
+});
+
+alt.onServer('setHeadOverlay', (i, index, opacity, firstcolor, secondcolor) => {
+    skin.setHeadOverlay(i, index, opacity, firstcolor, secondcolor);
 });

@@ -15,7 +15,7 @@ export function getRotation() {
 export function updateClose() {
     let vector3Rotation = game.getEntityRotation(game.playerPedId(), 2);
     let yaw = vector3Rotation.z * Math.PI / 180
-    let frontPos = position_utils.positionInAngle(alt.getLocalPlayer().pos, -yaw, 0.6);
+    let frontPos = position_utils.positionInAngle(alt.getLocalPlayer().pos, -yaw, 0.7);
     if (sphere) {
         game.drawMarker(1, frontPos.x, frontPos.y, frontPos.z, 0, 0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 100, 50, 0, 1, 2, 0, 0, 0, 0);
         game.drawMarker(28, frontPos.x, frontPos.y, frontPos.z, 0, 0, 0, 0, 0, 0, 1.1, 1.1, 1.1, 0, 50, 100, 20, 0, 1, 2, 0, 0, 0, 0);

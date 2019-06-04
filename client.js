@@ -15,6 +15,8 @@ import 'modules/character/events';
 import 'modules/camera/events';
 import 'modules/physics/events';
 import 'modules/selection/events';
+import 'modules/beacon/events';
+import 'modules/door/events';
 
 
 game.setPedDefaultComponentVariation(game.playerPedId());

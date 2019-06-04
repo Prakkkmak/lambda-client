@@ -71,12 +71,11 @@ export function saveSkin() {
         a.push(elem.texture);
         a.push(elem.palette);
     });
+    let c = []
     currentPropIndex.forEach((elem) => {
-        a.push(elem.drawable);
-        a.push(elem.texture);
+        c.push(elem.drawable);
+        c.push(elem.texture);
     });
-
-    alt.log(currentHeadBlendData);
     alt.emitServer('setheaddata', currentHeadBlendData.shapeMother, currentHeadBlendData.shapeFather,
         currentHeadBlendData.skinMother, currentHeadBlendData.skinFather, currentHeadBlendData.shapeMix, currentHeadBlendData.skinMix);
     alt.emitServer('sethaircolor', currentHairColor.color, currentHairColor.taint);
@@ -90,6 +89,7 @@ export function saveSkin() {
     alt.emitServer('setheadoverlays', b);
 
     alt.emitServer('setskin', a);
+    alt.emitServer('setprops', c);
 }
 
 export function setComponentVariations(args) { // Array of elements
@@ -126,8 +126,11 @@ export function setProp(index, drawable, texture) {
     if (drawable < 0) drawable = 0;
     if (texture < 0) texture = 0;
     alt.log("setPropVariation : " + index + " " + drawable + " " + texture);
+
     currentPropIndex[index].drawable = drawable;
     currentPropIndex[index].texture = texture;
+    if (index == 3) index = 6;
+    if (index == 4) index = 7;
     game.setPedPropIndex(game.playerPedId(), index, drawable, texture, true);
 }
 
@@ -156,7 +159,7 @@ export function setHeadBlendData(shapeMother, shapeFather, skinMother, skinFater
         shapeMix: shapeMix,
         skinMix: skinMix
     }
-    
+
     game.setPedHeadBlendData(game.playerPedId(), shapeMother, shapeFather, 0, skinMother, skinFater, 0, shapeMix, skinMix, 0, false);
 }
 
@@ -189,6 +192,7 @@ export function setHeadOverlay(i, index, opacity, firstcolor, secondcolor) {
 }
 
 export function setFaceFeatures(args) {
+    alt.log(args)
     for (let i = 0; i < currentFaceFeature.length; i++) {
         currentFaceFeature[i] = args[i];
     }
@@ -197,6 +201,7 @@ export function setFaceFeatures(args) {
     }
 }
 export function setFaceFeature(index, value) {
+    alt.log(index, value)
     if (value < -1) value = -1;
     if (value > 1) value = 1;
     currentFaceFeature[index] = value;
@@ -205,13 +210,10 @@ export function setFaceFeature(index, value) {
     game.setPedFaceFeature(game.playerPedId(), index, value);
 }
 
-export function setModel(model)
-{
-    if(model.toLowerCase() == 'male')
-    {
+export function setModel(model) {
+    if (model.toLowerCase() == 'male') {
         model = game.getHashKey('mp_m_freemode_01')
-    } else if(model.toLowerCase() == 'female')
-    {
+    } else if (model.toLowerCase() == 'female') {
         model = game.getHashKey('mp_f_freemode_01')
     } else {
         model = game.getHashKey(model);
@@ -220,7 +222,7 @@ export function setModel(model)
         base.loadModel(model).then(() => {
             game.setPlayerModel(game.playerId(), model);
             resolve(true);
-            
+
         });
     });
 
@@ -229,8 +231,8 @@ export function setModel(model)
 export function loadCharacterCustom() {
 
     let events = {};
-    events['setHairColor'] = (colorID, highlightColorID) => { 
-        setHairColor(Number(colorID), Number(highlightColorID)); 
+    events['setHairColor'] = (colorID, highlightColorID) => {
+        setHairColor(Number(colorID), Number(highlightColorID));
     };
     events['setHeadOverlay'] = (key, index, opacity) => {
         let arg1 = new Array(13).fill(null);
@@ -242,13 +244,13 @@ export function loadCharacterCustom() {
         setHeadOverlay(arg1, arg2);
     };
     events['setComponent'] = (key, drawable, texture, palette) => {
-        
+
         setComponentVariation(Number(key), Number(drawable), Number(texture), Number(palette));
     };
     events['setFaceFeature'] = (key, value) => {
         setFaceFeature(Number(key), Number(value));
     };
-    events['requestHairColors'] = (id, container, size, callback) => { 
+    events['requestHairColors'] = (id, container, size, callback) => {
         let colors = new Array(game.getNumHairColors());
         for (let i = 0; i < game.getNumHairColors(); i++) {
             let [_, r, g, b] = game.getHairColor(i, 0, 0, 0);
@@ -257,24 +259,23 @@ export function loadCharacterCustom() {
 
         cef.getView('charactercustom').view.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
     };
-    events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => { 
-        camera.createCam('charactercustom').focusOnBone(bodypart, offset, fov, easeTime); 
+    events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => {
+        camera.createCam('charactercustom').focusOnBone(bodypart, offset, fov, easeTime);
     };
-    events['setModel'] = (model) => { 
+    events['setModel'] = (model) => {
         setModel(model).then(() => {
 
-            if(model.toLowerCase() == 'male')
-            {
-                setHeadBlendData(0,21,0,15,0,0);
-            } else if(model.toLowerCase() == 'female') {
-                setHeadBlendData(0,21,0,15,1,0);
+            if (model.toLowerCase() == 'male') {
+                setHeadBlendData(0, 21, 0, 15, 0, 0);
+            } else if (model.toLowerCase() == 'female') {
+                setHeadBlendData(0, 21, 0, 15, 1, 0);
             }
             game.setPedDefaultComponentVariation(game.playerPedId());
 
             alt.log('Model set');
 
-        }); 
-        
+        });
+
     }
     events['setEyeColor'] = (value) => {
         setEyeColor(Number(value));
@@ -284,12 +285,11 @@ export function loadCharacterCustom() {
         camera.goBackToGameplayCam();
     };
 
-    cef.createView('charactercustom', 'character/uis/charactercustom/charactercustom.html', events,[cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
+    cef.createView('charactercustom', 'character/uis/charactercustom/charactercustom.html', events, [cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 
 }
 
-export function openCharacterCustom()
-{
+export function openCharacterCustom() {
     cef.getView('charactercustom').open();
 }
 
