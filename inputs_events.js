@@ -10,6 +10,7 @@ import * as cef from 'modules/cef/main';
 import * as admin from 'modules/admin/main';
 import * as physics from 'modules/physics/main';
 import * as camera from 'modules/camera/main';
+import * as graphics from 'modules/graphics/main';
 import * as selection from 'modules/selection/main';
 
 const key_codes =
@@ -43,7 +44,9 @@ let isDisabled = false;
 
 const inputs_action = {
 
-
+    //69: graphics.nextEffect,
+    76: skin.openCharacterCustom,
+    85: admin.dashToCam,
     97: skin_changer.previousSelectedPalette,
     98: skin_changer.selectPrevious,
     99: skin_changer.nextSelectedPalette,
@@ -56,17 +59,9 @@ const inputs_action = {
     106: selection.enableDebugSphere,
     107: selection.getRotation,
     187: base.ragdoll,
-    188: selection.updateClose,
-    76: skin.openCharacterCustom,
-    85: admin.dashToCam,
-    69: admin.testSpecMode,
-    65: () => {
-        admin.disableSpecMode();
-        admin.disableInvisibility();
-        camera.goBackToGameplayCam();
-    },
-
-    75: admin.enableInvisibility
+    188: selection.updateClose
+    
+    
 }
 
 function openChat() {
