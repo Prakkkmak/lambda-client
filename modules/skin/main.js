@@ -285,7 +285,7 @@ export function loadCharacterCustom() {
         camera.goBackToGameplayCam();
     };
 
-    cef.createView('charactercustom', 'character/uis/charactercustom/charactercustom.html', events, [cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
+    cef.createView('charactercustom', 'skin/uis/charactercustom/charactercustom.html', events, [cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 
 }
 

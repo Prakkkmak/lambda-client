@@ -11,8 +11,6 @@ export function freeze(value) {
     //setControlsEnabled(value);
 }
 
-
-
 export function loadModel(model)
 {
     if(game.isModelValid(model))
@@ -43,17 +41,19 @@ export function loadContext() {
     let events = {};
     
     events['chatmessage'] = (c) => {
-        alt.emitServer('chatmessage', c);
+        alt.emit('chatmessage', c);
     };
+
+    events['hide'] = (arg) => {
+        cef.getView('context').hide();
+    }
 
     cef.createView('context', 'base/uis/context/context.html', events,[cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 }
 
 export function openContext()
 {
-    cef.getView('context').open(() => {
-        cef.getView('context').view.emit('onParse', '{ button: { label: "Salut", cmd: "!veh" } }') ;
-    });
+    cef.getView('context').open();
 }
 export function hideContext()
 {
@@ -64,15 +64,15 @@ export function toggleContext()
 {
     if(cef.getView('context').isOpened())
     {
-        if()
+        if(cef.getView('context').view.isVisible)
         {
-
+            hideContext();
         } else 
         {
-
+            openContext();
         }
     } else {
-        
+        openContext();
     }
     
 }
