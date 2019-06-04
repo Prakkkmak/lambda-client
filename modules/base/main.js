@@ -1,6 +1,8 @@
 import game from 'natives';
 import alt from 'alt';
 
+import * as cef from 'modules/cef/main';
+
 export const playerPedId = alt.getLocalPlayer().scriptID;
 
 
@@ -8,9 +10,9 @@ export function freeze(value) {
     game.freezeEntityPosition(game.playerPedId(), value);
     //setControlsEnabled(value);
 }
-export function ragdoll() {
-    game.setPedToRagdoll(game.playerPedId(), 1000, 1000, 0, 0, 0, 0);
-}
+
+
+
 export function loadModel(model)
 {
     if(game.isModelValid(model))
@@ -28,7 +30,6 @@ export function loadModel(model)
                     resolve(true);
                 }
                 
-                
             },(5));
         });
     } else 
@@ -36,3 +37,43 @@ export function loadModel(model)
         alt.log('invalid model')
     }
 }
+
+export function loadContext() {
+
+    let events = {};
+    
+    events['chatmessage'] = (c) => {
+        alt.emitServer('chatmessage', c);
+    };
+
+    cef.createView('context', 'base/uis/context/context.html', events,[cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
+}
+
+export function openContext()
+{
+    cef.getView('context').open(() => {
+        cef.getView('context').view.emit('onParse', '{ button: { label: "Salut", cmd: "!veh" } }') ;
+    });
+}
+export function hideContext()
+{
+    cef.getView('context').hide();
+}
+
+export function toggleContext()
+{
+    if(cef.getView('context').isOpened())
+    {
+        if()
+        {
+
+        } else 
+        {
+
+        }
+    } else {
+        
+    }
+    
+}
+loadContext();

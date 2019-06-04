@@ -27,7 +27,7 @@ export function disableInvisibility()
 }
 export function toggleInvisibility()
 {
-    if(game.isEntityVisible())
+    if(game.isEntityVisible(game.playerPedId()))
     {
         enableInvisibility();
     } else
@@ -106,7 +106,7 @@ export function enableSpecMode(entity)
 }
 export function disableSpecMode()
 {
-    if(spec && camera.doesCamExists('speccam'))
+    if(spec && camera.doesCamExist('speccam'))
     {
         spec = false;
         specEntity = 0;

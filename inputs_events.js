@@ -58,10 +58,8 @@ const inputs_action = {
     105: skin_changer.nextSelectedTexture,
     106: selection.enableDebugSphere,
     107: selection.getRotation,
-    187: base.ragdoll,
+    187: character.ragdoll,
     188: selection.updateClose
-    
-    
 }
 
 function openChat() {
