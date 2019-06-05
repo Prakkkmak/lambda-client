@@ -53,6 +53,7 @@ export function getView(id)
 export function showCursor()
 {
     if(!cursor) {
+        
         alt.showCursor(true);
         cursor = true;
     }
@@ -66,7 +67,6 @@ export function hideCursor()
         {
             if(loaded_cefs[i].isOpened()  && loaded_cefs[i].view.isVisible && loaded_cefs[i].hasFlag(eCefFlags.SHOW_CURSOR))
             {
-                
                 return;
             }
         }
@@ -78,6 +78,7 @@ export function disableControls()
 {
     if(controls)
     {
+        alt.log('disable controls');
         alt.toggleGameControls(false);
         controls = false;
     }
@@ -166,6 +167,7 @@ export class CEF
     }
     show()
     {
+        alt.log(this.id + ': Show called')
         this.view.isVisible = true;
 
         if(this.hasFlag(eCefFlags.SHOW_CURSOR))

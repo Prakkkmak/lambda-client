@@ -81,6 +81,7 @@ function button_parser(json)
         {
             add_button('.wrapper', lbl, () => {
                 alt.emit('chatmessage', null, cmd);
+                alt.emit('hide', null);
                 clear_buttons('.wrapper');
             }); 
         }

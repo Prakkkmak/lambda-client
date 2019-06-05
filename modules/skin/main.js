@@ -106,7 +106,7 @@ export function setComponentVariation(index, drawable, texture, palette) { // Ar
     if (drawable < 0) drawable = 0;
     if (texture < 0) texture = 0;
     if (palette < 0) palette = 0;
-    alt.log("setComponentVariation : " + index + " " + drawable + " " + texture + " " + palette)
+    //alt.log("setComponentVariation : " + index + " " + drawable + " " + texture + " " + palette)
     currentComponentVariation[index].drawable = drawable;
     currentComponentVariation[index].texture = texture;
     currentComponentVariation[index].palette = palette;
@@ -125,7 +125,7 @@ export function setProps(args) {
 export function setProp(index, drawable, texture) {
     if (drawable < 0) drawable = 0;
     if (texture < 0) texture = 0;
-    alt.log("setPropVariation : " + index + " " + drawable + " " + texture);
+    //alt.log("setPropVariation : " + index + " " + drawable + " " + texture);
 
     currentPropIndex[index].drawable = drawable;
     currentPropIndex[index].texture = texture;
@@ -141,7 +141,7 @@ export function setHairColor(colorID, highlightColorID) {
         color: colorID,
         taint: highlightColorID
     }
-    alt.log("color " + currentHairColor);
+    //alt.log("color " + currentHairColor);
     game.setPedHairColor(game.playerPedId(), colorID, highlightColorID);
 }
 
@@ -192,7 +192,7 @@ export function setHeadOverlay(i, index, opacity, firstcolor, secondcolor) {
 }
 
 export function setFaceFeatures(args) {
-    alt.log(args)
+    //alt.log(args)
     for (let i = 0; i < currentFaceFeature.length; i++) {
         currentFaceFeature[i] = args[i];
     }
@@ -201,7 +201,7 @@ export function setFaceFeatures(args) {
     }
 }
 export function setFaceFeature(index, value) {
-    alt.log(index, value)
+    //alt.log(index, value)
     if (value < -1) value = -1;
     if (value > 1) value = 1;
     currentFaceFeature[index] = value;
@@ -260,7 +260,7 @@ export function loadCharacterCustom() {
         cef.getView('charactercustom').view.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
     };
     events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => {
-        camera.createCam('charactercustom').focusOnBone(bodypart, offset, fov, easeTime);
+        camera.createCam('charactercustom').focusOnBone(bodypart, offset, fov, easeTime, game.playerPedId(), true);
     };
     events['setModel'] = (model) => {
         setModel(model).then(() => {

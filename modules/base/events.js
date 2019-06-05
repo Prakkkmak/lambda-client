@@ -13,4 +13,5 @@ alt.onServer('playerLoaded', () => {
 
 alt.onServer('setContextActions', (json) => {
     cef.getView('context').view.emit('onParse', json);
+    alt.log(json);
 });

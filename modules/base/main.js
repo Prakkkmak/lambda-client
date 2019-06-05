@@ -3,8 +3,6 @@ import alt from 'alt';
 
 import * as cef from 'modules/cef/main';
 
-export const playerPedId = alt.getLocalPlayer().scriptID;
-
 
 export function freeze(value) {
     game.freezeEntityPosition(game.playerPedId(), value);
@@ -50,7 +48,6 @@ export function loadContext() {
 
     cef.createView('context', 'base/uis/context/context.html', events,[cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 }
-
 export function openContext()
 {
     cef.getView('context').open();
@@ -74,6 +71,5 @@ export function toggleContext()
     } else {
         openContext();
     }
-    
 }
 loadContext();

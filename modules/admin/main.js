@@ -94,7 +94,7 @@ export function enableSpecMode(entity)
     
         beforeSpecPos = game.getEntityCoords(game.playerPedId(), false);
     
-        camera.createCam('speccam').focusOnBone(camera.ped_bones['SKEL_L_Clavicle'], specCamOffset, 60, 500, specEntity);
+        camera.createCam('speccam').focusOnBone(camera.ped_bones['SKEL_L_Clavicle'], specCamOffset, 60, 500, specEntity, false);
 
         enableNoClip();
         enableInvicibility();

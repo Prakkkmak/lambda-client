@@ -13,18 +13,8 @@ alt.onServer('playerLoaded',() => {
     {
         alt.log('console opened');
     
-        openConsole();
-    } else {
-        alt.log('console closed');
-    }
-});
-alt.setTimeout(() => {
-    if(!alt.gameControlsEnabled())
-    {
-        alt.log('console opened');
-    
         cef.openConsole();
     } else {
         alt.log('console closed');
     }
-}, 250);
+});
