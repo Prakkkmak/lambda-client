@@ -53,6 +53,7 @@ export function getView(id)
 export function showCursor()
 {
     if(!cursor) {
+        
         alt.showCursor(true);
         cursor = true;
     }
@@ -64,9 +65,8 @@ export function hideCursor()
     {
         for(let i=0;i<loaded_cefs.length;i++)
         {
-            if(loaded_cefs[i].isOpened() && loaded_cefs[i].hasFlag(eCefFlags.SHOW_CURSOR))
+            if(loaded_cefs[i].isOpened()  && loaded_cefs[i].view.isVisible && loaded_cefs[i].hasFlag(eCefFlags.SHOW_CURSOR))
             {
-                
                 return;
             }
         }
@@ -78,6 +78,7 @@ export function disableControls()
 {
     if(controls)
     {
+        alt.log('disable controls');
         alt.toggleGameControls(false);
         controls = false;
     }
@@ -88,7 +89,7 @@ export function enableControls()
     {
         for(let i=0;i<loaded_cefs.length;i++)
         {
-            if(loaded_cefs[i].isOpened() && loaded_cefs[i].hasFlag(eCefFlags.FREEZE_PLAYER))
+            if(loaded_cefs[i].isOpened() && loaded_cefs[i].view.isVisible && loaded_cefs[i].hasFlag(eCefFlags.FREEZE_PLAYER))
             {
                 alt.setTimeout(() => {
                     alt.toggleGameControls(false);
@@ -126,7 +127,7 @@ export function toggleConsole()
 
 export class CEF
 {
-    constructor(id, path, events, flags)
+    constructor(id, path, events, flags, preLoad = false)
     {
         this.id = id;
         this.path = 'http://resources/lambda-client/modules/'+path;
@@ -149,21 +150,43 @@ export class CEF
             Object.keys(this.events).forEach((key) => {
                 this.view.on(key, this.events[key]);
             });
+
     
             this.setFocusOn();
-    
-            if(this.hasFlag(eCefFlags.SHOW_CURSOR))
-            {
-                showCursor();
-            }
-    
-            if(this.hasFlag(eCefFlags.FREEZE_PLAYER))
-            {
-                disableControls();
-            }
-    
+            
+            this.view.on('onLoad', (arg) => {
+                this.show();
+                callback();
+            });
+            
+        } else {
+            this.show();
+
             callback();
         }
+    }
+    show()
+    {
+        alt.log(this.id + ': Show called')
+        this.view.isVisible = true;
+
+        if(this.hasFlag(eCefFlags.SHOW_CURSOR))
+        {
+            showCursor();
+        }
+
+        if(this.hasFlag(eCefFlags.FREEZE_PLAYER))
+        {
+            disableControls();
+        }
+    }
+
+    hide()
+    {
+        this.view.isVisible = false;
+
+        hideCursor();
+        enableControls();
     }
     
     close(callback = function() {})

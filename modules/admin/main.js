@@ -27,7 +27,7 @@ export function disableInvisibility()
 }
 export function toggleInvisibility()
 {
-    if(game.isEntityVisible())
+    if(game.isEntityVisible(game.playerPedId()))
     {
         enableInvisibility();
     } else
@@ -94,7 +94,7 @@ export function enableSpecMode(entity)
     
         beforeSpecPos = game.getEntityCoords(game.playerPedId(), false);
     
-        camera.createCam('speccam').focusOnBone(camera.ped_bones['SKEL_L_Clavicle'], specCamOffset, 60, 500, specEntity);
+        camera.createCam('speccam').focusOnBone(camera.ped_bones['SKEL_L_Clavicle'], specCamOffset, 60, 500, specEntity, false);
 
         enableNoClip();
         enableInvicibility();
@@ -106,7 +106,7 @@ export function enableSpecMode(entity)
 }
 export function disableSpecMode()
 {
-    if(spec && camera.doesCamExists('speccam'))
+    if(spec && camera.doesCamExist('speccam'))
     {
         spec = false;
         specEntity = 0;

@@ -3,6 +3,8 @@
 import game from 'natives';
 import alt from 'alt';
 
+import * as base from 'modules/base/main';
+
 export const ped_bones =
 {
     'IK_Head': 0x322c,
@@ -38,12 +40,16 @@ export class Camera
         });
     }
 
-    focusOnBone(bone, offset, fov, easeTime, ped=alt.getLocalPlayer().scriptID) 
+    focusOnBone(bone, offset, fov, easeTime, ped, attach) 
     {
         bone = (typeof (bone) == 'string') ? ped_bones[bone] : bone;
         alt.nextTick(() => {
             this.setFov(fov);
             game.pointCamAtPedBone(this.cam, ped, bone, 0, 0, 0, true);
+            if(attach)
+            {
+                game.attachCamToPedBone(this.cam, ped, bone, offset.x, offset.y, offset.z, true);
+            }
             game.renderScriptCams(true, true, easeTime, true, false);
         });
     }
@@ -75,7 +81,7 @@ export class Camera
     {
         game.destroyCam(this.cam, false);
         
-        for( var i = 0; i < cam.length; i++)
+        for(var i = 0; i < cam.length; i++)
         { 
             if ( cam[i].id === this.id) {
               cam.splice(i, 1); 

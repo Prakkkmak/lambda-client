@@ -287,6 +287,9 @@ async function add_colorpicker(colorpicker_id, container, el_height, elements, c
     return div;
 }
 
-window.addEventListener('load', () => {
+
+window.addEventListener('load', () =>{
+    //Evènement appelé quand la page est chargée
     showOneMenu('identity');
+    alt.emit('onLoad', 'aze');
 });

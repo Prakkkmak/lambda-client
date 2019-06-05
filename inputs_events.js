@@ -44,7 +44,7 @@ let isDisabled = false;
 
 const inputs_action = {
 
-    //69: graphics.nextEffect,
+    69: base.toggleContext,
     76: skin.openCharacterCustom,
     85: admin.dashToCam,
     97: skin_changer.previousSelectedPalette,
@@ -58,10 +58,8 @@ const inputs_action = {
     105: skin_changer.nextSelectedTexture,
     106: selection.enableDebugSphere,
     107: selection.getRotation,
-    187: base.ragdoll,
+    187: character.ragdoll,
     188: selection.updateClose
-    
-    
 }
 
 function openChat() {
