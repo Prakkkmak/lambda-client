@@ -182,8 +182,8 @@ export function setHeadOverlay(i, index, opacity, firstcolor, secondcolor) {
     currentHeadOverlay[i].opacity = opacity;
     currentHeadOverlay[i].firstcolor = firstcolor;
     currentHeadOverlay[i].secondcolor = secondcolor;
-    // alt.log("VALUE " + index)
-    // alt.log("VALUE " + opacity)
+    alt.log("VALUE " + index)
+    alt.log("VALUE " + opacity)
     game.setPedHeadOverlay(game.playerPedId(), i, index, opacity);
     var colortype = 0;
     if (i == 2 || i == 1 || i == 10) colortype = 1;

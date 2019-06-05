@@ -25,4 +25,3 @@ alt.emitServer("setlicense", alt.getLicenseHash());
 alt.on('update', () => {
     input_check(); // Check inputs
 });
-

@@ -87,7 +87,7 @@ function changeSelected(dec) {
     }
     if (selected > MAX_PROP && selected <= MAX_OVERLAY) {
         i -= MAX_PROP + 1;
-        skin.setHeadOverlay(i, skin.currentHeadOverlay[i].index += dec, skin.currentHeadOverlay[i].opacity, skin.currentHeadOverlay[i].firstcolor, skin.currentHeadOverlay[i].secondcolor);
+        skin.setHeadOverlay(i, skin.currentHeadOverlay[i].index += dec, 1, skin.currentHeadOverlay[i].firstcolor, skin.currentHeadOverlay[i].secondcolor);
         alt.emit('chatmessage', 'skin manager',
             selected_strings[selected] +
             " : " +
@@ -99,7 +99,7 @@ function changeSelected(dec) {
     }
     if (selected > MAX_OVERLAY && selected <= MAX_SELECTED) {
         i -= MAX_OVERLAY + 1;
-        skin.setFaceFeature(i, skin.currentFaceFeature[i] += dec / 10);
+        skin.setFaceFeature(i, Math.round(skin.currentFaceFeature[i] += dec) / 10);
         alt.emit('chatmessage', 'skin manager',
             selected_strings[selected] +
             " : " +
@@ -150,7 +150,7 @@ function changeSelectedTexture(dec) {
     }
     if (selected > MAX_PROP && selected <= MAX_OVERLAY) {
         i -= MAX_PROP + 1;
-        skin.setHeadOverlay(i, skin.currentHeadOverlay[i].index, skin.currentHeadOverlay[i].opacity, skin.currentHeadOverlay[i].firstcolor += dec, skin.currentHeadOverlay[i].secondcolor);
+        skin.setHeadOverlay(i, skin.currentHeadOverlay[i].index, 1, skin.currentHeadOverlay[i].firstcolor += dec, skin.currentHeadOverlay[i].secondcolor);
         alt.emit('chatmessage', 'skin manager',
             selected_strings[selected] +
             " : " +
@@ -185,7 +185,7 @@ function changeSelectedPalette(dec) {
     }
     if (selected > MAX_PROP && selected <= MAX_OVERLAY) {
         i -= MAX_PROP + 1;
-        skin.setHeadOverlay(i, skin.currentHeadOverlay[i].index, skin.currentHeadOverlay[i].opacity, skin.currentHeadOverlay[i].firstcolor, skin.currentHeadOverlay[i].secondcolor += dec);
+        skin.setHeadOverlay(i, skin.currentHeadOverlay[i].index, 1, skin.currentHeadOverlay[i].firstcolor, skin.currentHeadOverlay[i].secondcolor += dec);
         alt.emit('chatmessage', 'skin manager',
             selected_strings[selected] +
             " : " +
