@@ -150,11 +150,8 @@ export class CEF
             Object.keys(this.events).forEach((key) => {
                 this.view.on(key, this.events[key]);
             });
-
-    
-            this.setFocusOn();
-            
-            this.view.on('onLoad', (arg) => {
+                
+            this.view.on('onLoad', () => {
                 this.show();
                 callback();
             });
@@ -169,7 +166,7 @@ export class CEF
     {
         alt.log(this.id + ': Show called')
         this.view.isVisible = true;
-
+        this.view.focus();
         if(this.hasFlag(eCefFlags.SHOW_CURSOR))
         {
             showCursor();
@@ -184,7 +181,7 @@ export class CEF
     hide()
     {
         this.view.isVisible = false;
-
+        this.view.unfocus();
         hideCursor();
         enableControls();
     }
@@ -206,11 +203,6 @@ export class CEF
         callback();
     }
 
-    setFocusOn()
-    {
-        this.view.focus();
-    }
-    
     hasFlag(flag)
     {
         return this.flags.indexOf(flag) != -1;

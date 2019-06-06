@@ -109,6 +109,7 @@ export function disableSpecMode()
     if(spec && camera.doesCamExist('speccam'))
     {
         spec = false;
+
         specEntity = 0;
         game.setEntityCoords(game.playerPedId(), beforeSpecPos.x, beforeSpecPos.y, beforeSpecPos.z, false, false, false, false);
     
@@ -149,7 +150,7 @@ export function dashToCam()
 }
 
 alt.on('update', () => {
-    if(spec)
+    if(spec && game.doesCamExist('speccam'))
     {
         let pos = game.getEntityCoords(specEntity, false);
 

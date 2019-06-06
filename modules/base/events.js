@@ -15,8 +15,14 @@ alt.onServer('setContextActions', (json) => {
     let root = JSON.parse(json);
     if(root.length > 0)
     {
-        base.openContext();
-        cef.getView('context').view.emit('onParse', json);
+        base.openContext(() => {cef.getView('context').view.emit('onParse', json) });
+        
     }
     alt.log(json);
+});
+
+alt.onServer('setInteraction', (a,b,c,d) => {
+    base.openInteraction(() => {
+        cef.getView('interaction').view.emit('onInteraction', a,b,c,d);
+    });
 });

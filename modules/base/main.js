@@ -48,15 +48,14 @@ export function loadContext() {
 
     cef.createView('context', 'base/uis/context/context.html', events,[cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 }
-export function openContext()
+export function openContext(callback = () => { })
 {
-    cef.getView('context').open();
+    cef.getView('context').open(callback);
 }
 export function hideContext()
 {
     cef.getView('context').hide();
 }
-
 export function toggleContext()
 {
     if(cef.getView('context').isOpened())
@@ -72,4 +71,29 @@ export function toggleContext()
         openContext();
     }
 }
+
+export function loadInteraction()
+{
+    let events = {};
+    
+    events['chatmessage'] = (c) => {
+        alt.emit('chatmessage', c);
+    };
+
+    events['hide'] = () => {
+        closeInteraction();
+    }
+
+    cef.createView('interaction', 'base/uis/interaction/interaction.html', events,[cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
+}
+export function openInteraction(callback = () => { })
+{
+    cef.getView('interaction').open(callback);
+}
+export function closeInteraction()
+{
+    cef.getView('interaction').hide();
+}
+
 loadContext();
+loadInteraction();

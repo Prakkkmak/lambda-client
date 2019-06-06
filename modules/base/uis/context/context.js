@@ -81,7 +81,7 @@ function button_parser(json)
         {
             add_button('.wrapper', lbl, () => {
                 alt.emit('chatmessage', null, cmd);
-                alt.emit('hide', null);
+                alt.emit('hide');
                 clear_buttons('.wrapper');
             }); 
         }
@@ -90,6 +90,6 @@ function button_parser(json)
 
 window.addEventListener('load', () =>{
     //Evènement appelé quand la page est chargée
-    alt.emit('onLoad', null);
+    alt.emit('onLoad');
 });
 
