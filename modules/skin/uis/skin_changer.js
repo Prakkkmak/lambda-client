@@ -1,5 +1,5 @@
 import * as skin from "modules/skin/main";
-import alt from 'alt';
+import * as alt from 'alt';
 const MAX_COMPONENT = 11;
 const MAX_PROP = 16;
 const MAX_OVERLAY = 29

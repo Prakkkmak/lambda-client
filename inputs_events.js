@@ -1,6 +1,6 @@
 /// <reference path="definitions/altv-client.d.ts" />
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 
 import * as skin_changer from "modules/skin/uis/skin_changer"
 import * as skin from 'modules/skin/main';

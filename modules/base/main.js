@@ -1,5 +1,5 @@
-import game from 'natives';
-import alt from 'alt';
+import * as game from 'natives';
+import * as alt from 'alt';
 
 import * as cef from 'modules/cef/main';
 
@@ -9,27 +9,23 @@ export function freeze(value) {
     //setControlsEnabled(value);
 }
 
-export function loadModel(model)
-{
-    if(game.isModelValid(model))
-    {
+export function loadModel(model) {
+    if (game.isModelValid(model)) {
         alt.log('valid model');
         game.requestModel(model);
         return new Promise((resolve, reject) => {
-            
+
             let check = alt.setInterval(() => {
-                
-                if(game.hasModelLoaded(model))
-                {
+
+                if (game.hasModelLoaded(model)) {
                     alt.clearInterval(check);
                     alt.log('Model loaded');
                     resolve(true);
                 }
-                
-            },(5));
+
+            }, (5));
         });
-    } else 
-    {
+    } else {
         alt.log('invalid model')
     }
 }
@@ -37,7 +33,7 @@ export function loadModel(model)
 export function loadContext() {
 
     let events = {};
-    
+
     events['chatmessage'] = (c) => {
         alt.emit('chatmessage', c);
     };
@@ -46,26 +42,20 @@ export function loadContext() {
         cef.getView('context').hide();
     }
 
-    cef.createView('context', 'base/uis/context/context.html', events,[cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
+    cef.createView('context', 'base/uis/context/context.html', events, [cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 }
-export function openContext()
-{
+export function openContext() {
     cef.getView('context').open();
 }
-export function hideContext()
-{
+export function hideContext() {
     cef.getView('context').hide();
 }
 
-export function toggleContext()
-{
-    if(cef.getView('context').isOpened())
-    {
-        if(cef.getView('context').view.isVisible)
-        {
+export function toggleContext() {
+    if (cef.getView('context').isOpened()) {
+        if (cef.getView('context').view.isVisible) {
             hideContext();
-        } else 
-        {
+        } else {
             openContext();
         }
     } else {

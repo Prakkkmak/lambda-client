@@ -1,8 +1,8 @@
 //touches = https://github.com/crosire/scripthookvdotnet/blob/dev_v3/source/scripting/Game/Control.cs
 // https://pastebin.com/guYd0ht4
 // https://wiki.rage.mp/index.php?title=Controls
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 import * as police from "modules/police/main"
 const anim = { dict: 'mp_arresting', name: 'idle' }
 alt.onServer('setHandcuff', (value) => {

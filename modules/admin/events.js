@@ -1,10 +1,9 @@
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 import * as admin from 'modules/admin/main';
 
 alt.onServer('setInvicibility', (state) => {
-    if(state)
-    {
+    if (state) {
         admin.enableInvicibility();
     } else {
         admin.disableInvicibility();
@@ -15,8 +14,7 @@ alt.onServer('toggleInvicibility', () => {
 });
 
 alt.onServer('setInvisibility', (state) => {
-    if(state)
-    {
+    if (state) {
         admin.enableInvisibility();
     } else {
         admin.disableInvisibility();
@@ -28,17 +26,15 @@ alt.onServer('toggleInvisibility', () => {
 
 
 alt.onServer('setSpecTarget', (player, state) => {
-    if(state)
-    {
+    if (state) {
         admin.enableSpecMode(player.scriptID);
-    } else 
-    {
+    } else {
         admin.disableSpecMode();
     }
 });
 
 alt.onServer('stopSpecTarget', () => {
-    
+
     admin.disableSpecMode();
-    
+
 });

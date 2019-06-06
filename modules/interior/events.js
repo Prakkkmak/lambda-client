@@ -1,4 +1,4 @@
-import alt from 'alt';
+import * as alt from 'alt';
 import * as interior from "modules/interior/main";
 
 alt.onServer('loadIpl', (ipl) => {

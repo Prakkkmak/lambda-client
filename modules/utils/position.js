@@ -1,4 +1,4 @@
-import alt from 'alt';
+import * as alt from 'alt';
 
 export function positionInAngle(pos, angle, dist) {
     let x = pos.x;
@@ -25,6 +25,7 @@ export function closePlayer(pos) {
 }
 export function closePlayerInRange(pos, range) {
     let currentClosePlayer = null;
+    let i = 0;
     alt.players.forEach(target => {
         if (target != alt.getLocalPlayer()) {
             if (distance(target.pos, pos) < range) {

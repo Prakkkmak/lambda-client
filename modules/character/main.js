@@ -1,5 +1,5 @@
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 
 import * as cef from 'modules/cef/main';
 import * as skin from 'modules/skin/main';
@@ -11,14 +11,12 @@ export function ragdoll() {
     game.setPedToRagdoll(game.playerPedId(), 1000, 1000, 0, 0, 0, 0);
 }
 
-export function setPedSpeed(mul)
-{
+export function setPedSpeed(mul) {
     game.setRunSprintMultiplierForPlayer(game.playerId(), mul);
     game.setSwimMultiplierForPlayer(game.playerId(), mul);
 }
 
-export function applyStrongForceToPed(dir, force)
-{    
+export function applyStrongForceToPed(dir, force) {
     physics.applyGlobalForceToEntity(game.playerPedId(), dir, force);
 }
 

@@ -1,5 +1,5 @@
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 import * as base from 'modules/base/main';
 import * as cef from 'modules/cef/main';
 import * as camera from 'modules/camera/main';
@@ -158,7 +158,7 @@ export function setHeadBlendData(shapeMother, shapeFather, skinMother, skinFater
         skinFather: skinFater,
         shapeMix: shapeMix,
         skinMix: skinMix
-    }
+    };
 
     game.setPedHeadBlendData(game.playerPedId(), shapeMother, shapeFather, 0, skinMother, skinFater, 0, shapeMix, skinMix, 0, false);
 }
@@ -182,8 +182,6 @@ export function setHeadOverlay(i, index, opacity, firstcolor, secondcolor) {
     currentHeadOverlay[i].opacity = opacity;
     currentHeadOverlay[i].firstcolor = firstcolor;
     currentHeadOverlay[i].secondcolor = secondcolor;
-    alt.log("VALUE " + index)
-    alt.log("VALUE " + opacity)
     game.setPedHeadOverlay(game.playerPedId(), i, index, opacity);
     var colortype = 0;
     if (i == 2 || i == 1 || i == 10) colortype = 1;

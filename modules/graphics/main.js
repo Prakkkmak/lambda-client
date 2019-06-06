@@ -1,5 +1,5 @@
-import game from 'natives';
-import alt from 'alt';
+import * as game from 'natives';
+import * as alt from 'alt';
 
 const screen_effects = [
     'SwitchHUDIn',
@@ -10,7 +10,7 @@ const screen_effects = [
     'MinigameEndTrevor',
     'MinigameEndFranklin',
     'MinigameEndMichael',
-    
+
     'MinigameTransitionOut',
     'MinigameTransitionIn',
     'SwitchShortNeutralIn',
@@ -37,7 +37,7 @@ const screen_effects = [
     'SwitchSceneTrevor',
     'SwitchSceneMichael',
     'SwitchSceneNeutral',
-    
+
     'MP_Celeb_Win',
     'MP_Celeb_Win_Out',
     'MP_Celeb_Lose',
@@ -68,13 +68,13 @@ const screen_effects = [
     'MenuMGHeistIn',
     'MenuMGTournamentIn',
     'MenuMGSelectionIn',
-    
+
     'ChopVision',
     'DMT_flight_intro',
     'DMT_flight',
     'DrugsDrivingIn',
     'DrugsDrivingOut',
-    
+
     'SwitchOpenNeutralFIB5',
     'HeistLocate',
     'MP_job_load',
@@ -95,40 +95,31 @@ const screen_effects = [
 
 let chosen = -1;
 
-export function startScreenEffect(effectName, duration, looped)
-{
+export function startScreenEffect(effectName, duration, looped) {
     game.startScreenEffect(effectName, duration, looped);
 }
-export function stopScreenEffect(effectName)
-{
+export function stopScreenEffect(effectName) {
     game.stopScreenEffect(effectName);
 }
-export function stopAllScreenEffects()
-{
+export function stopAllScreenEffects() {
     game.stopAllScreenEffects();
 }
 
-export function setShakeCam(shakeName, intensity)
-{
+export function setShakeCam(shakeName, intensity) {
     game.shakeGameplayCam(shakeName, intensity);
 }
-export function setShakeCamAmplitude(amplitude)
-{
+export function setShakeCamAmplitude(amplitude) {
     game.setGameplayCamShakeAmplitude(amplitude);
 }
-export function stopShake()
-{
+export function stopShake() {
     game.stopGameplayCamShaking();
 }
 
-export function nextEffect()
-{
+export function nextEffect() {
     //stopAllScreenEffects();
-    if(chosen+1 >= screen_effects.length)
-    {
+    if (chosen + 1 >= screen_effects.length) {
         chosen = 0;
-    } else
-    {
+    } else {
         chosen += 1;
     }
 

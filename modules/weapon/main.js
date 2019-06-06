@@ -1,6 +1,6 @@
 /// <reference path="../../definitions/altv-client.d.ts" />
 import alt from 'alt'
-import game from 'natives';
+import * as game from 'natives';
 export function giveAllWeapons() {
     let player = game.playerPedId();
     for (const weapon of weapons) {

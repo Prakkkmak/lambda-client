@@ -1,5 +1,5 @@
 import * as skin from "modules/skin/main"
-import alt from 'alt';
+import * as alt from 'alt';
 // args are drawable, texture, palette
 alt.onServer('setComponent', (index, drawable, texture, palette) => {
     skin.setComponentVariation(index, drawable, texture, palette);

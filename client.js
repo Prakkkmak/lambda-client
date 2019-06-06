@@ -1,6 +1,6 @@
 /// <reference path="definitions/altv-client.d.ts" />
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 import { input_check } from "inputs_events";
 
 import 'modules/cef/events';
@@ -25,3 +25,15 @@ alt.emitServer("setlicense", alt.getLicenseHash());
 alt.on('update', () => {
     input_check(); // Check inputs
 });
+
+alt.on('gameEntityCreate', (entity) => {
+    const isPlayer = entity.constructor.name === "Player"
+    if (isPlayer) alt.players.push(entity);
+    alt.log("new entity ");
+    alt.log("number player " + alt.players.length)
+})
+
+alt.on('gameEntityDestroy', (entity) => {
+    const isPlayer = entity.constructor.name === "Player"
+    if (isPlayer) alt.players.splice(alt.players.indexOf(entity));
+})

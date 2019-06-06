@@ -1,5 +1,5 @@
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 import { playAnim } from "modules/anim/main"
 
 const anim = { dict: 'mp_arresting', name: 'idle' }

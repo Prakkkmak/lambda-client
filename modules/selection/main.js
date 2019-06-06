@@ -1,5 +1,5 @@
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 import * as position_utils from 'modules/utils/position'
 
 let playerSelected = null;
@@ -10,7 +10,6 @@ export function enableDebugSphere() {
 export function getRotation() {
     let vector3Rotation = game.getEntityRotation(game.playerPedId(), 2);
     let yaw = vector3Rotation.z * Math.PI / 180
-    alt.log("Rotation : " + yaw);
 }
 export function updateClose() {
     let vector3Rotation = game.getEntityRotation(game.playerPedId(), 2);
@@ -22,6 +21,7 @@ export function updateClose() {
     }
 
     let closePlayer = position_utils.closePlayerInRange(frontPos, 1.1);
+    //alt.log(JSON.stringify(closePlayer));
     if (closePlayer != null) {
         let pos = closePlayer.pos;
         game.drawMarker(0, pos.x, pos.y, pos.z + 1.1, 0, 0, 0, 0, 0, 0, 0.2, 0.2, 0.2, 241, 196, 15, 50, 1, 1, 2, 0, 0, 0, 0);

@@ -1,4 +1,4 @@
-import alt from 'alt';
+import * as alt from 'alt';
 import * as base from "modules/base/main"
 import * as skin from "modules/skin/main"
 import * as cef from 'modules/cef/main';
