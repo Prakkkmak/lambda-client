@@ -1,4 +1,4 @@
-import alt from 'alt';
+import * as alt from 'alt';
 
 export function positionInAngle(pos, angle, dist) {
     let x = pos.x;

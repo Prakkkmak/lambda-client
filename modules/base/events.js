@@ -1,4 +1,4 @@
-import alt from 'alt';
+import * as alt from 'alt';
 import * as base from "modules/base/main"
 import * as skin from "modules/skin/main"
 import * as cef from 'modules/cef/main';
@@ -12,6 +12,11 @@ alt.onServer('playerLoaded', () => {
 });
 
 alt.onServer('setContextActions', (json) => {
-    cef.getView('context').view.emit('onParse', json);
+    let root = JSON.parse(json);
+    if(root.length > 0)
+    {
+        base.openContext();
+        cef.getView('context').view.emit('onParse', json);
+    }
     alt.log(json);
 });

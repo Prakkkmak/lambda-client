@@ -1,5 +1,5 @@
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 
 import * as cef from 'modules/cef/main';
 import * as skin from 'modules/skin/main';

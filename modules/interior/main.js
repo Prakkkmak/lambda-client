@@ -1,4 +1,4 @@
-import game from 'natives';
+import * as game from 'natives';
 export function loadIpl(ipl) {
     game.requestIpl(ipl);
 }

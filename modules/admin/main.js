@@ -1,5 +1,5 @@
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 
 import * as character from 'modules/character/main';
 import * as camera from 'modules/camera/main';

@@ -1,4 +1,4 @@
-import alt from 'alt';
+import * as alt from 'alt';
 import * as physics from 'modules/physics/main';
 
 alt.onServer('applyForce', (entity, x,y,z) => {

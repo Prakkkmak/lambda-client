@@ -1,5 +1,5 @@
-import game from 'natives';
-import alt from 'alt';
+import * as game from 'natives';
+import * as alt from 'alt';
 import * as camera from 'modules/camera/main';
 
 export function applyGlobalForceToEntity(entity, dir, force, type = 1, scaleForce = true)

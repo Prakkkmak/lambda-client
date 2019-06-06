@@ -1,4 +1,4 @@
-import alt from 'alt';
+import * as alt from 'alt';
 
 var loaded_cefs = [];
 var cursor = false;
@@ -191,7 +191,13 @@ export class CEF
     
     close(callback = function() {})
     {
-        if(this.isOpened()) this.view.destroy();
+        this.hide();
+        if(this.isOpened()) 
+        {   
+            
+            this.view.destroy();
+        }
+        
         this.view = null;
         
         enableControls();

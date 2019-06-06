@@ -1,5 +1,5 @@
 
-import game from 'natives';
+import * as game from 'natives';
 
 let blips = []
 

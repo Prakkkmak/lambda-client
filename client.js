@@ -1,6 +1,6 @@
 /// <reference path="definitions/altv-client.d.ts" />
-import alt from 'alt';
-import game from 'natives';
+import * as alt from 'alt';
+import * as game from 'natives';
 import { input_check } from "inputs_events";
 
 import 'modules/cef/events';
