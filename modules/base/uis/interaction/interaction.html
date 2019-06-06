@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <span class="question" id="question" ></span>
+        <span class="content" id="content"></span>
+        <button class="buttonL" id="buttonL" onclick="this.blur(); alt.emit('chatmessage', '/accepter'); alt.emit('hide');"></button>
+        <button class="buttonR" id="buttonR" onclick="this.blur(); alt.emit('chatmessage', '/refuser'); alt.emit('hide');"></button>
+
+    </div>
+
+
+    <script src="app.js"></script>
+</body>
+
+</html>
