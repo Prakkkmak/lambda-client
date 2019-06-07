@@ -2,6 +2,9 @@ alt.on('onInteraction', (question, content, buttonL, buttonR) => {
     add_interaction(question, content, buttonL, buttonR);
 });
 
+window.addEventListener('load', ()=> {
+    alt.emit('onLoad');
+})
 
 function add_question(texte) {
     var span = document.getElementById("question");
@@ -36,8 +39,3 @@ function add_interaction(question,content,buttonL,buttonR){
     add_right_button(buttonR);
 
 }
-
-
-window.addEventListener('load', ()=> {
-    alt.emit('onLoad');
-})

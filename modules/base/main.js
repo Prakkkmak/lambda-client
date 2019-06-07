@@ -38,8 +38,8 @@ export function loadContext() {
         alt.emit('chatmessage', c);
     };
 
-    events['hide'] = (arg) => {
-        cef.getView('context').hide();
+    events['hide'] = () => {
+        cef.getView('context').close();
     }
 
     cef.createView('context', 'base/uis/context/context.html', events, [cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
@@ -48,8 +48,9 @@ export function openContext(callback = () => { })
 {
     cef.getView('context').open(callback);
 }
-export function hideContext() {
-    cef.getView('context').hide();
+export function hideContext()
+{
+    cef.getView('context').close();
 }
 export function toggleContext()
 {
@@ -86,7 +87,7 @@ export function openInteraction(callback = () => { })
 }
 export function closeInteraction()
 {
-    cef.getView('interaction').hide();
+    cef.getView('interaction').close();
 }
 
 loadContext();

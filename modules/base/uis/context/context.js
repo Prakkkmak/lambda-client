@@ -1,6 +1,4 @@
-alt.on('onParse', (json) => {
-    button_parser(json);
-});
+
 
 
 /** 
@@ -12,6 +10,7 @@ alt.on('onParse', (json) => {
 */
 function add_button(query = ".wrapper", label = "Button", action = (...args) => { console.log(args)})
 {
+    console.log('add_button');
     var context = document.querySelector(query);
     var button = document.createElement("button");
 
@@ -86,10 +85,17 @@ function button_parser(json)
             }); 
         }
     }
+
+    console.log(document.querySelector('.wrapper').childElementCount);
 }
 
-window.addEventListener('load', () =>{
-    //Evènement appelé quand la page est chargée
-    alt.emit('onLoad');
+alt.on('onParse', (json) => {
+    console.log('WEB: ' + json);
+    button_parser(json);
 });
 
+window.addEventListener('load', () =>{
+    console.log('onLoad context');
+
+    alt.emit('onLoad', null);
+});

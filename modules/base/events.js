@@ -12,12 +12,20 @@ alt.onServer('playerLoaded', () => {
 });
 
 alt.onServer('setContextActions', (json) => {
-    let root = JSON.parse(json);
-    if(root.length > 0)
+    if(JSON.parse(json).length > 0)
     {
-        base.openContext(() => {cef.getView('context').view.emit('onParse', json) });
-        
+        base.openContext(() => {
+            alt.log('onParse Send');
+            
+            alt.setTimeout(() => {
+                cef.getView('context').view.emit('onParse', json); 
+            }, 200);
+            //cef.getView('context').view.execJS(`button_parser('${json}')`)
+            alt.log('onParse Sent');
+        });
     }
+    
+    
     alt.log(json);
 });
 
