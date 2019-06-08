@@ -60,7 +60,6 @@ function fade_out(time)
 */
 function add_button(originX,originY, angle, distance, label = "Button", action = (...args) => { console.log(args)})
 {
-
     let pos = {
         x : Math.cos(angle)*distance + originX,
         y : Math.sin(angle)*distance + originY
@@ -142,7 +141,104 @@ function button_parser(json)
 
     console.log(document.querySelector('.wrapper').childElementCount);
 }
+window.addEventListener('load', () =>{
+    let test = [
+        {
+            label: 'On teste',
+            cmd: '/veh',
+            children: [
+                {
+                    label: 'Bon bah on teste encore',
+                    cmd: '/spec stop',
+                    children: [
+                        {
+                            label: 'Encore ?',
+                            cmd: '/oui',
+                            children: []
+                        },
+                        {
+                            label: 'Bon va te coucher...',
+                            cmd: '/veh',
+                            children: []
+                        },
+                        
+                        {
+                            label: 'Mais mec',
+                            cmd: '/veh',
+                            children: []
+                        },
+                        {
+                            label: 'Encore ?',
+                            cmd: '/oui',
+                            children: []
+                        },
+                        {
+                            label: 'Bon va te coucher...',
+                            cmd: '/veh',
+                            children: []
+                        },
+                        
+                        {
+                            label: 'Mais mec',
+                            cmd: '/veh',
+                            children: []
+                        },
+                        {
+                            label: 'Encore ?',
+                            cmd: '/oui',
+                            children: []
+                        },
+                        {
+                            label: 'Bon va te coucher...',
+                            cmd: '/veh',
+                            children: []
+                        },
+                        
+                        {
+                            label: 'Mais mec',
+                            cmd: '/veh',
+                            children: []
+                        },
+                        {
+                            label: 'Encore ?',
+                            cmd: '/oui',
+                            children: []
+                        },
+                        {
+                            label: 'Bon va te coucher...',
+                            cmd: '/veh',
+                            children: []
+                        },
+                        
+                        {
+                            label: 'Mais mec',
+                            cmd: '/veh',
+                            children: []
+                        }
 
+                    ]
+
+                },
+                {
+                    label: 'Enfin comme tu veux...',
+                    cmd: '/spec stop',
+                    children: [
+                        {
+                            label: 'Abuse pas',
+                            cmd: '/oui',
+                            children: []
+                        }
+                    ]
+
+                }
+            ]
+        }
+    ];
+
+
+    //button_parser(JSON.stringify(test));
+    alt.emit('onLoad', null);
+});
 alt.on('onParse', (json) => {
     console.log('WEB: ' + json);
     fade_in(200);
@@ -150,10 +246,3 @@ alt.on('onParse', (json) => {
 });
 
 
-window.addEventListener('load', () =>{
-    console.log('onLoad context');
-    let n = 20;
-
-    button_parser(JSON.stringify(test));
-    alt.emit('onLoad', null);
-});
