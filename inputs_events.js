@@ -44,7 +44,7 @@ let isDisabled = false;
 
 const inputs_action = {
 
-    //69: base.toggleContext,
+    // 69: () => {game.setFocusArea(100, 100, 100, 0, 0, 0)},
     76: skin.openCharacterCustom,
     85: admin.dashToCam,
     97: skin_changer.previousSelectedPalette,

@@ -25,7 +25,7 @@ export function raycastExPointToPoint(pointA, pointB, flags)
         entity: entityHit
     };
 }
-export function screenPointToWorldPoint(pixelCoords)
+export function screenPointToWorldPoint(pixelCoords, camera = 'gameplaycam')
 {
     
 }

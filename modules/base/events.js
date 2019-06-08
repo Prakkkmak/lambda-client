@@ -18,7 +18,101 @@ alt.onServer('setContextActions', (json) => {
             alt.log('onParse Send');
             
             alt.setTimeout(() => {
-                cef.getView('context').view.emit('onParse', json); 
+                let test = [
+                    {
+                        label: 'On teste',
+                        cmd: '/veh',
+                        children: [
+                            {
+                                label: 'Bon bah on teste encore',
+                                cmd: '/spec stop',
+                                children: [
+                                    {
+                                        label: 'Encore ?',
+                                        cmd: '/oui',
+                                        children: []
+                                    },
+                                    {
+                                        label: 'Bon va te coucher...',
+                                        cmd: '/veh',
+                                        children: []
+                                    },
+                                    
+                                    {
+                                        label: 'Mais mec',
+                                        cmd: '/veh',
+                                        children: []
+                                    },
+                                    {
+                                        label: 'Encore ?',
+                                        cmd: '/oui',
+                                        children: []
+                                    },
+                                    {
+                                        label: 'Bon va te coucher...',
+                                        cmd: '/veh',
+                                        children: []
+                                    },
+                                    
+                                    {
+                                        label: 'Mais mec',
+                                        cmd: '/veh',
+                                        children: []
+                                    },
+                                    {
+                                        label: 'Encore ?',
+                                        cmd: '/oui',
+                                        children: []
+                                    },
+                                    {
+                                        label: 'Bon va te coucher...',
+                                        cmd: '/veh',
+                                        children: []
+                                    },
+                                    
+                                    {
+                                        label: 'Mais mec',
+                                        cmd: '/veh',
+                                        children: []
+                                    },
+                                    {
+                                        label: 'Encore ?',
+                                        cmd: '/oui',
+                                        children: []
+                                    },
+                                    {
+                                        label: 'Bon va te coucher...',
+                                        cmd: '/veh',
+                                        children: []
+                                    },
+                                    
+                                    {
+                                        label: 'Mais mec',
+                                        cmd: '/veh',
+                                        children: []
+                                    }
+            
+                                ]
+            
+                            },
+                            {
+                                label: 'Enfin comme tu veux...',
+                                cmd: '/spec stop',
+                                children: [
+                                    {
+                                        label: 'Abuse pas',
+                                        cmd: '/oui',
+                                        children: []
+                                    }
+                                ]
+            
+                            }
+                        ]
+                    }
+                ];
+            
+            
+                cef.getView('context').view.emit('onParse', JSON.stringify(test)); 
             }, 200);
             //cef.getView('context').view.execJS(`button_parser('${json}')`)
             alt.log('onParse Sent');

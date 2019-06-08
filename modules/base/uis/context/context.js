@@ -1,3 +1,53 @@
+const d = 200;
+
+function move_to(element, originX, originY, angle, offsetFactor, distance, time)
+{
+    anime.set(element, {
+
+        left: originX + (Math.cos(angle) * distance) * offsetFactor + 'px',
+        bottom: originY + (Math.sin(angle) * distance) * offsetFactor + 'px'
+    });
+
+    anime({
+        targets: element,
+
+        left: originX + (Math.cos(angle) * distance) + 'px',
+        bottom: originY + (Math.sin(angle) * distance) + 'px',
+        
+        easing: 'easeInOutSine',
+        duration: time
+    })
+}
+
+function fade_in(time)
+{
+    let container = document.querySelector('.wrapper');
+    
+    alt.emit('blurin')
+
+    anime({
+        targets: container,
+        backgroundColor: 'rgba(0,0,0,0.65)',
+
+        easing: 'easeInOutSine', 
+        duration: time
+    });
+}
+
+function fade_out(time)
+{
+    let container = document.querySelector('.wrapper');
+    
+    alt.emit('blurout')
+
+    anime({
+        targets: container,
+        backgroundColor: 'rgba(0,0,0,0)',
+
+        easing: 'easeInOutSine', 
+        duration: time
+    });
+}
 
 
 
@@ -8,38 +58,29 @@
 *   @param {string} label       Nom du bouton
 *   @param {Function} action        Action du bouton
 */
-function add_button(query = ".wrapper", label = "Button", action = (...args) => { console.log(args)})
+function add_button(originX,originY, angle, distance, label = "Button", action = (...args) => { console.log(args)})
 {
-    console.log('add_button');
-    var context = document.querySelector(query);
-    var button = document.createElement("button");
 
-    button.setAttribute("class", "button");
-    button.innerHTML = label;
+    let pos = {
+        x : Math.cos(angle)*distance + originX,
+        y : Math.sin(angle)*distance + originY
+    };
 
-    context.appendChild(button);
-    button.addEventListener("click", function()
-    {
-       action();
-    }); //Action
+    let button = document.createElement('button');
+    button.setAttribute('class', 'button');
+    button.addEventListener('click', action);
 
-    button.addEventListener("click", function()
-    {
-        anime.set(button,{
-            scale: 0.95
-        });
+    let button_text = document.createElement('span');
+    button_text.innerHTML = label;
+    button_text.setAttribute('class', 'button-text');
+    button_text.style.left = Math.cos(angle)*65-140 + 'px';
+    button_text.style.bottom = Math.sin(angle)*60-5 + 'px';
+    button_text.style.width = 300 +'px';
+    button.appendChild(button_text);
 
-        anime({
-            targets: button,
-            
-            scale: {
-                value: 1,
-                duration: 200,
-                easing: 'easeInOutSine'
-            }
-        });      
-    }); //Animation
-    
+    let container = document.querySelector('.wrapper');
+    container.appendChild(button);
+
     return button;
 }
 /** 
@@ -64,26 +105,39 @@ function button_parser(json)
     clear_buttons('.wrapper');
 
     data = JSON.parse(json);
+    let n = data.length;
 
-    for (var i=0;i<data.length;i++)
+    for (var i=0;i<n;i++)
     {
         let lbl = data[i].label;
         let cmd = data[i].cmd;
         
+        let a = i * (2 * Math.PI / n) + Math.PI/2;
+
+        let b;
+
         if (data[i].children.length > 0)
         {
             let sub_json = JSON.stringify(data[i].children);
-            add_button('.wrapper', lbl, () => {
+
+            
+            b = add_button(window.innerWidth/2, window.innerHeight/2, a, d, lbl, () => {
                 button_parser(sub_json);
-            });  
+            });
+
         } else 
-        {
-            add_button('.wrapper', lbl, () => {
+        {   
+            b = add_button(window.innerWidth/2, window.innerHeight/2, a, d, lbl, () => {
+                fade_out(200);
                 alt.emit('chatmessage', null, cmd);
                 alt.emit('hide');
                 clear_buttons('.wrapper');
-            }); 
+            });
+            
         }
+
+        move_to(b, window.innerWidth/2, window.innerHeight/2, a, 0.15, 200, 200);
+
     }
 
     console.log(document.querySelector('.wrapper').childElementCount);
@@ -91,11 +145,15 @@ function button_parser(json)
 
 alt.on('onParse', (json) => {
     console.log('WEB: ' + json);
+    fade_in(200);
     button_parser(json);
 });
 
+
 window.addEventListener('load', () =>{
     console.log('onLoad context');
+    let n = 20;
 
+    button_parser(JSON.stringify(test));
     alt.emit('onLoad', null);
 });

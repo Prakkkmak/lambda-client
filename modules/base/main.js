@@ -2,7 +2,7 @@ import * as game from 'natives';
 import * as alt from 'alt';
 
 import * as cef from 'modules/cef/main';
-
+import * as graphics from 'modules/graphics/main';
 
 export function freeze(value) {
     game.freezeEntityPosition(game.playerPedId(), value);
@@ -39,8 +39,16 @@ export function loadContext() {
     };
 
     events['hide'] = () => {
-        cef.getView('context').close();
+        graphics.startScreenEffect('FocusOut', 200, true);
+        alt.setTimeout(() => {
+            cef.getView('context').close();
+        }, 200);
     }
+
+    events['blurin'] = () => {
+        graphics.startScreenEffect('FocusIn', 200, true);
+    };
+
 
     cef.createView('context', 'base/uis/context/context.html', events, [cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 }

@@ -124,7 +124,7 @@ export function dashToCam() {
 }
 
 alt.on('update', () => {
-    if(spec && game.doesCamExist('speccam'))
+    if(spec && camera.doesCamExist('speccam'))
     {
         let pos = game.getEntityCoords(specEntity, false);
 
