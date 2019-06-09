@@ -23,11 +23,11 @@ function fade_in(time)
 {
     let container = document.querySelector('.wrapper');
     
-    alt.emit('blurin')
+    //alt.emit('blurin')
 
     anime({
         targets: container,
-        backgroundColor: 'rgba(0,0,0,0.65)',
+        backgroundColor: 'rgba(0,0,0,0.35)',
 
         easing: 'easeInOutSine', 
         duration: time
@@ -38,7 +38,7 @@ function fade_out(time)
 {
     let container = document.querySelector('.wrapper');
     
-    alt.emit('blurout')
+    //alt.emit('blurout')
 
     anime({
         targets: container,
