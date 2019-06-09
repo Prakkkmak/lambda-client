@@ -39,14 +39,14 @@ export function loadContext() {
     };
 
     events['hide'] = () => {
-        graphics.startScreenEffect('FocusOut', 200, true);
+        graphics.stopScreenEffect('ChopVision');
         alt.setTimeout(() => {
             cef.getView('context').close();
         }, 200);
     }
 
     events['blurin'] = () => {
-        graphics.startScreenEffect('FocusIn', 200, true);
+        graphics.startScreenEffect('ChopVision', 0, true);
     };
 
 
