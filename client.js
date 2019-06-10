@@ -30,10 +30,10 @@ alt.on('gameEntityCreate', (entity) => {
     const isPlayer = entity.constructor.name === "Player"
     if (isPlayer) alt.players.push(entity);
     alt.log("new entity ");
-    alt.log("number player " + alt.players.length)
+    alt.log("number player " + alt.Player.all.length)
 })
 
 alt.on('gameEntityDestroy', (entity) => {
     const isPlayer = entity.constructor.name === "Player"
-    if (isPlayer) alt.players.splice(alt.players.indexOf(entity));
+    if (isPlayer) alt.Player.all.splice(alt.Player.all.indexOf(entity));
 })

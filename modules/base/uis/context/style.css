@@ -2,7 +2,9 @@
     font-family: roboto;
     src: url('fonts/Roboto-Regular.ttf');
   }
-
+img{-webkit-user-drag: none;}
+* {outline: none;-webkit-user-select: none;font-family: 'Open Sans', sans-serif;}
+  
 html,body 
 {
     background-color: rgba(0, 0, 0, 0);
