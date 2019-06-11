@@ -17,6 +17,8 @@ import 'modules/physics/events';
 import 'modules/selection/events';
 import 'modules/beacon/events';
 import 'modules/door/events';
+import 'modules/prop/events';
+//import 'modules/notification/events';
 
 
 game.setPedDefaultComponentVariation(game.playerPedId());
@@ -25,15 +27,13 @@ alt.emitServer("setlicense", alt.getLicenseHash());
 alt.on('update', () => {
     input_check(); // Check inputs
 });
-
+/*
 alt.on('gameEntityCreate', (entity) => {
-    const isPlayer = entity.constructor.name === "Player"
-    if (isPlayer) alt.players.push(entity);
-    alt.log("new entity ");
-    alt.log("number player " + alt.players.length)
+    const isPlayer = entity instanceof alt.Player
+    if (isPlayer) alt.Player.all.push(entity);
 })
 
 alt.on('gameEntityDestroy', (entity) => {
-    const isPlayer = entity.constructor.name === "Player"
-    if (isPlayer) alt.players.splice(alt.players.indexOf(entity));
-})
+    const isPlayer = entity instanceof alt.Player
+    if (isPlayer) alt.Player.all.splice(alt.Player.all.indexOf(entity));
+})*/

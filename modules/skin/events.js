@@ -35,7 +35,6 @@ alt.onServer('setSkin', (mother, father, mix) => {
 });
 
 alt.onServer('setFaceFeature', (index, value) => {
-    alt.log("FACE " + index + " + " + value);
     skin.setFaceFeature(index, value);
 });
 

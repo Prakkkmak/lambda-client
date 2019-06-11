@@ -95,10 +95,13 @@ alt.on('keydown', (key) => {
 });
 
 export function input_check() {
-    /*if (game.isControlJustPressed(0, 100)) {
-        skin_changer.selectNext();
+    // INPUT_PUSH_TO_TALK 249
+    if (game.isControlJustPressed(0, 249)) {
+        alt.enableVoiceInput();
+        alt.log("Voice on");
     }
-    if (game.isControlJustPressed(0, 102)) {
-        skin_changer.selectPrevious();
-    }*/
+    if (game.isControlJustReleased(0, 249)) {
+        alt.disableVoiceInput();
+        alt.log("Voice off");
+    }
 }

@@ -23,7 +23,6 @@ let selected = 0;
 export function selectNext() {
     selected++;
     clampSelected();
-    alt.log(selected_strings[selected] + " séléctioné");
     alt.emit('chatmessage', 'skin manager', "Selection de " + selected_strings[selected]);
     // TODO emit le slot selectioné
 }
@@ -31,7 +30,6 @@ export function selectNext() {
 export function selectPrevious() {
     selected--;
     clampSelected();
-    alt.log(selected_strings[selected] + " séléctioné")
     alt.emit('chatmessage', 'skin manager', "Selection de " + selected_strings[selected]);
     // TODO emit le slot selectioné
 }

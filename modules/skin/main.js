@@ -87,9 +87,10 @@ export function saveSkin() {
         b.push(elem.secondcolor);
     })
     alt.emitServer('setheadoverlays', b);
-
+    alt.emitServer("chatConsole", "component" + a);
     alt.emitServer('setskin', a);
     alt.emitServer('setprops', c);
+    alt.emitServer('save');
 }
 
 export function setComponentVariations(args) { // Array of elements
@@ -106,7 +107,6 @@ export function setComponentVariation(index, drawable, texture, palette) { // Ar
     if (drawable < 0) drawable = 0;
     if (texture < 0) texture = 0;
     if (palette < 0) palette = 0;
-    //alt.log("setComponentVariation : " + index + " " + drawable + " " + texture + " " + palette)
     currentComponentVariation[index].drawable = drawable;
     currentComponentVariation[index].texture = texture;
     currentComponentVariation[index].palette = palette;
@@ -125,8 +125,6 @@ export function setProps(args) {
 export function setProp(index, drawable, texture) {
     if (drawable < 0) drawable = 0;
     if (texture < 0) texture = 0;
-    //alt.log("setPropVariation : " + index + " " + drawable + " " + texture);
-
     currentPropIndex[index].drawable = drawable;
     currentPropIndex[index].texture = texture;
     if (index == 3) index = 6;
@@ -159,7 +157,7 @@ export function setHeadBlendData(shapeMother, shapeFather, skinMother, skinFater
         shapeMix: shapeMix,
         skinMix: skinMix
     };
-
+    alt.log(currentHeadBlendData)
     game.setPedHeadBlendData(game.playerPedId(), shapeMother, shapeFather, 0, skinMother, skinFater, 0, shapeMix, skinMix, 0, false);
 }
 
@@ -199,12 +197,9 @@ export function setFaceFeatures(args) {
     }
 }
 export function setFaceFeature(index, value) {
-    //alt.log(index, value)
     if (value < -1) value = -1;
     if (value > 1) value = 1;
     currentFaceFeature[index] = value;
-    // alt.log("VALUE " + index)
-    // alt.log("VALUE " + value)
     game.setPedFaceFeature(game.playerPedId(), index, value);
 }
 
@@ -269,9 +264,6 @@ export function loadCharacterCustom() {
                 setHeadBlendData(0, 21, 0, 15, 1, 0);
             }
             game.setPedDefaultComponentVariation(game.playerPedId());
-
-            alt.log('Model set');
-
         });
 
     }
