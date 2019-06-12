@@ -95,7 +95,10 @@ const screen_effects = [
 
 let chosen = -1;
 
+
+
 export function startScreenEffect(effectName, duration, looped) {
+    alt.log('Starting screeneffect ' + effectName + ' for ' + duration + 'ms')
     game.startScreenEffect(effectName, duration, looped);
 }
 export function stopScreenEffect(effectName) {
@@ -114,6 +117,8 @@ export function setShakeCamAmplitude(amplitude) {
 export function stopShake() {
     game.stopGameplayCamShaking();
 }
+
+
 
 export function nextEffect() {
     //stopAllScreenEffects();

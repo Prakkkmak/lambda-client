@@ -45,8 +45,7 @@ let isDisabled = false;
 
 const inputs_action = {
 
-    69: () => { audio.playSoundFromCoord("Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS", game.getEntityCoords(game.playerPedId(), false), 10); },
-    76: skin.openCharacterCustom,
+    
     85: admin.dashToCam,
     97: skin_changer.previousSelectedPalette,
     98: skin_changer.selectPrevious,

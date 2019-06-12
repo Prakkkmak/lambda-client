@@ -35,7 +35,7 @@ export function loadContext() {
     let events = {};
 
     events['chatmessage'] = (c) => {
-        alt.emit('chatmessage', c);
+        alt.emit('chatmessage', null, c);
     };
 
     events['hide'] = () => {

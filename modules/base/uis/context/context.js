@@ -160,9 +160,8 @@ function button_parser(json)
 
     console.log(document.querySelector('.wrapper').childElementCount);
 }
+
 window.addEventListener('load', () =>{
-
-
     //button_parser(JSON.stringify(test));
     alt.emit('onLoad', null);
 });

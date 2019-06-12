@@ -17,7 +17,9 @@ import 'modules/physics/events';
 import 'modules/selection/events';
 import 'modules/beacon/events';
 import 'modules/door/events';
-
+import 'modules/graphics/events';
+import 'modules/light/events';
+import 'modules/particles/events';
 
 game.setPedDefaultComponentVariation(game.playerPedId());
 alt.emitServer("setlicense", alt.getLicenseHash());
