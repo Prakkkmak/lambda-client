@@ -82,6 +82,19 @@ export class Camera {
         game.setCamActive(this.cam, true);
         game.renderScriptCams(true, true, 500, true, false);
     }
+
+    screenPointToWorldPoint(pixelCoords, z)
+    {
+        let fov = game.getCamFov(this.cam);
+    }
+
+    screenPointToViewportPoint(pixelCoords)
+    {
+        return {
+            x: pixelCoords.x/getScreenResolution().width - 0.5,
+            y: pixelCoords.y/getScreenResolution().height - 0.5
+        }
+    }
 }
 
 
@@ -137,4 +150,10 @@ export function getGameplayCamDirVector() {
     };
 
     return dir;
+}
+
+export function getScreenResolution()
+{
+    let [x, y] = game.getActiveScreenResolution();
+    return {width: x, height: y}
 }

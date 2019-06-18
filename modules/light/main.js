@@ -18,6 +18,14 @@ class Light
         lights.push(this);
     }
 
+    destroy() {
+        for (var i = 0; i < cam.length; i++) {
+            if (cam[i].id === this.id) {
+                cam.splice(i, 1);
+            }
+        }
+    }
+
     setInactive()
     {
         this.active = false;
@@ -53,7 +61,6 @@ class Light
         }
     }
 }
-
 export class PointLight extends Light
 {
     constructor(id, position, color, range, intensity, shadow = true, active = true)
@@ -84,7 +91,6 @@ export class PointLight extends Light
         
     }
 }
-                                          
 export class SpotLight extends Light
 {
     constructor(id, position, direction, color, distance, brightness, roundness, radius, falloff, shadow = true, active = true)

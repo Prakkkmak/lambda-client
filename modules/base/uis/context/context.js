@@ -136,12 +136,30 @@ function button_parser(json)
 
         if (data[i].children.length > 0)
         {
-            let sub_json = JSON.stringify(data[i].children);
 
+            let sub_json = JSON.stringify(data[i].children);
+            let sub = data[i];
+
+            if(sub.children[0].type == undefined)
+            {
+                b = add_button(window.innerWidth/2, window.innerHeight/2, a, d, lbl, () => {
+                    button_parser(sub_json);
+                });
+            } else if(sub.children[0].type == 'menu_args'){
+                b = add_button(window.innerWidth/2, window.innerHeight/2, a, d, lbl, () => {
+                    let parameters = [];
+                    for(let j=0;j<sub.children[0].children.length;j++)
+                    {
+                        parameters.push({
+                            type: sub.children[0].children[j].type,
+                            label: sub.children[0].children[j].label
+                        });
+                    }
+                    document.querySelector('.container').style.display = 'block';
+                    create_command_menu(sub.children[0].label, sub.cmd, parameters);
+                });
+            }
             
-            b = add_button(window.innerWidth/2, window.innerHeight/2, a, d, lbl, () => {
-                button_parser(sub_json);
-            });
 
         } else 
         {   
@@ -162,7 +180,26 @@ function button_parser(json)
 }
 
 window.addEventListener('load', () =>{
-    //button_parser(JSON.stringify(test));
+    // let test = [{
+    //     label: 'Test 1',
+    //     cmd: '/test',
+    //     children: [{
+    //         title: 'Commande',
+    //         type: 'menu_args',
+    //         children: [
+    //             {
+    //                 type: 'text',
+    //                 label: 'Argument 1'
+    //             },
+    //             {
+    //                 type: 'text',
+    //                 label: 'Argument 2'
+    //             }
+    //         ]
+    //     }]
+    // }];
+
+    // button_parser(JSON.stringify(test));
     alt.emit('onLoad', null);
 });
 alt.on('onParse', (json) => {

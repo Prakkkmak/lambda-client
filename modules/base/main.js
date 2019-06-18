@@ -22,7 +22,7 @@ export function loadModel(model) {
                     alt.log('Model loaded');
                     resolve(true);
                 }
-
+                
             }, (5));
         });
     } else {
