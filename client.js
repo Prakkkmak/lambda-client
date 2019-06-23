@@ -21,8 +21,6 @@ import 'modules/graphics/events';
 import 'modules/light/events';
 import 'modules/particles/events';
 import 'modules/prop/events';
-import 'modules/creator/events';
-import 'modules/time/events';
 //import 'modules/notification/events';
 
 game.setPedDefaultComponentVariation(game.playerPedId());
