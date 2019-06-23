@@ -12,12 +12,20 @@ alt.onServer('playerLoaded', () => {
 });
 
 alt.onServer('setContextActions', (json) => {
-    let root = JSON.parse(json);
-    if(root.length > 0)
+    if(JSON.parse(json).length > 0)
     {
-        base.openContext(() => {cef.getView('context').view.emit('onParse', json) });
-        
+        base.openContext(() => {
+            alt.log('onParse Send');
+            
+            alt.setTimeout(() => {
+                cef.getView('context').view.emit('onParse', json); 
+            }, 200);
+            //cef.getView('context').view.execJS(`button_parser('${json}')`)
+            alt.log('onParse Sent');
+        });
     }
+    
+    
     alt.log(json);
 });
 
@@ -25,4 +33,13 @@ alt.onServer('setInteraction', (a,b,c,d) => {
     base.openInteraction(() => {
         cef.getView('interaction').view.emit('onInteraction', a,b,c,d);
     });
+});
+
+alt.on('consoleCommand', (command, ...args) => {
+    if(command == 'interaction')
+    {
+        base.openInteraction(() => {
+            cef.getView('interaction').view.emit('onInteraction', args[0], args[1], args[2], args[3]);
+        });
+    }
 });

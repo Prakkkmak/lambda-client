@@ -12,6 +12,7 @@ import * as physics from 'modules/physics/main';
 import * as camera from 'modules/camera/main';
 import * as graphics from 'modules/graphics/main';
 import * as selection from 'modules/selection/main';
+import * as audio from 'modules/audio/main';
 
 const key_codes =
 {
@@ -44,8 +45,7 @@ let isDisabled = false;
 
 const inputs_action = {
 
-    69: base.toggleContext,
-    76: skin.openCharacterCustom,
+    
     85: admin.dashToCam,
     97: skin_changer.previousSelectedPalette,
     98: skin_changer.selectPrevious,

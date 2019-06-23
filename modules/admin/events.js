@@ -34,7 +34,6 @@ alt.onServer('setSpecTarget', (player, state) => {
 });
 
 alt.onServer('stopSpecTarget', () => {
-
     admin.disableSpecMode();
-
 });
+

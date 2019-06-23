@@ -2,7 +2,7 @@ import * as game from 'natives';
 import * as alt from 'alt';
 
 import * as cef from 'modules/cef/main';
-
+import * as graphics from 'modules/graphics/main';
 
 export function freeze(value) {
     game.freezeEntityPosition(game.playerPedId(), value);
@@ -22,7 +22,7 @@ export function loadModel(model) {
                     alt.log('Model loaded');
                     resolve(true);
                 }
-
+                
             }, (5));
         });
     } else {
@@ -35,12 +35,20 @@ export function loadContext() {
     let events = {};
 
     events['chatmessage'] = (c) => {
-        alt.emit('chatmessage', c);
+        alt.emit('chatmessage', null, c);
     };
 
-    events['hide'] = (arg) => {
-        cef.getView('context').hide();
+    events['hide'] = () => {
+        graphics.stopScreenEffect('ChopVision');
+        alt.setTimeout(() => {
+            cef.getView('context').close();
+        }, 200);
     }
+
+    events['blurin'] = () => {
+        graphics.startScreenEffect('ChopVision', 0, true);
+    };
+
 
     cef.createView('context', 'base/uis/context/context.html', events, [cef.eCefFlags.SHOW_CURSOR, cef.eCefFlags.FREEZE_PLAYER]);
 }
@@ -48,8 +56,9 @@ export function openContext(callback = () => { })
 {
     cef.getView('context').open(callback);
 }
-export function hideContext() {
-    cef.getView('context').hide();
+export function hideContext()
+{
+    cef.getView('context').close();
 }
 export function toggleContext()
 {
@@ -86,7 +95,7 @@ export function openInteraction(callback = () => { })
 }
 export function closeInteraction()
 {
-    cef.getView('interaction').hide();
+    cef.getView('interaction').close();
 }
 
 loadContext();

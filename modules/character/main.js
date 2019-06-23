@@ -20,4 +20,18 @@ export function applyStrongForceToPed(dir, force) {
     physics.applyGlobalForceToEntity(game.playerPedId(), dir, force);
 }
 
+export function setPosition(position)
+{
+    
+    game.setEntityCoords(game.playerPedId(), position.x, position.y, position.z, true, false, false, false);
+}
+export function getPosition()
+{
+    return game.getEntityCoords(game.playerPedId(), true);
+}
+
+export function setRotation(rotation)
+{
+    game.setEntityRotation(game.playerPedId(),rotation.pitch, rotation.roll, rotation.yaw, 2);
+}
 
