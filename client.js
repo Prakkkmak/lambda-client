@@ -18,6 +18,8 @@ import 'modules/selection/events';
 import 'modules/beacon/events';
 import 'modules/door/events';
 import 'modules/prop/events';
+import 'modules/creator/events';
+import 'modules/time/events';
 //import 'modules/notification/events';
 
 

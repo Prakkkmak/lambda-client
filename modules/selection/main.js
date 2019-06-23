@@ -7,13 +7,8 @@ let sphere = false;
 export function enableDebugSphere() {
     sphere = !sphere;
 }
-export function getRotation() {
-    let vector3Rotation = game.getEntityRotation(game.playerPedId(), 2);
-    let yaw = vector3Rotation.z * Math.PI / 180
-}
 export function updateClose() {
-    let vector3Rotation = game.getEntityRotation(game.playerPedId(), 2);
-    let yaw = vector3Rotation.z * Math.PI / 180
+    let yaw = position_utils.getRotation();
     let frontPos = position_utils.positionInAngle(alt.getLocalPlayer().pos, -yaw, 0.7);
     if (sphere) {
         game.drawMarker(1, frontPos.x, frontPos.y, frontPos.z, 0, 0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 100, 50, 0, 1, 2, 0, 0, 0, 0);

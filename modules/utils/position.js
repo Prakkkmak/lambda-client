@@ -1,4 +1,5 @@
 import * as alt from 'alt';
+import * as game from 'natives';
 
 export function positionInAngle(pos, angle, dist) {
     let x = pos.x;
@@ -42,4 +43,10 @@ export function distance(pos1, pos2) {
     let y = pos1.y - pos2.y;
     let z = pos1.z - pos2.z;
     return Math.sqrt(x * x + y * y + z * z);
+}
+
+export function getRotation() {
+    let vector3Rotation = game.getEntityRotation(game.playerPedId(), 2);
+    let yaw = vector3Rotation.z * Math.PI / 180
+    return yaw;
 }
