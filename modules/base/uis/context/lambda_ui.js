@@ -215,6 +215,7 @@ function add_command_button(parent, label, command)
         if(completed)
         {
             console.log(cmd);
+            alt.emit('hide');
         } else {
             console.log('Uncomplete');
         }
@@ -223,10 +224,28 @@ function add_command_button(parent, label, command)
 function add_header(parent, label)
 {
     let flex_container = document.createElement('div');
-    flex_container.setAttribute('class', 'container-header');
-    flex_container.innerHTML = label;
+    flex_container.setAttribute('class', 'flex-container container-header');
 
-    parent.appendChild(flex_container);
+    parent.appendChild(flex_container);    
+
+    let span = document.createElement('span');
+    span.innerHTML = label;
+    span.style.color = '#f1c40f';
+    span.style.fontSize = '24px';
+
+    let close = document.createElement('img');
+    close.src = 'imgs/red_cross.png';
+    close.width = 24;
+    close.height = 24;
+    close.style.cursor = 'pointer';
+    close.style.flexShrink = 5;
+
+    close.addEventListener('click', () => {
+        alt.emit('hide');
+    });
+
+    flex_container.appendChild(span);
+    flex_container.appendChild(close);
 }
 function create_command_menu(title, command, parameters)
 {
@@ -243,20 +262,3 @@ function create_command_menu(title, command, parameters)
 
     add_command_button(menu, 'Exécuter', command);
 }
-
-// window.addEventListener('load', () => {
-//     create_command_menu('Commande', '/test', [
-//         {
-//             type: 'text',
-//             label: 'Argument 1'
-//         },
-//         {
-//             type: 'text',
-//             label: 'Argument 2'
-//         },
-//         {
-//             type: 'text',
-//             label: 'Argument 3'
-//         }
-//     ])
-// });

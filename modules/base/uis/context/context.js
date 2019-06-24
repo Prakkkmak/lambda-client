@@ -179,12 +179,13 @@ function button_parser(json)
     console.log(document.querySelector('.wrapper').childElementCount);
 }
 
+
 window.addEventListener('load', () =>{
     // let test = [{
     //     label: 'Test 1',
     //     cmd: '/test',
     //     children: [{
-    //         title: 'Commande',
+    //         label: 'Commande',
     //         type: 'menu_args',
     //         children: [
     //             {
