@@ -13,16 +13,24 @@ export function loadModel(model) {
     if (game.isModelValid(model)) {
         alt.log('valid model');
         game.requestModel(model);
+        let timeout = 3000;
+
         return new Promise((resolve, reject) => {
-
+            let startTime = Date.now();
             let check = alt.setInterval(() => {
-
-                if (game.hasModelLoaded(model)) {
+                if((Date.now() - startTime) <= timeout)
+                {
+                    if (game.hasModelLoaded(model)) {
+                        alt.clearInterval(check);
+                        alt.log('Model loaded');
+                        resolve(true);
+                    } 
+    
+                } else
+                {
                     alt.clearInterval(check);
-                    alt.log('Model loaded');
-                    resolve(true);
+                    reject('Model could not be loaded')
                 }
-
             }, (5));
         });
     } else {
