@@ -8,7 +8,7 @@ import * as anim from 'modules/anim/main';
 import * as physics from 'modules/physics/main';
 
 export function ragdoll() {
-    game.setPedToRagdoll(game.playerPedId(), 1000, 1000, 0, 0, 0, 0);
+    game.setPedToRagdoll(alt.getLocalPlayer().scriptID, 1000, 1000, 0, 0, 0, 0);
 }
 
 export function setPedSpeed(mul) {
@@ -17,21 +17,21 @@ export function setPedSpeed(mul) {
 }
 
 export function applyStrongForceToPed(dir, force) {
-    physics.applyGlobalForceToEntity(game.playerPedId(), dir, force);
+    physics.applyGlobalForceToEntity(alt.getLocalPlayer().scriptID, dir, force);
 }
 
 export function setPosition(position)
 {
     
-    game.setEntityCoords(game.playerPedId(), position.x, position.y, position.z, true, false, false, false);
+    game.setEntityCoords(alt.getLocalPlayer().scriptID, position.x, position.y, position.z, true, false, false, false);
 }
 export function getPosition()
 {
-    return game.getEntityCoords(game.playerPedId(), true);
+    return game.getEntityCoords(alt.getLocalPlayer().scriptID, true);
 }
 
 export function setRotation(rotation)
 {
-    game.setEntityRotation(game.playerPedId(),rotation.pitch, rotation.roll, rotation.yaw, 2);
+    game.setEntityRotation(alt.getLocalPlayer().scriptID,rotation.pitch, rotation.roll, rotation.yaw, 2);
 }
 

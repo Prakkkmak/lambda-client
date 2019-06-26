@@ -8,11 +8,11 @@ export function enableDebugSphere() {
     sphere = !sphere;
 }
 export function getRotation() {
-    let vector3Rotation = game.getEntityRotation(game.playerPedId(), 2);
+    let vector3Rotation = game.getEntityRotation(alt.getLocalPlayer().scriptID, 2);
     let yaw = vector3Rotation.z * Math.PI / 180
 }
 export function updateClose() {
-    let vector3Rotation = game.getEntityRotation(game.playerPedId(), 2);
+    let vector3Rotation = game.getEntityRotation(alt.getLocalPlayer().scriptID, 2);
     let yaw = vector3Rotation.z * Math.PI / 180
     let frontPos = position_utils.positionInAngle(alt.getLocalPlayer().pos, -yaw, 0.7);
     if (sphere) {

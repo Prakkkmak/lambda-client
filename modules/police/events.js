@@ -20,11 +20,11 @@ alt.onServer('setHandcuff', (value) => {
 });
 alt.on('update', () => {
     if (police.handcuffed) {
-        alt.log(game.isEntityPlayingAnim(game.playerPedId(), anim.dict, anim.name, 3))
-        if (!game.isEntityPlayingAnim(game.playerPedId(), anim.dict, anim.name, 3)) {
+        alt.log(game.isEntityPlayingAnim(alt.getLocalPlayer().scriptID, anim.dict, anim.name, 3))
+        if (!game.isEntityPlayingAnim(alt.getLocalPlayer().scriptID, anim.dict, anim.name, 3)) {
             police.putHandcuff();
         }
-        game.setPedPathCanUseLadders(game.playerPedId(), false)
+        game.setPedPathCanUseLadders(alt.getLocalPlayer().scriptID, false)
         game.disableControlAction(0, 142, true) // MeleeAttackAlternat
         game.disableControlAction(0, 24, true) //Shoot 
         game.disableControlAction(0, 92, true) //Shoot in car
@@ -34,7 +34,7 @@ alt.on('update', () => {
         game.disableControlAction(0, 141, true) // alternative
         game.disableControlAction(0, 142, true) // alternative
         game.disableControlAction(0, 143, true) // alternative
-        if (game.isPedInAnyVehicle(game.playerPedId(), false)) {
+        if (game.isPedInAnyVehicle(alt.getLocalPlayer().scriptID, false)) {
             game.disableControlAction(0, 59, true) // droiger gauche veh
         }
     }

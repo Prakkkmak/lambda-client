@@ -18,13 +18,13 @@ let specEntity = 0;
 let beforeSpecPos = undefined;
 
 export function enableInvisibility() {
-    game.setEntityVisible(game.playerPedId(), false);
+    game.setEntityVisible(alt.getLocalPlayer().scriptID, false);
 }
 export function disableInvisibility() {
-    game.setEntityVisible(game.playerPedId(), true);
+    game.setEntityVisible(alt.getLocalPlayer().scriptID, true);
 }
 export function toggleInvisibility() {
-    if (game.isEntityVisible(game.playerPedId())) {
+    if (game.isEntityVisible(alt.getLocalPlayer().scriptID)) {
         enableInvisibility();
     } else {
         disableInvisibility();
@@ -32,7 +32,7 @@ export function toggleInvisibility() {
 }
 
 export function enableInvicibility() {
-    game.setEntityInvincible(game.playerPedId(), true);
+    game.setEntityInvincible(alt.getLocalPlayer().scriptID, true);
 }
 export function disableInvicibility() {
     game.setEntityInvincible(game.playerId(), false);
@@ -48,13 +48,13 @@ export function toggleInvicibility() {
 
 
 export function enableNoClip() {
-    game.setEntityCollision(game.playerPedId(), false, false);
+    game.setEntityCollision(alt.getLocalPlayer().scriptID, false, false);
 }
 export function disableNoClip() {
-    game.setEntityCollision(game.playerPedId(), true, true);
+    game.setEntityCollision(alt.getLocalPlayer().scriptID, true, true);
 }
 export function toggleNoClip() {
-    if (game.getEntityCollisonDisabled(game.playerPedId())) {
+    if (game.getEntityCollisonDisabled(alt.getLocalPlayer().scriptID)) {
         disableNoClip();
     } else {
         enableNoClip();
@@ -73,7 +73,7 @@ export function enableSpecMode(entity) {
     if (!spec) {
         specEntity = entity;
 
-        beforeSpecPos = game.getEntityCoords(game.playerPedId(), false);
+        beforeSpecPos = game.getEntityCoords(alt.getLocalPlayer().scriptID, false);
 
         camera.createCam('speccam').focusOnBone(camera.ped_bones['SKEL_L_Clavicle'], specCamOffset, 60, 500, specEntity, false);
 
@@ -90,7 +90,7 @@ export function disableSpecMode() {
         spec = false;
 
         specEntity = 0;
-        game.setEntityCoords(game.playerPedId(), beforeSpecPos.x, beforeSpecPos.y, beforeSpecPos.z, false, false, false, false);
+        game.setEntityCoords(alt.getLocalPlayer().scriptID, beforeSpecPos.x, beforeSpecPos.y, beforeSpecPos.z, false, false, false, false);
 
         disableNoClip();
         disableInvicibility();
@@ -115,8 +115,8 @@ export function dashToCam() {
     let dir = camera.getGameplayCamDirVector(game.getGameplayCamRot(0));
 
 
-    if (game.isPedInAnyVehicle(game.playerPedId(), false)) {
-        physics.applyGlobalForceToEntity(game.getVehiclePedIsIn(game.playerPedId(), false), dir, 25);
+    if (game.isPedInAnyVehicle(alt.getLocalPlayer().scriptID, false)) {
+        physics.applyGlobalForceToEntity(game.getVehiclePedIsIn(alt.getLocalPlayer().scriptID, false), dir, 25);
     } else {
         character.applyStrongForceToPed(dir, 25);
     }
@@ -129,7 +129,7 @@ alt.on('update', () => {
         let pos = game.getEntityCoords(specEntity, false);
 
         let gCamPos = game.getGameplayCamCoord();
-        let pPos = game.getEntityCoords(game.playerPedId(), false);
+        let pPos = game.getEntityCoords(alt.getLocalPlayer().scriptID, false);
 
         specCamOffset.x = gCamPos.x - pPos.x;
         specCamOffset.y = gCamPos.y - pPos.y;
@@ -142,6 +142,6 @@ alt.on('update', () => {
         });
 
 
-        game.setEntityCoords(game.playerPedId(), pos.x, pos.y, pos.z - 10, false, false, false, false);
+        game.setEntityCoords(alt.getLocalPlayer().scriptID, pos.x, pos.y, pos.z - 10, false, false, false, false);
     }
 });

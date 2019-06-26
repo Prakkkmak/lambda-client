@@ -23,7 +23,7 @@ import 'modules/particles/events';
 import 'modules/prop/events';
 //import 'modules/notification/events';
 
-game.setPedDefaultComponentVariation(game.playerPedId());
+game.setPedDefaultComponentVariation(alt.getLocalPlayer().scriptID);
 alt.emitServer("setlicense", alt.getLicenseHash());
 
 alt.on('update', () => {

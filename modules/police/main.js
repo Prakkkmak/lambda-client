@@ -5,7 +5,7 @@ import { playAnim } from "modules/anim/main"
 const anim = { dict: 'mp_arresting', name: 'idle' }
 export let handcuffed = false;
 export function putHandcuff() {
-    var player = game.playerPedId();
+    var player = alt.getLocalPlayer().scriptID;
     game.clearPedTasksImmediately(player);
     playAnim(anim.dict, anim.name, 49);
     game.setEnableHandcuffs(player, true);
@@ -14,7 +14,7 @@ export function putHandcuff() {
     handcuffed = true;
 }
 export function removeHandcuff() {
-    var player = game.playerPedId();
+    var player = alt.getLocalPlayer().scriptID;
     game.clearPedSecondaryTask(player);
     game.setEnableHandcuffs(player, false);
     game.setCurrentPedWeapon(player, game.getHashKey("WEAPON_UNARMED"), true);

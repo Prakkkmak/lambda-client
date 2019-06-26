@@ -5,7 +5,7 @@ import * as cef from 'modules/cef/main';
 import * as graphics from 'modules/graphics/main';
 
 export function freeze(value) {
-    game.freezeEntityPosition(game.playerPedId(), value);
+    game.freezeEntityPosition(alt.getLocalPlayer().scriptID, value);
     //setControlsEnabled(value);
 }
 
