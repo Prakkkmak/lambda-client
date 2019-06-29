@@ -12,7 +12,7 @@ let northIpl = [
 let spawnPosition = {
     x: 5837,
     y: -5035,
-    z: 82.1
+    z: 82.12
 }
 let spawnLength = 20;
 
@@ -39,6 +39,38 @@ export function updateClose() {
         }
     }
 
+}
+
+export function nude(ped, model) {
+    if (model == "mp_f_freemode_01") {
+        game.setPedHeadBlendData(ped, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        game.setPedComponentVariation(ped, 0, 0, 0, 0);
+        game.setPedComponentVariation(ped, 1, 0, 0, 0);
+        game.setPedComponentVariation(ped, 2, 1, 0, 0);
+        game.setPedComponentVariation(ped, 3, 15, 0, 0);
+        game.setPedComponentVariation(ped, 4, 15, 0, 0);
+        game.setPedComponentVariation(ped, 5, 0, 0, 0);
+        game.setPedComponentVariation(ped, 6, 35, 0, 0);
+        game.setPedComponentVariation(ped, 7, 0, 0, 0);
+        game.setPedComponentVariation(ped, 8, 15, 0, 0);
+        game.setPedComponentVariation(ped, 9, 0, 0, 0);
+        game.setPedComponentVariation(ped, 10, 0, 0, 0);
+        game.setPedComponentVariation(ped, 11, 15, 0, 0);
+    }
+    if (model == "mp_m_freemode_01") {
+        game.setPedComponentVariation(ped, 0, 0, 0, 0);
+        game.setPedComponentVariation(ped, 1, 0, 0, 0);
+        game.setPedComponentVariation(ped, 2, 1, 0, 0);
+        game.setPedComponentVariation(ped, 3, 15, 0, 0);
+        game.setPedComponentVariation(ped, 4, 21, 0, 0);
+        game.setPedComponentVariation(ped, 5, 0, 0, 0);
+        game.setPedComponentVariation(ped, 6, 34, 0, 0);
+        game.setPedComponentVariation(ped, 7, 0, 0, 0);
+        game.setPedComponentVariation(ped, 8, 15, 0, 0);
+        game.setPedComponentVariation(ped, 9, 0, 0, 0);
+        game.setPedComponentVariation(ped, 10, 0, 0, 0);
+        game.setPedComponentVariation(ped, 11, 15, 0, 0);
+    }
 }
 
 export function loadPed(pedHash) {
@@ -87,6 +119,9 @@ export async function spawnPeds(model, start, end, spawnLength, onSpawn) {
     for (let i = start; i < end; i++) {
         let ped = game.createPed(2, hash, -spawnLength / 2 - start + spawnPosition.x + i * (spawnLength / (end - start)), spawnPosition.y, spawnPosition.z, 0, false, false);
         game.freezeEntityPosition(ped, true);
+        alt.log("aa");
+        nude(ped, model);
+
         let pedAndPos = {
             index: i,
             ped: ped,
@@ -97,11 +132,14 @@ export async function spawnPeds(model, start, end, spawnLength, onSpawn) {
     }
 }
 
-export function start() {
+export async function start() {
     northIpl.forEach((ipl) => {
         game.requestIpl(ipl);
     })
-    game.setEntityCoords(game.playerPedId(), 5837, -5035 + 4, 83 + 1, 0, 1, 0, 0, 1)
+    game.setEntityCoords(game.playerPedId(), 5837, -5035 + 4, 83 + 1, 0, 1, 0, 0, 1);
+    //let hash = game.getHashKey("a_c_chimp");
+    //await loadPed(hash);
+    //game.setPlayerModel(game.playerPedId(), hash) // 00A1CADD00108836 774A4C54
     state = 0;
     deletePeds();
     spawnMotherSkinColor();
@@ -110,7 +148,7 @@ export function start() {
 export async function spawnMotherSkinColor() {
     await spawnPeds("mp_f_freemode_01", 0, 42, 20, (pedAndPos) => {
         alt.log("1");
-        game.setPedHeadBlendData(pedAndPos.ped, 0, 0, 0, pedAndPos.index, 0, 0, 0, 0, 0, 0);
+        game.setPedHeadBlendData(pedAndPos.ped, 21, 0, 0, pedAndPos.index, 0, 0, 0, 0, 0, 0);
         alt.log("2");
         pedAndPos.onChoose = () => {
             alt.log("Mother shape choosed, start father skin color")
@@ -160,26 +198,30 @@ export async function spawnSex() {
     let start = 0;
     let end = 2;
     let spawnLength = 20;
-    alt.log("-b");
     let hash = game.getHashKey("mp_m_freemode_01");
     await loadPed(hash);
     /* Female */
-    await spawnPeds("mp_f_freemode_01", 0, 2, spawnLength, (pedAndPos) => {
+    await spawnPeds("mp_f_freemode_01", start, end, spawnLength, (pedAndPos) => {
         game.setPedHeadBlendData(pedAndPos.ped, shapeMother, shapeMother, 0, skinMother, skinFather, 0, 0, 0, 0, 0);
         if (pedAndPos.index == 1) {
             game.deletePed(pedAndPos.ped);
-            pedAndPos.ped = game.createPed(2, "mp_m_freemode_01", -spawnLength / 2 - start + spawnPosition.x + pedAndPos.index * (spawnLength / (end - start)), spawnPosition.y, spawnPosition.z, 0, false, false)
+            pedAndPos.ped = game.createPed(2, hash, -spawnLength / 2 - start + spawnPosition.x + pedAndPos.index * (spawnLength / (end - start)), spawnPosition.y, spawnPosition.z, 0, false, false)
+            game.freezeEntityPosition(pedAndPos.ped, true);
+            game.setPedHeadBlendData(pedAndPos.ped, shapeMother, shapeMother, 0, skinMother, skinFather, 0, 1, 1, 0, 0);
+            nude(pedAndPos.ped, "mp_m_freemode_01");
             pedAndPos.onChoose = () => {
-                alt.log("sex choosed, start sex")
+                alt.log("sex choosed, start mix")
                 model = "mp_m_freemode_01";
                 deletePeds();
+                spawnMix();
             }
         }
         else {
             pedAndPos.onChoose = () => {
-                alt.log("sex choosed, start sex")
+                alt.log("sex choosed, start mix")
                 model = "mp_f_freemode_01";
                 deletePeds();
+                spawnMix();
             }
         }
 
@@ -193,15 +235,21 @@ export async function spawnSex() {
 
 export async function spawnMix() {
     let start = 0;
-    let end = 10;
+    let end = 20;
     await spawnPeds(model, start, end, 20, (pedAndPos) => {
         game.setPedHeadBlendData(pedAndPos.ped, shapeMother, shapeFather, 0, skinMother, skinFather, 0, pedAndPos.index / (end - start), pedAndPos.index / (end - start), 0, 0);
 
-        pedAndPos.onChoose = () => {
+        pedAndPos.onChoose = async () => {
             alt.log("Mix choosed")
             mix = pedAndPos.index / (end - start);
             deletePeds();
-            //spawnMotherShapes();
+
+            let hash = game.getHashKey(model);
+            await loadPed(hash);
+            game.setPlayerModel(game.playerPedId(), hash) // 00A1CADD00108836 774A4C54
+            game.setPedHeadBlendData(game.playerPedId(), shapeMother, shapeFather, 0, skinMother, skinFather, 0, mix, mix, 0, 0);
+            nude(game.playerPedId(), model);
+
         }
     });
 }
