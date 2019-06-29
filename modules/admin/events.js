@@ -37,3 +37,17 @@ alt.onServer('stopSpecTarget', () => {
     admin.disableSpecMode();
 });
 
+
+alt.on('consoleCommand', (command, ...args) => {
+
+    if(command == 'freecam')
+    {
+        if(args[0] == 'start')
+        {
+            admin.enableFreeCam();
+        } else if(args[0] == 'stop')
+        {
+            admin.disableFreeCam();
+        }
+    }
+})

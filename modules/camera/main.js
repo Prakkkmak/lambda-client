@@ -66,6 +66,7 @@ export class Camera {
 
     setFov(fov) {
         game.setCamFov(this.cam, fov);
+        return this;
     }
 
     destroy() {
@@ -79,8 +80,48 @@ export class Camera {
     }
 
     renderCam() {
-        game.setCamActive(this.cam, true);
-        game.renderScriptCams(true, true, 500, true, false);
+        alt.nextTick(() => {
+            game.setCamActive(this.cam, true);
+            game.renderScriptCams(true, true, 500, true, false);
+        
+            
+        });
+    }
+
+    getForwardVector() {
+        let rotation = game.getCamRot(this.cam, 2);
+    
+        let Z = rotation.z;
+        let num = Z * 0.0174532924;
+        let X = rotation.x;
+        let num2 = X * 0.0174532924;
+        let num3 = Math.abs(Math.cos(num2));
+    
+        let dir = {
+            x: (((-Math.sin(num))) * num3),
+            y: ((Math.cos(num)) * num3),
+            z: Math.sin(num2)
+        };
+    
+        return dir;
+    }
+    
+    getRightVector() {
+        let rotation = game.getCamRot(this.cam, 2);
+    
+        let Z = rotation.z + 90;
+        let num = Z * 0.0174532924;
+        let X = rotation.x;
+        let num2 = X * 0.0174532924;
+        let num3 = Math.abs(Math.cos(num2));
+    
+        let dir = {
+            x: (((-Math.sin(num))) * num3),
+            y: ((Math.cos(num)) * num3),
+            z: Math.sin(num2)
+        };
+    
+        return dir;
     }
 
     screenPointToWorldPoint(pixelCoords, z)

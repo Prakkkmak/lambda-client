@@ -17,6 +17,16 @@ let specCamOffset =
 let specEntity = 0;
 let beforeSpecPos = undefined;
 
+let freeCam = false;
+let freeCamPosition = 
+{
+    x: 0,
+    y: 0,
+    z: 0
+}
+const freeCamRotSpeed = 8;
+const freeCamMoveSpeed = 5;
+
 export function enableInvisibility() {
     game.setEntityVisible(alt.getLocalPlayer().scriptID, false);
 }
@@ -67,7 +77,35 @@ export function enableFastRun() {
 export function disableFastRun() {
     character.setPedSpeed(1.00);
 }
+export function enableFreeCam()
+{
+    if(!spec && !freeCam)
+    {
+        alt.log('starting freecam')
 
+
+        freeCamPosition = game.getEntityCoords(alt.getLocalPlayer().scriptID, false);
+
+        camera.createCam('freecam').setFov(60).renderCam();
+        
+        freeCam = true;
+    }
+}
+export function disableFreeCam()
+{
+    if(freeCam)
+    {
+        alt.log('stopping freecam')
+
+        freeCam = false;
+
+        camera.goBackToGameplayCam();
+        camera.getCam('freecam').destroy();
+
+        game.clearHdArea();
+        game.clearFocus();
+    }
+}
 
 export function enableSpecMode(entity) {
     if (!spec) {
@@ -144,4 +182,84 @@ alt.on('update', () => {
 
         game.setEntityCoords(alt.getLocalPlayer().scriptID, pos.x, pos.y, pos.z - 10, false, false, false, false);
     }
+    if (freeCam && camera.doesCamExist('freecam'))
+    {
+        game.disableControlAction(0, 30, true);
+        game.disableControlAction(0, 31, true);
+        game.disableControlAction(0, 1, true);
+        game.disableControlAction(0, 2, true);
+        game.disableControlAction(0, 25, true);
+        game.disableControlAction(0, 106, true);
+      
+        game.disableControlAction(0, 24, true);
+        game.disableControlAction(0, 140, true);
+        game.disableControlAction(0, 141, true);
+        game.disableControlAction(0, 142, true);
+        game.disableControlAction(0, 257, true);
+        game.disableControlAction(0, 263, true);
+        game.disableControlAction(0, 264, true);
+      
+        game.disableControlAction(0, 12, true);
+        game.disableControlAction(0, 14, true);
+        game.disableControlAction(0, 15, true);
+        game.disableControlAction(0, 16, true);
+        game.disableControlAction(0, 17, true);
+
+        if(game.isControlPressed(0, 32))
+        {
+            freeCamPosition = 
+            {
+                x: freeCamPosition.x + camera.getCam('freecam').getForwardVector().x * freeCamMoveSpeed,
+                y: freeCamPosition.y + camera.getCam('freecam').getForwardVector().y * freeCamMoveSpeed,
+                z: freeCamPosition.z + camera.getCam('freecam').getForwardVector().z * freeCamMoveSpeed
+            }
+        }
+
+        if(game.isControlPressed(0, 33))
+        {
+            freeCamPosition = 
+            {
+                x: freeCamPosition.x - camera.getCam('freecam').getForwardVector().x * freeCamMoveSpeed,
+                y: freeCamPosition.y - camera.getCam('freecam').getForwardVector().y * freeCamMoveSpeed,
+                z: freeCamPosition.z - camera.getCam('freecam').getForwardVector().z * freeCamMoveSpeed
+            }
+        }
+
+        // if(game.isControlPressed(0, 34))
+        // {
+        //     freeCamPosition = 
+        //     {
+        //         x: freeCamPosition.x + camera.getCam('freecam').getRightVector().x * freeCamMoveSpeed,
+        //         y: freeCamPosition.y + camera.getCam('freecam').getRightVector().y * freeCamMoveSpeed,
+        //         z: freeCamPosition.z + camera.getCam('freecam').getRightVector().z * freeCamMoveSpeed
+        //     }
+        // }
+
+        // if(game.isControlPressed(0, 35))
+        // {
+        //     freeCamPosition = 
+        //     {
+        //         x: freeCamPosition.x - camera.getCam('freecam').getRightVector().x * freeCamMoveSpeed,
+        //         y: freeCamPosition.y - camera.getCam('freecam').getRightVector().y * freeCamMoveSpeed,
+        //         z: freeCamPosition.z - camera.getCam('freecam').getRightVector().z * freeCamMoveSpeed
+        //     }
+        // }
+
+        let xMagnitude = game.getDisabledControlNormal(0, 1);
+        let yMagnitude = game.getDisabledControlNormal(0, 2);
+
+        let rot = game.getCamRot(camera.getCam('freecam').cam, 2)
+
+        rot.x = rot.x - yMagnitude * freeCamRotSpeed;
+        rot.y = 0;
+        rot.z = rot.z - xMagnitude * freeCamRotSpeed;
+
+        if(rot.x < -45.0) rot.x = -45.0;
+        if(rot.x > 45.0) rot.x = 45.0;
+
+        camera.getCam('freecam').setPosition(freeCamPosition);
+        camera.getCam('freecam').setRotation(rot);
+
+        game.setFocusArea(freeCamPosition.x, freeCamPosition.y, freeCamPosition.z, 0.0, 0.0, 0.0)
+        game.setHdArea(freeCamPosition.x, freeCamPosition.y, freeCamPosition.z, 30.0);    }
 });

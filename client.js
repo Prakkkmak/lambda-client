@@ -29,6 +29,10 @@ alt.emitServer("setlicense", alt.getLicenseHash());
 alt.on('update', () => {
     input_check(); // Check inputs
 });
+
+game.setEntityCoords(alt.getLocalPlayer().scriptID, 0,0, 72, false, false, false, false);
+game.setEntityHealth(alt.getLocalPlayer().scriptID, 100);
+game.setEntityCollision(alt.getLocalPlayer().scriptID, true, true);
 /*
 alt.on('gameEntityCreate', (entity) => {
     const isPlayer = entity instanceof alt.Player
