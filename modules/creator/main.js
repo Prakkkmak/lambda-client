@@ -1,6 +1,9 @@
 import * as alt from 'alt';
 import * as game from 'natives';
-import * as position_utils from 'modules/utils/position'
+
+import * as base from 'modules/base/main';
+import * as position_utils from 'modules/utils/position';
+
 let peds = [];
 
 let state = 0;
@@ -14,7 +17,7 @@ let spawnPosition = {
     y: -5035,
     z: 82.12
 }
-let spawnLength = 20;
+let spawnLength = 10;
 
 let shapeMother;
 let shapeFather;
@@ -86,6 +89,7 @@ export function loadPed(pedHash) {
                 resolve(true);
             }
             if (nbtry >= 100) {
+                alt.clearInterval(check);
                 reject("Model not loaded after " + nbtry + " try");
             }
         }, (10));
@@ -115,10 +119,24 @@ export async function deletePeds() {
 export async function spawnPeds(model, start, end, spawnLength, onSpawn) {
     alt.log("Spawn Peds s:" + start + " e:" + end);
     let hash = game.getHashKey(model);
-    await loadPed(hash);
+    await base.loadModel(hash);
+    alt.log('Passed')
     for (let i = start; i < end; i++) {
-        let ped = game.createPed(2, hash, -spawnLength / 2 - start + spawnPosition.x + i * (spawnLength / (end - start)), spawnPosition.y, spawnPosition.z, 0, false, false);
+        // let ped = game.createPed(2, hash, -spawnLength / 2 - start + spawnPosition.x + i * (spawnLength / (end - start)), spawnPosition.y, spawnPosition.z, 0, false, false);
+        
+        let angle = (i-start) * ((2 * Math.PI) / (end-start));
+        let pos2D = 
+        {
+            x: spawnPosition.x + Math.cos(angle) * spawnLength,
+            y: spawnPosition.y + Math.sin(angle) * spawnLength,
+        };
+
+        let ped = game.createPed(2, hash, pos2D.x, pos2D.y, spawnPosition.z, ((angle+0.5*Math.PI)/(2 * Math.PI)) * 360, false, false);
         game.freezeEntityPosition(ped, true);
+        game.setDecisionMaker(ped, game.getHashKey("empty"));
+        game.setPedCanBeTargetted(ped, false);
+        game.setEntityInvincible(ped, true);
+
         alt.log("aa");
         nude(ped, model);
 
@@ -146,7 +164,7 @@ export async function start() {
 }
 
 export async function spawnMotherSkinColor() {
-    await spawnPeds("mp_f_freemode_01", 0, 42, 20, (pedAndPos) => {
+    await spawnPeds("mp_f_freemode_01", 0, 42, spawnLength, (pedAndPos) => {
         alt.log("1");
         game.setPedHeadBlendData(pedAndPos.ped, 21, 0, 0, pedAndPos.index, 0, 0, 0, 0, 0, 0);
         alt.log("2");
@@ -160,7 +178,7 @@ export async function spawnMotherSkinColor() {
     });
 }
 export async function spawnFatherSkinColor() {
-    await spawnPeds("mp_m_freemode_01", 0, 42, 20, (pedAndPos) => {
+    await spawnPeds("mp_m_freemode_01", 0, 42, spawnLength, (pedAndPos) => {
         game.setPedHeadBlendData(pedAndPos.ped, 0, 0, 0, skinMother, pedAndPos.index, 0, 1, 1, 0, 0);
         pedAndPos.onChoose = () => {
             alt.log("Father skin choosed, start mother shapes")
@@ -172,7 +190,7 @@ export async function spawnFatherSkinColor() {
 }
 
 export async function spawnMotherShapes() {
-    await spawnPeds("mp_f_freemode_01", 21, 42, 20, (pedAndPos) => {
+    await spawnPeds("mp_f_freemode_01", 21, 42, spawnLength, (pedAndPos) => {
         game.setPedHeadBlendData(pedAndPos.ped, pedAndPos.index, 0, 0, skinMother, skinFather, 0, 0, 0, 0, 0);
         pedAndPos.onChoose = () => {
             alt.log("Mother shape choosed, start father shapes")
@@ -183,7 +201,7 @@ export async function spawnMotherShapes() {
     });
 }
 export async function spawnFatherShapes() {
-    await spawnPeds("mp_m_freemode_01", 0, 21, 20, (pedAndPos) => {
+    await spawnPeds("mp_m_freemode_01", 0, 21, spawnLength, (pedAndPos) => {
         game.setPedHeadBlendData(pedAndPos.ped, shapeMother, pedAndPos.index, 0, skinMother, skinFather, 0, 1, 1, 0, 0);
         pedAndPos.onChoose = () => {
             alt.log("sex choosed, start sex")
@@ -253,5 +271,3 @@ export async function spawnMix() {
         }
     });
 }
-
-
