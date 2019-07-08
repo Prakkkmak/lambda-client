@@ -4,6 +4,7 @@ import * as game from 'natives';
 import * as alt from 'alt';
 
 import * as base from 'modules/base/main';
+import * as matrix from 'modules/utils/matrix';
 
 export const ped_bones =
 {
@@ -36,6 +37,23 @@ export class Camera {
             cam.push(this);
         });
     }
+
+    get position()
+    {
+        return game.getCamCoord(this.cam);
+    }
+
+    get rotation()
+    {
+        return game.getCamRot(this.cam, 2);
+    }
+
+    get model_matrix()
+    {
+        return matrix.translation(this.position).mul(matrix.rotation(this.rotation.x* 0.0174532924, this.rotation.y* 0.0174532924, this.rotation.z* 0.0174532924));
+    }
+
+
 
     focusOnBone(bone, offset, fov, easeTime, ped, attach) {
         bone = (typeof (bone) == 'string') ? ped_bones[bone] : bone;
@@ -107,21 +125,22 @@ export class Camera {
     }
     
     getRightVector() {
-        let rotation = game.getCamRot(this.cam, 2);
-    
-        let Z = rotation.z + 90;
-        let num = Z * 0.0174532924;
-        let X = rotation.x;
-        let num2 = X * 0.0174532924;
-        let num3 = Math.abs(Math.cos(num2));
-    
-        let dir = {
-            x: (((-Math.sin(num))) * num3),
-            y: ((Math.cos(num)) * num3),
-            z: Math.sin(num2)
+        
+        
+        let cells = new Array(4).fill(0).map(x => Array(1).fill(0));
+        cells[0][0] = 1;
+        cells[3][0] = 1;
+
+        let right = new matrix.Matrix(cells);
+        let right_global = matrix.rotation(this.rotation.x*0.0174532924, this.rotation.y*0.0174532924, this.rotation.z*0.0174532924).mul(right);
+        
+        //right_global.display();
+        return {
+            x: right_global.cells[0][0],
+            y: right_global.cells[1][0],
+            z: right_global.cells[2][0]
+
         };
-    
-        return dir;
     }
 
     screenPointToWorldPoint(pixelCoords, z)

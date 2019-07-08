@@ -21,6 +21,7 @@ import 'modules/graphics/events';
 import 'modules/light/events';
 import 'modules/particles/events';
 import 'modules/prop/events';
+import 'modules/utils/matrix';
 //import 'modules/notification/events';
 
 game.setPedDefaultComponentVariation(alt.getLocalPlayer().scriptID);

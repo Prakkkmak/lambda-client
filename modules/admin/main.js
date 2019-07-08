@@ -225,25 +225,33 @@ alt.on('update', () => {
             }
         }
 
-        // if(game.isControlPressed(0, 34))
-        // {
-        //     freeCamPosition = 
-        //     {
-        //         x: freeCamPosition.x + camera.getCam('freecam').getRightVector().x * freeCamMoveSpeed,
-        //         y: freeCamPosition.y + camera.getCam('freecam').getRightVector().y * freeCamMoveSpeed,
-        //         z: freeCamPosition.z + camera.getCam('freecam').getRightVector().z * freeCamMoveSpeed
-        //     }
-        // }
+        if(game.isControlPressed(0, 34))
+        {
+            freeCamPosition = 
+            {
+                x: freeCamPosition.x - camera.getCam('freecam').getRightVector().x * freeCamMoveSpeed,
+                y: freeCamPosition.y - camera.getCam('freecam').getRightVector().y * freeCamMoveSpeed,
+                z: freeCamPosition.z - camera.getCam('freecam').getRightVector().z * freeCamMoveSpeed
+            }
 
-        // if(game.isControlPressed(0, 35))
-        // {
-        //     freeCamPosition = 
-        //     {
-        //         x: freeCamPosition.x - camera.getCam('freecam').getRightVector().x * freeCamMoveSpeed,
-        //         y: freeCamPosition.y - camera.getCam('freecam').getRightVector().y * freeCamMoveSpeed,
-        //         z: freeCamPosition.z - camera.getCam('freecam').getRightVector().z * freeCamMoveSpeed
-        //     }
-        // }
+            // alt.log('X: ' + camera.getCam('freecam').getRightVector().x);
+            // alt.log('Y: ' + camera.getCam('freecam').getRightVector().y);
+            // alt.log('Z: ' + camera.getCam('freecam').getRightVector().z);
+        }
+
+        if(game.isControlPressed(0, 35))
+        {
+            freeCamPosition = 
+            {
+                x: freeCamPosition.x + camera.getCam('freecam').getRightVector().x * freeCamMoveSpeed,
+                y: freeCamPosition.y + camera.getCam('freecam').getRightVector().y * freeCamMoveSpeed,
+                z: freeCamPosition.z + camera.getCam('freecam').getRightVector().z * freeCamMoveSpeed
+            }
+
+            // alt.log('X: ' + camera.getCam('freecam').getRightVector().x);
+            // alt.log('Y: ' + camera.getCam('freecam').getRightVector().y);
+            // alt.log('Z: ' + camera.getCam('freecam').getRightVector().z);
+        }
 
         let xMagnitude = game.getDisabledControlNormal(0, 1);
         let yMagnitude = game.getDisabledControlNormal(0, 2);
