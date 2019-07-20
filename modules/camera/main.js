@@ -23,19 +23,17 @@ export class Camera {
 
         this.id = id;
 
-        alt.nextTick(() => {
-            if (doesCamExist(id)) {
-                game.destroyCam(cam[id].cam, false);
-            }
-            this.cam = game.createCam('DEFAULT_SCRIPTED_CAMERA', false);
-            this.setPosition(position.x, position.y, position.z);
-            this.setRotation(rotation.x, rotation.y, rotation.z);
-            this.setFov(fov);
-            game.setCamActive(this.cam, true);
+        if (doesCamExist(id)) {
+            game.destroyCam(cam[id].cam, false);
+        }
+        this.cam = game.createCam('DEFAULT_SCRIPTED_CAMERA', false);
+        this.setPosition(position.x, position.y, position.z);
+        this.setRotation(rotation.x, rotation.y, rotation.z);
+        this.setFov(fov);
+        game.setCamActive(this.cam, true);
 
 
-            cam.push(this);
-        });
+        cam.push(this);
     }
 
     get position()
@@ -48,42 +46,108 @@ export class Camera {
         return game.getCamRot(this.cam, 2);
     }
 
+    get fov()
+    {
+        return game.getCamFov(this.cam);
+    }
+
+    get near_clip()
+    {
+        return game.getCamNearClip(this.cam);
+    }
+
+    get far_clip()
+    {
+        return game.getCamFarClip(this.cam);
+    }
+
     get model_matrix()
     {
         return matrix.translation(this.position).mul(matrix.rotation(this.rotation.x* 0.0174532924, this.rotation.y* 0.0174532924, this.rotation.z* 0.0174532924));
     }
 
+    get view_matrix()
+    {
+        let transpose_cells = new Array(4).fill(0).map(x => new Array(4).fill(0));
+        transpose_cells[0][0] = 1;
+        transpose_cells[1][2] = 1;
+        transpose_cells[2][1] = -1;
+        transpose_cells[3][3] = 1;
 
+        let transpose_matrix = new matrix.Matrix(transpose_cells);
+        // let view_matrix = transpose_matrix.mul(
+        //     matrix.com_rotation(-this.rotation.x* 0.0174532924, -this.rotation.y* 0.0174532924, -this.rotation.z* 0.0174532924).mul(
+        //         matrix.translation({
+        //         x: -this.position.x,
+        //         y: -this.position.y,
+        //         z: -this.position.z
+        // })));
+
+        let view_matrix = transpose_matrix.mul(this.model_matrix.inverse);
+
+        return view_matrix;
+    }
+
+    get projection_matrix()
+    {
+        alt.log(this.fov);
+
+
+        let [a, width, height] = game.getActiveScreenResolution(0,0);
+        let ar = width/height;
+
+        let S = 1/(Math.tan((this.fov * 0.5) * 0.0174532924));
+
+        
+        let projection_matrix = matrix.Matrix.identity(4);
+        projection_matrix.cells[0][0] = S/ar;
+        projection_matrix.cells[1][1] = S;
+
+        projection_matrix.cells[2][2] = -(this.far_clip + this.near_clip)/(this.far_clip-this.near_clip);
+        projection_matrix.cells[2][3] = -(2*this.far_clip*this.near_clip)/(this.far_clip-this.near_clip);
+        projection_matrix.cells[3][2] = -1;
+        projection_matrix.cells[3][3] = 0;
+
+        // projection_matrix.display();
+
+        return projection_matrix;
+    }
+
+    
 
     focusOnBone(bone, offset, fov, easeTime, ped, attach) {
         bone = (typeof (bone) == 'string') ? ped_bones[bone] : bone;
-        alt.nextTick(() => {
-            this.setFov(fov);
-            game.pointCamAtPedBone(this.cam, ped, bone, 0, 0, 0, true);
-            if (attach) {
-                game.attachCamToPedBone(this.cam, ped, bone, offset.x, offset.y, offset.z, true);
-            }
-            game.renderScriptCams(true, true, easeTime, true, false);
-        });
+        this.setFov(fov);
+        game.pointCamAtPedBone(this.cam, ped, bone, 0, 0, 0, true);
+        if (attach) {
+            game.attachCamToPedBone(this.cam, ped, bone, offset.x, offset.y, offset.z, true);
+        }
+        game.renderScriptCams(true, true, easeTime, true, false);
+        return this;
     }
 
     focusOnEntity(entity, offset, offsetPoint = { x: 0, y: 0, z: 0 }, relative = true) {
-        alt.nextTick(() => {
-            game.pointCamAtEntity(this.cam, entity, offsetPoint.x, offsetPoint.y, offsetPoint.z, true);
-            game.renderScriptCams(true, true, 500, true, false);
-        });
+        game.pointCamAtEntity(this.cam, entity, offsetPoint.x, offsetPoint.y, offsetPoint.z, true);
+        game.renderScriptCams(true, true, 500, true, false);
+
+        return this;
     }
 
     setPosition(position) {
         game.setCamCoord(this.cam, position.x, position.y, position.z);
+
+        return this;
     }
 
     setRotation(rotation) {
         game.setCamRot(this.cam, rotation.x, rotation.y, rotation.z);
+
+        return this;
     }
 
     setFov(fov) {
         game.setCamFov(this.cam, fov);
+        
         return this;
     }
 
@@ -98,12 +162,8 @@ export class Camera {
     }
 
     renderCam() {
-        alt.nextTick(() => {
-            game.setCamActive(this.cam, true);
-            game.renderScriptCams(true, true, 500, true, false);
-        
-            
-        });
+        game.setCamActive(this.cam, true);
+        game.renderScriptCams(true, true, 500, true, false);
     }
 
     getForwardVector() {
@@ -139,7 +199,6 @@ export class Camera {
             x: right_global.cells[0][0],
             y: right_global.cells[1][0],
             z: right_global.cells[2][0]
-
         };
     }
 

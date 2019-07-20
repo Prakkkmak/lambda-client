@@ -28,13 +28,13 @@ const freeCamRotSpeed = 8;
 const freeCamMoveSpeed = 5;
 
 export function enableInvisibility() {
-    game.setEntityVisible(alt.getLocalPlayer().scriptID, false);
+    game.setEntityVisible(alt.Player.local.scriptID, false);
 }
 export function disableInvisibility() {
-    game.setEntityVisible(alt.getLocalPlayer().scriptID, true);
+    game.setEntityVisible(alt.Player.local.scriptID, true);
 }
 export function toggleInvisibility() {
-    if (game.isEntityVisible(alt.getLocalPlayer().scriptID)) {
+    if (game.isEntityVisible(alt.Player.local.scriptID)) {
         enableInvisibility();
     } else {
         disableInvisibility();
@@ -42,7 +42,7 @@ export function toggleInvisibility() {
 }
 
 export function enableInvicibility() {
-    game.setEntityInvincible(alt.getLocalPlayer().scriptID, true);
+    game.setEntityInvincible(alt.Player.local.scriptID, true);
 }
 export function disableInvicibility() {
     game.setEntityInvincible(game.playerId(), false);
@@ -58,13 +58,13 @@ export function toggleInvicibility() {
 
 
 export function enableNoClip() {
-    game.setEntityCollision(alt.getLocalPlayer().scriptID, false, false);
+    game.setEntityCollision(alt.Player.local.scriptID, false, false);
 }
 export function disableNoClip() {
-    game.setEntityCollision(alt.getLocalPlayer().scriptID, true, true);
+    game.setEntityCollision(alt.Player.local.scriptID, true, true);
 }
 export function toggleNoClip() {
-    if (game.getEntityCollisonDisabled(alt.getLocalPlayer().scriptID)) {
+    if (game.getEntityCollisonDisabled(alt.Player.local.scriptID)) {
         disableNoClip();
     } else {
         enableNoClip();
@@ -83,10 +83,9 @@ export function enableFreeCam()
     {
         alt.log('starting freecam')
 
+        freeCamPosition = game.getEntityCoords(alt.Player.local.scriptID, false);
 
-        freeCamPosition = game.getEntityCoords(alt.getLocalPlayer().scriptID, false);
-
-        camera.createCam('freecam').setFov(60).renderCam();
+        camera.createCam('freecam', {x:0, y:0, z:0}, {x:0, y:0, z:0}, 90).renderCam();
         
         freeCam = true;
     }
@@ -111,7 +110,7 @@ export function enableSpecMode(entity) {
     if (!spec) {
         specEntity = entity;
 
-        beforeSpecPos = game.getEntityCoords(alt.getLocalPlayer().scriptID, false);
+        beforeSpecPos = game.getEntityCoords(alt.Player.local.scriptID, false);
 
         camera.createCam('speccam').focusOnBone(camera.ped_bones['SKEL_L_Clavicle'], specCamOffset, 60, 500, specEntity, false);
 
@@ -128,7 +127,7 @@ export function disableSpecMode() {
         spec = false;
 
         specEntity = 0;
-        game.setEntityCoords(alt.getLocalPlayer().scriptID, beforeSpecPos.x, beforeSpecPos.y, beforeSpecPos.z, false, false, false, false);
+        game.setEntityCoords(alt.Player.local.scriptID, beforeSpecPos.x, beforeSpecPos.y, beforeSpecPos.z, false, false, false, false);
 
         disableNoClip();
         disableInvicibility();
@@ -153,8 +152,8 @@ export function dashToCam() {
     let dir = camera.getGameplayCamDirVector(game.getGameplayCamRot(0));
 
 
-    if (game.isPedInAnyVehicle(alt.getLocalPlayer().scriptID, false)) {
-        physics.applyGlobalForceToEntity(game.getVehiclePedIsIn(alt.getLocalPlayer().scriptID, false), dir, 25);
+    if (game.isPedInAnyVehicle(alt.Player.local.scriptID, false)) {
+        physics.applyGlobalForceToEntity(game.getVehiclePedIsIn(alt.Player.local.scriptID, false), dir, 25);
     } else {
         character.applyStrongForceToPed(dir, 25);
     }
@@ -167,7 +166,7 @@ alt.on('update', () => {
         let pos = game.getEntityCoords(specEntity, false);
 
         let gCamPos = game.getGameplayCamCoord();
-        let pPos = game.getEntityCoords(alt.getLocalPlayer().scriptID, false);
+        let pPos = game.getEntityCoords(alt.Player.local.scriptID, false);
 
         specCamOffset.x = gCamPos.x - pPos.x;
         specCamOffset.y = gCamPos.y - pPos.y;
@@ -180,10 +179,11 @@ alt.on('update', () => {
         });
 
 
-        game.setEntityCoords(alt.getLocalPlayer().scriptID, pos.x, pos.y, pos.z - 10, false, false, false, false);
+        game.setEntityCoords(alt.Player.local.scriptID, pos.x, pos.y, pos.z - 10, false, false, false, false);
     }
     if (freeCam && camera.doesCamExist('freecam'))
     {
+
         game.disableControlAction(0, 30, true);
         game.disableControlAction(0, 31, true);
         game.disableControlAction(0, 1, true);
@@ -233,10 +233,6 @@ alt.on('update', () => {
                 y: freeCamPosition.y - camera.getCam('freecam').getRightVector().y * freeCamMoveSpeed,
                 z: freeCamPosition.z - camera.getCam('freecam').getRightVector().z * freeCamMoveSpeed
             }
-
-            // alt.log('X: ' + camera.getCam('freecam').getRightVector().x);
-            // alt.log('Y: ' + camera.getCam('freecam').getRightVector().y);
-            // alt.log('Z: ' + camera.getCam('freecam').getRightVector().z);
         }
 
         if(game.isControlPressed(0, 35))
@@ -247,10 +243,6 @@ alt.on('update', () => {
                 y: freeCamPosition.y + camera.getCam('freecam').getRightVector().y * freeCamMoveSpeed,
                 z: freeCamPosition.z + camera.getCam('freecam').getRightVector().z * freeCamMoveSpeed
             }
-
-            // alt.log('X: ' + camera.getCam('freecam').getRightVector().x);
-            // alt.log('Y: ' + camera.getCam('freecam').getRightVector().y);
-            // alt.log('Z: ' + camera.getCam('freecam').getRightVector().z);
         }
 
         let xMagnitude = game.getDisabledControlNormal(0, 1);

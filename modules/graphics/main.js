@@ -95,7 +95,17 @@ const screen_effects = [
 
 let chosen = -1;
 
+export function projectionCoordsToScreenCoords(x,y)
+{
+    let [a, width, height] = game.getActiveScreenResolution(0,0);
+    let p_x = ((x+1)/2) * width;
+    let p_y = ((y+1)/2) * height;
 
+    return {
+        x: p_x,
+        y: p_y
+    }
+}
 
 export function startScreenEffect(effectName, duration, looped) {
     alt.log('Starting screeneffect ' + effectName + ' for ' + duration + 'ms')

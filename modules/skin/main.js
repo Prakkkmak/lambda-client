@@ -110,7 +110,7 @@ export function setComponentVariation(index, drawable, texture, palette) { // Ar
     currentComponentVariation[index].drawable = drawable;
     currentComponentVariation[index].texture = texture;
     currentComponentVariation[index].palette = palette;
-    game.setPedComponentVariation(alt.getLocalPlayer().scriptID, index, drawable, texture, palette);
+    game.setPedComponentVariation(alt.Player.local.scriptID, index, drawable, texture, palette);
 }
 
 export function setProps(args) {
@@ -129,7 +129,7 @@ export function setProp(index, drawable, texture) {
     currentPropIndex[index].texture = texture;
     if (index == 3) index = 6;
     if (index == 4) index = 7;
-    game.setPedPropIndex(alt.getLocalPlayer().scriptID, index, drawable, texture, true);
+    game.setPedPropIndex(alt.Player.local.scriptID, index, drawable, texture, true);
 }
 
 export function setHairColor(colorID, highlightColorID) {
@@ -140,13 +140,13 @@ export function setHairColor(colorID, highlightColorID) {
         taint: highlightColorID
     }
     //alt.log("color " + currentHairColor);
-    game.setPedHairColor(alt.getLocalPlayer().scriptID, colorID, highlightColorID);
+    game.setPedHairColor(alt.Player.local.scriptID, colorID, highlightColorID);
 }
 
 export function setEyeColor(colorID) {
     if (colorID < 0) colorID = 0;
     currentEyeColor = colorID;
-    game.setPedEyeColor(alt.getLocalPlayer().scriptID, currentEyeColor);
+    game.setPedEyeColor(alt.Player.local.scriptID, currentEyeColor);
 }
 export function setHeadBlendData(shapeMother, shapeFather, skinMother, skinFater, shapeMix, skinMix) {
     currentHeadBlendData = {
@@ -158,7 +158,7 @@ export function setHeadBlendData(shapeMother, shapeFather, skinMother, skinFater
         skinMix: skinMix
     };
     alt.log(currentHeadBlendData)
-    game.setPedHeadBlendData(alt.getLocalPlayer().scriptID, shapeMother, shapeFather, 0, skinMother, skinFater, 0, shapeMix, skinMix, 0, false);
+    game.setPedHeadBlendData(alt.Player.local.scriptID, shapeMother, shapeFather, 0, skinMother, skinFater, 0, shapeMix, skinMix, 0, false);
 }
 
 export function setHeadOverlays(args) {
@@ -180,11 +180,11 @@ export function setHeadOverlay(i, index, opacity, firstcolor, secondcolor) {
     currentHeadOverlay[i].opacity = opacity;
     currentHeadOverlay[i].firstcolor = firstcolor;
     currentHeadOverlay[i].secondcolor = secondcolor;
-    game.setPedHeadOverlay(alt.getLocalPlayer().scriptID, i, index, opacity);
+    game.setPedHeadOverlay(alt.Player.local.scriptID, i, index, opacity);
     var colortype = 0;
     if (i == 2 || i == 1 || i == 10) colortype = 1;
     if (i == 5 || i == 8) colortype = 2;
-    game.setPedHeadOverlayColor(alt.getLocalPlayer().scriptID, i, colortype, firstcolor, secondcolor);
+    game.setPedHeadOverlayColor(alt.Player.local.scriptID, i, colortype, firstcolor, secondcolor);
 }
 
 export function setFaceFeatures(args) {
@@ -200,7 +200,7 @@ export function setFaceFeature(index, value) {
     if (value < -1) value = -1;
     if (value > 1) value = 1;
     currentFaceFeature[index] = value;
-    game.setPedFaceFeature(alt.getLocalPlayer().scriptID, index, value);
+    game.setPedFaceFeature(alt.Player.local.scriptID, index, value);
 }
 
 export function setModel(model) {
@@ -253,7 +253,7 @@ export function loadCharacterCustom() {
         cef.getView('charactercustom').view.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
     };
     events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => {
-        camera.createCam('charactercustom').focusOnBone(bodypart, offset, fov, easeTime, alt.getLocalPlayer().scriptID, true);
+        camera.createCam('charactercustom').focusOnBone(bodypart, offset, fov, easeTime, alt.Player.local.scriptID, true);
     };
     events['setModel'] = (model) => {
         setModel(model).then(() => {
@@ -263,7 +263,7 @@ export function loadCharacterCustom() {
             } else if (model.toLowerCase() == 'female') {
                 setHeadBlendData(0, 21, 0, 15, 1, 0);
             }
-            game.setPedDefaultComponentVariation(alt.getLocalPlayer().scriptID);
+            game.setPedDefaultComponentVariation(alt.Player.local.scriptID);
         });
 
     }
@@ -293,10 +293,10 @@ loadCharacterCustom();
 
 export function setFaceFeatures(args) {
     for (let i = 0; i < 40; i += 2) {
-        game.setPedFaceFeature(alt.getLocalPlayer().scriptID, args[i], args[i + 1]);
+        game.setPedFaceFeature(alt.Player.local.scriptID, args[i], args[i + 1]);
     }
 }
 
 export function setFaceFeature(index, value) {
-    game.setPedFaceFeature(alt.getLocalPlayer().scriptID, index, value);
+    game.setPedFaceFeature(alt.Player.local.scriptID, index, value);
 }*/

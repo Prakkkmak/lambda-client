@@ -24,16 +24,16 @@ import 'modules/prop/events';
 import 'modules/utils/matrix';
 //import 'modules/notification/events';
 
-game.setPedDefaultComponentVariation(alt.getLocalPlayer().scriptID);
+game.setPedDefaultComponentVariation(alt.Player.local.scriptID);
 alt.emitServer("setlicense", alt.getLicenseHash());
 
 alt.on('update', () => {
     input_check(); // Check inputs
 });
 
-game.setEntityCoords(alt.getLocalPlayer().scriptID, 0,0, 72, false, false, false, false);
-game.setEntityHealth(alt.getLocalPlayer().scriptID, 100);
-game.setEntityCollision(alt.getLocalPlayer().scriptID, true, true);
+game.setEntityCoords(alt.Player.local.scriptID, 0,0, 72, false, false, false, false);
+game.setEntityHealth(alt.Player.local.scriptID, 100);
+game.setEntityCollision(alt.Player.local.scriptID, true, true);
 /*
 alt.on('gameEntityCreate', (entity) => {
     const isPlayer = entity instanceof alt.Player
