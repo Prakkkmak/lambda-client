@@ -17,7 +17,7 @@ export function positionInAngle(pos, angle, dist) {
 export function closePlayer(pos) {
     let currentClosePlayer = null;
     alt.Player.all.forEach(target => {
-        if (target != alt.getLocalPlayer()) {
+        if (target != alt.Player.local) {
             if (currentClosePlayer == null) currentClosePlayer = target;
             if (distance(target.pos, pos) < distance(currentClosePlayer.pos, pos)) currentClosePlayer = target;
         }
@@ -28,7 +28,7 @@ export function closePlayerInRange(pos, range) {
     let currentClosePlayer = null;
     let i = 0;
     alt.Player.all.forEach(target => {
-        if (target != alt.getLocalPlayer()) {
+        if (target != alt.Player.local) {
             if (distance(target.pos, pos) < range) {
                 if (currentClosePlayer == null) currentClosePlayer = target;
                 if (distance(target.pos, pos) < distance(currentClosePlayer.pos, pos)) currentClosePlayer = target;

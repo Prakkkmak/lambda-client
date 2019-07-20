@@ -26,7 +26,7 @@ let mix = 0.5;
 
 export function updateClose() {
     let yaw = position_utils.getRotation();
-    let frontPos = position_utils.positionInAngle(alt.getLocalPlayer().pos, -yaw, 0.7);
+    let frontPos = position_utils.positionInAngle(alt.Player.local.pos, -yaw, 0.7);
 
     let closePed = closePedInRange(frontPos, 3);
     if (closePed != null) {

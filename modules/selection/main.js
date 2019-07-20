@@ -9,7 +9,7 @@ export function enableDebugSphere() {
 }
 export function updateClose() {
     let yaw = position_utils.getRotation();
-    let frontPos = position_utils.positionInAngle(alt.getLocalPlayer().pos, -yaw, 0.7);
+    let frontPos = position_utils.positionInAngle(alt.Player.local.pos, -yaw, 0.7);
     if (sphere) {
         game.drawMarker(1, frontPos.x, frontPos.y, frontPos.z, 0, 0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 100, 50, 0, 1, 2, 0, 0, 0, 0);
         game.drawMarker(28, frontPos.x, frontPos.y, frontPos.z, 0, 0, 0, 0, 0, 0, 1.1, 1.1, 1.1, 0, 50, 100, 20, 0, 1, 2, 0, 0, 0, 0);
