@@ -1,4 +1,5 @@
 import * as alt from 'alt';
+
 alt.on('consoleCommand', (command, ...args) => {
     if(command == 'matrix')
     {
@@ -134,12 +135,7 @@ export class Matrix
 
     get vector()
     {
-        return {
-            x: this.cells[0][0],
-            y: this.cells[1][0],
-            z: this.cells[2][0],
-            w: this.cells[3][0]
-        }
+        return new Vector4(this.cells[0][0], this.cells[1][0], this.cells[2][0], this.cells[3][0])
     }
 
     mul(matrixB)
@@ -160,6 +156,11 @@ export class Matrix
 
                 cells[i][j] = cell;
             }
+        }
+
+        if(matrixB instanceof Vector4)
+        {
+            return new Matrix(cells).vector;
         }
 
         return new Matrix(cells);
@@ -249,6 +250,64 @@ export class Matrix
         }
     }
 }
+
+export class Vector4 extends Matrix
+{
+    constructor(x, y, z, w=1)
+    {
+        let cells = new Array(4).fill(0).map(a => new Array(1).fill(0));
+
+        cells[0][0] = x;
+        cells[1][0] = y;
+        cells[2][0] = z;
+        cells[3][0] = w;
+
+        super(cells)
+    }
+
+    set x(value)
+    {
+        this.cells[0][0] = value;
+    }
+
+    get x()
+    {
+        return this.cells[0][0];
+    }
+
+    set y(value)
+    {
+        this.cells[1][0] = value;
+    }
+
+    get y()
+    {
+        return this.cells[1][0];
+    }
+
+    set z(value)
+    {
+        this.cells[2][0] = value;
+    }
+
+    get z()
+    {
+        return this.cells[2][0];
+    }
+
+    set w(value)
+    {
+        this.cells[3][0] = value;
+    }
+
+    get w()
+    {
+        return this.cells[3][0];
+    }
+
+
+}
+
 
 export function rotationX(alpha)
 {

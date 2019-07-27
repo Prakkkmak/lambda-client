@@ -22,7 +22,7 @@ import 'modules/light/events';
 import 'modules/particles/events';
 import 'modules/prop/events';
 import 'modules/utils/matrix';
-//import 'modules/notification/events';
+// import 'modules/notification/events';
 
 game.setPedDefaultComponentVariation(alt.Player.local.scriptID);
 alt.emitServer("setlicense", alt.getLicenseHash());
