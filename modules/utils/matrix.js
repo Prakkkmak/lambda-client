@@ -132,6 +132,16 @@ export class Matrix
         }
     }
 
+    get vector()
+    {
+        return {
+            x: this.cells[0][0],
+            y: this.cells[1][0],
+            z: this.cells[2][0],
+            w: this.cells[3][0]
+        }
+    }
+
     mul(matrixB)
     {
         // TODO: verifs taille

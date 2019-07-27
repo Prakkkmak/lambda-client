@@ -20,17 +20,20 @@ var cam = [];
 
 export class Camera {
     constructor(id, position, rotation, fov) {
-
+        
         this.id = id;
 
-        if (doesCamExist(id)) {
+        if (doesCamExist(id) && id != 'gameplay') {
             game.destroyCam(cam[id].cam, false);
         }
-        this.cam = game.createCam('DEFAULT_SCRIPTED_CAMERA', false);
-        this.setPosition(position.x, position.y, position.z);
-        this.setRotation(rotation.x, rotation.y, rotation.z);
-        this.setFov(fov);
-        game.setCamActive(this.cam, true);
+        if(id != 'gameplay')
+        {
+            this.cam = game.createCam('DEFAULT_SCRIPTED_CAMERA', false);
+            this.setPosition(position.x, position.y, position.z);
+            this.setRotation(rotation.x, rotation.y, rotation.z);
+            this.setFov(fov);
+            game.setCamActive(this.cam, true);
+        }
 
 
         cam.push(this);
@@ -38,26 +41,48 @@ export class Camera {
 
     get position()
     {
+        if(this.id == 'gameplay')
+        {
+            return game.getGameplayCamCoord();
+        }
         return game.getCamCoord(this.cam);
     }
 
     get rotation()
-    {
+    {        
+        if(this.id == 'gameplay')
+        {
+            return game.getGameplayCamRot(2);
+        }
+
         return game.getCamRot(this.cam, 2);
     }
 
     get fov()
     {
+        if(this.id == 'gameplay')
+        {
+            return game.getGameplayCamFov();
+        }
+
         return game.getCamFov(this.cam);
     }
 
     get near_clip()
     {
+        if(this.id == 'gameplay')
+        {
+            return 0.15;
+        }
         return game.getCamNearClip(this.cam);
     }
 
     get far_clip()
     {
+        if(this.id == 'gameplay')
+        {
+            return game.getGameplayCamFarClip();
+        }
         return game.getCamFarClip(this.cam);
     }
 
@@ -90,9 +115,6 @@ export class Camera {
 
     get projection_matrix()
     {
-        alt.log(this.fov);
-
-
         let [a, width, height] = game.getActiveScreenResolution(0,0);
         let ar = width/height;
 
@@ -107,8 +129,6 @@ export class Camera {
         projection_matrix.cells[2][3] = -(2*this.far_clip*this.near_clip)/(this.far_clip-this.near_clip);
         projection_matrix.cells[3][2] = -1;
         projection_matrix.cells[3][3] = 0;
-
-        // projection_matrix.display();
 
         return projection_matrix;
     }
@@ -218,11 +238,11 @@ export class Camera {
 
 
 export function createCam(id, position = { x: 0, y: 0, z: 0 }, rotation = { x: 0, y: 0, z: 0 }, fov = 30) {
+    
     if (doesCamExist(id)) {
-        let c = getCam(id);
-        c.setPosition(position.x, position.y, position.z);
-        c.setRotation(rotation.x, rotation.y, rotation.z);
-        c.setFov(fov);
+        getCam(id).setPosition(position.x, position.y, position.z);
+        getCam(id).setRotation(rotation.x, rotation.y, rotation.z);
+        getCam(id).setFov(fov);
 
         return getCam(id);
     } else {
@@ -230,11 +250,13 @@ export function createCam(id, position = { x: 0, y: 0, z: 0 }, rotation = { x: 0
     }
 }
 export function getCam(camID) {
+    
     for (let i = 0; i < cam.length; i++) {
         if (cam[i].id == camID) {
             return cam[i];
         }
     }
+    
 
     return undefined;
 }

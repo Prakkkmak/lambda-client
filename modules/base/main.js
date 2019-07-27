@@ -9,7 +9,10 @@ export function freeze(value) {
     //setControlsEnabled(value);
 }
 
-export function loadModel(model) {
+export function loadModel(model) 
+{
+    if(typeof(model) == 'string') model = game.getHashKey(model);
+
     if (game.isModelValid(model)) {
         alt.log('valid model');
         game.requestModel(model);

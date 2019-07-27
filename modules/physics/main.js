@@ -8,15 +8,15 @@ export function applyGlobalForceToEntity(entity, dir, force, type = 1, scaleForc
 export function applyLocalForceToEntity(entity, dir, force, type = 1, scaleForce = true) {
     game.applyForceToEntityCenterOfMass(entity, 1, dir.x * force, dir.y * force, dir.z * force, type, true, scaleForce, false);
 }
-export function raycastPointToPoint(pointA, pointB, flags)
+// export function raycastPointToPoint(pointA, pointB, flags = -1)
+// {
+//     let ray = game.startShapeTestRay(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, flags, alt.Player.local.scriptID, 0);
+//     return game.getShapeTestResult(ray);
+// }
+export function raycastExPointToPoint(pointA, pointB, flags = -1)
 {
     let ray = game.startShapeTestRay(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, flags, alt.Player.local.scriptID, 0);
-    return game.getShapeTestResult(ray);
-}
-export function raycastExPointToPoint(pointA, pointB, flags)
-{
-    let ray = game.startShapeTestRayEx(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, flags, alt.Player.local.scriptID, 0);
-    let [r, hit, endCoords, surfaceNormal, entityHit] = game.getShapeTestResult(ray);
+    let [r, hit, endCoords, surfaceNormal, entityHit] = game.getShapeTestResultEx(ray);
     return {
         retval: r,
         hasHit: hit,
