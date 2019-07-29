@@ -93,9 +93,9 @@ export function raycastScreenToPoint(screenPoint, dist, cam = 'gameplay')
 
 alt.on('update', () => {
 
-    if(pointA != undefined && pointB != undefined && point != undefined) 
-    {
-        game.drawLine(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, 255, 255, 255, 255);
-        game.drawBox(point.x-0.1, point.y-0.1,point.z-0.1,point.x+0.1,point.y+0.1,point.z+0.1, 255,0,0,255);
-    }
+    // if(pointA != undefined && pointB != undefined && point != undefined) 
+    // {
+    //     game.drawLine(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, 255, 255, 255, 255);
+    //     game.drawBox(point.x-0.1, point.y-0.1,point.z-0.1,point.x+0.1,point.y+0.1,point.z+0.1, 255,0,0,255);
+    // }
 })

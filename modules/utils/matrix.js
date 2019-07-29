@@ -140,30 +140,32 @@ export class Matrix
 
     mul(matrixB)
     {
-        // TODO: verifs taille
-        let cells = new Array(this.m).fill(0).map(x => Array(matrixB.n).fill(0));
-
-        for(let i=0;i<this.m;i++)
+        if(this.n == matrixB.m)
         {
-            for(let j=0;j<matrixB.n;j++)
+            let cells = new Array(this.m).fill(0).map(x => Array(matrixB.n).fill(0));
+
+            for(let i=0;i<this.m;i++)
             {
-                let cell = 0;
-
-                for(let a=0;a<this.n;a++)
+                for(let j=0;j<matrixB.n;j++)
                 {
-                    cell += this.cells[i][a] * matrixB.cells[a][j];
+                    let cell = 0;
+    
+                    for(let a=0;a<this.n;a++)
+                    {
+                        cell += this.cells[i][a] * matrixB.cells[a][j];
+                    }
+    
+                    cells[i][j] = cell;
                 }
-
-                cells[i][j] = cell;
             }
+    
+            if(matrixB instanceof Vector4)
+            {
+                return new Matrix(cells).vector;
+            }
+    
+            return new Matrix(cells);
         }
-
-        if(matrixB instanceof Vector4)
-        {
-            return new Matrix(cells).vector;
-        }
-
-        return new Matrix(cells);
     }
 
     extract(i1, j1, i2, j2)
