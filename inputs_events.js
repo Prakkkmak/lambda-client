@@ -89,9 +89,9 @@ alt.on('keydown', (key) => {
         inputs_action[key]();
     }
 
-    if (key == 119) {
-        cef.toggleConsole();
-    }
+    // if (key == 119) {
+    //     cef.toggleConsole();
+    // }
 });
 
 export function input_check() {

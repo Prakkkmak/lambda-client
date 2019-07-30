@@ -102,28 +102,28 @@ export function enableControls()
         controls = true;
     }
 }
-export function openConsole()
-{
-    disableControls();
-    alt.log('Open Console');
-    altConsole = true;
-}
-export function closeConsole()
-{
-    enableControls();
-    alt.log('Close Console');
-    altConsole = false;
-}
-export function toggleConsole()
-{
-    if(altConsole)
-    {
-        closeConsole();
-    } else 
-    {
-        openConsole();
-    }
-}
+// export function openConsole()
+// {
+//     disableControls();
+//     alt.log('Open Console');
+//     altConsole = true;
+// }
+// export function closeConsole()
+// {
+//     enableControls();
+//     alt.log('Close Console');
+//     altConsole = false;
+// }
+// export function toggleConsole()
+// {
+//     if(altConsole)
+//     {
+//         closeConsole();
+//     } else 
+//     {
+//         openConsole();
+//     }
+// }
 
 export class CEF
 {
