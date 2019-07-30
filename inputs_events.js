@@ -46,7 +46,7 @@ let isDisabled = false;
 const inputs_action = {
 
     
-    85: admin.dashToCam,
+    // 85: admin.dashToCam,
     97: skin_changer.previousSelectedPalette,
     98: skin_changer.selectPrevious,
     99: skin_changer.nextSelectedPalette,
