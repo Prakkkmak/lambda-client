@@ -23,19 +23,19 @@ alt.onServer('playerLoaded',() => {
 });
 
 
-alt.on('consoleCommand', (command, ...args) => {
-    if(command == 'opencef') 
-    {
-        cef.getView(args[0]).open( () => {
+// alt.on('consoleCommand', (command, ...args) => {
+//     if(command == 'opencef') 
+//     {
+//         cef.getView(args[0]).open( () => {
             
-        });
-    } else if(command == 'closecef')
-    {
-        cef.getView(args[0]).close();
-    } else if(command == 'openinworld')
-    {
-        alt.log(game.getHashKey(args[0]));
+//         });
+//     } else if(command == 'closecef')
+//     {
+//         cef.getView(args[0]).close();
+//     } else if(command == 'openinworld')
+//     {
+//         alt.log(game.getHashKey(args[0]));
 
-        let view = new alt.WebView(args[0], game.getHashKey(args[1]), args[2]);
-    }
-});
+//         let view = new alt.WebView(args[0], game.getHashKey(args[1]), args[2]);
+//     }
+// });

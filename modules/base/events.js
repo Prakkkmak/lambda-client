@@ -35,11 +35,11 @@ alt.onServer('setInteraction', (a,b,c,d) => {
     });
 });
 
-alt.on('consoleCommand', (command, ...args) => {
-    if(command == 'interaction')
-    {
-        base.openInteraction(() => {
-            cef.getView('interaction').view.emit('onInteraction', args[0], args[1], args[2], args[3]);
-        });
-    }
-});
+// alt.on('consoleCommand', (command, ...args) => {
+//     if(command == 'interaction')
+//     {
+//         base.openInteraction(() => {
+//             cef.getView('interaction').view.emit('onInteraction', args[0], args[1], args[2], args[3]);
+//         });
+//     }
+// });

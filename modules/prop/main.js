@@ -18,7 +18,7 @@ export async function spawnProp(propName, x, y, z) {
     game.setEntityHeading(prop, heading);
     game.attachEntityToEntity(prop, game.getPlayerPed(-1), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     alt.log("placed");
-    notification('Prop placé');
+    notification.showNotification('Prop placé');
 }
 
 export function loadProp(propHash) {

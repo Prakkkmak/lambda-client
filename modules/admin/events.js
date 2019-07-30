@@ -36,58 +36,67 @@ alt.onServer('setSpecTarget', (player, state) => {
     }
 });
 
+alt.onServer('setFreeCam', (state) => {
+    if(state)
+    {
+        admin.enableFreeCam();
+    } else {
+        admin.disableFreeCam();
+    }
+})
+
 alt.onServer('stopSpecTarget', () => {
     admin.disableSpecMode();
 });
 
 
-alt.on('consoleCommand', (command, ...args) => {
+// alt.on('consoleCommand', (command, ...args) => {
 
-    if(command == 'freecam')
-    {
-        if(args[0] == 'start')
-        {
-            admin.enableFreeCam();
-        } else if(args[0] == 'stop')
-        {
-            admin.disableFreeCam();
-        } else if(args[0] == "view")
-        {
-            let cells = new Array(4).fill(0).map(x => Array(1).fill(0));
-            cells[0][0] = alt.Player.local.pos.x;
-            cells[1][0] = alt.Player.local.pos.y;
-            cells[2][0] = alt.Player.local.pos.z;
-            cells[3][0] = 1;
+//     if(command == 'freecam')
+//     {
+//         if(args[0] == 'start')
+//         {
+//             admin.enableFreeCam();
+//         } else if(args[0] == 'stop')
+//         {
+//             admin.disableFreeCam();
+//         } else if(args[0] == "view")
+//         {
+//             let cells = new Array(4).fill(0).map(x => Array(1).fill(0));
+//             cells[0][0] = alt.Player.local.pos.x;
+//             cells[1][0] = alt.Player.local.pos.y;
+//             cells[2][0] = alt.Player.local.pos.z;
+//             cells[3][0] = 1;
 
-            let playerMatrix = new matrix.Matrix(cells);
+//             let playerMatrix = new matrix.Matrix(cells);
 
-            let camview = camera.getCam('freecam').view_matrix.mul(playerMatrix);
+//             let camview = camera.getCam('freecam').view_matrix.mul(playerMatrix);
 
-            alt.log('X: ' + camview.cells[0][0]);
-            alt.log('Y: ' + camview.cells[1][0]);
-            alt.log('Z: ' + camview.cells[2][0]);
-        } else if(args[0] == "proj")
-        {
-            let cells = new Array(4).fill(0).map(x => Array(1).fill(0));
-            cells[0][0] = alt.Player.local.pos.x;
-            cells[1][0] = alt.Player.local.pos.y;
-            cells[2][0] = alt.Player.local.pos.z;
-            cells[3][0] = 1;
+//             alt.log('X: ' + camview.cells[0][0]);
+//             alt.log('Y: ' + camview.cells[1][0]);
+//             alt.log('Z: ' + camview.cells[2][0]);
+//         } else if(args[0] == "proj")
+//         {
+//             let cells = new Array(4).fill(0).map(x => Array(1).fill(0));
+//             cells[0][0] = alt.Player.local.pos.x;
+//             cells[1][0] = alt.Player.local.pos.y;
+//             cells[2][0] = alt.Player.local.pos.z;
+//             cells[3][0] = 1;
 
-            let playerMatrix = new matrix.Matrix(cells);
-            let viewMatrix = camera.getCam('freecam').view_matrix.mul(playerMatrix);
+//             let playerMatrix = new matrix.Matrix(cells);
+//             let viewMatrix = camera.getCam('freecam').view_matrix.mul(playerMatrix);
 
-            let projMatrix = camera.getCam('freecam').projection_matrix.mul(viewMatrix);
+//             let projMatrix = camera.getCam('freecam').projection_matrix.mul(viewMatrix);
 
-            let pixelCoord = {
-                x: projMatrix.cells[0][0]/projMatrix.cells[3][0],
-                y: projMatrix.cells[1][0]/projMatrix.cells[3][0]
-                }
-            alt.log('X screen: ' + pixelCoord.x);
-            alt.log('Y screen: ' + pixelCoord.y);
-        } else if(args[0] == "fov") {
-            game.setCamFov(camera.getCam('freecam').cam, Number(args[1]));
-        }
+//             let pixelCoord = {
+//                 x: projMatrix.cells[0][0]/projMatrix.cells[3][0],
+//                 y: projMatrix.cells[1][0]/projMatrix.cells[3][0]
+//                 }
+//             alt.log('X screen: ' + pixelCoord.x);
+//             alt.log('Y screen: ' + pixelCoord.y);
+//         } else if(args[0] == "fov") {
+//             game.setCamFov(camera.getCam('freecam').cam, Number(args[1]));
+//         }
 
-    }
-})
+//     }
+// })

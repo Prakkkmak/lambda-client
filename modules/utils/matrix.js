@@ -1,30 +1,30 @@
 import * as alt from 'alt';
 
-alt.on('consoleCommand', (command, ...args) => {
-    if(command == 'matrix')
-    {
-        if(args[0] == 'identity')
-        {
-            alt.log('Identity 4x4 Matrix:')
-            let m = Matrix.identity(4);
-            m.display();
-            alt.log('Determinant: ' + m.determinant);
-        } else if(args[0] == "random")
-        {
-            let m = Number(args[1]);
-            let n = Number(args[2]);
+// alt.on('consoleCommand', (command, ...args) => {
+//     if(command == 'matrix')
+//     {
+//         if(args[0] == 'identity')
+//         {
+//             alt.log('Identity 4x4 Matrix:')
+//             let m = Matrix.identity(4);
+//             m.display();
+//             alt.log('Determinant: ' + m.determinant);
+//         } else if(args[0] == "random")
+//         {
+//             let m = Number(args[1]);
+//             let n = Number(args[2]);
 
-            let cells = new Array(m).fill(0).map(x => new Array(n).fill(0).map(y => Math.floor(Math.random()*10)));
+//             let cells = new Array(m).fill(0).map(x => new Array(n).fill(0).map(y => Math.floor(Math.random()*10)));
 
-            let randomMatrix = new Matrix(cells);
-            alt.log(`Random ${m}x${n} Matrix:`);
-            randomMatrix.display();
-            alt.log('Determinant: ' + randomMatrix.determinant);
-            alt.log('Inverse: ');
-            randomMatrix.inverse.display();
-        }
-    }
-});
+//             let randomMatrix = new Matrix(cells);
+//             alt.log(`Random ${m}x${n} Matrix:`);
+//             randomMatrix.display();
+//             alt.log('Determinant: ' + randomMatrix.determinant);
+//             alt.log('Inverse: ');
+//             randomMatrix.inverse.display();
+//         }
+//     }
+// });
 
 
 export class Matrix

@@ -10,9 +10,9 @@ alt.on('update', () => {
     creator.updateClose();
 });
 
-alt.on('consoleCommand', (command, ...args) => {
-    if(command == 'creatorTest')
-    {
-        creator.start();
-    }
-});
+// alt.on('consoleCommand', (command, ...args) => {
+//     if(command == 'creatorTest')
+//     {
+//         creator.start();
+//     }
+// });
