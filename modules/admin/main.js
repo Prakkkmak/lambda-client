@@ -33,7 +33,8 @@ export function enableInvicibility() {
 export function disableInvicibility() {
     game.setPlayerInvincible(game.playerId(), false);
 }*/
-export function toggleInvicibility() {
+export function toggleInvincibility() {
+    alt.log("toggle invincibility triggered");
     game.setPlayerInvincible(game.playerId(), !game.getPlayerInvincible());
 }
 

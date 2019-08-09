@@ -20,6 +20,7 @@ let shapeMother;
 let shapeFather;
 let skinMother;
 let skinFather;
+let faceFeature = [];
 let model = "";
 let mix = 0.5;
 
@@ -249,9 +250,33 @@ export async function spawnMix() {
             game.setPlayerModel(game.playerPedId(), hash) // 00A1CADD00108836 774A4C54
             game.setPedHeadBlendData(game.playerPedId(), shapeMother, shapeFather, 0, skinMother, skinFather, 0, mix, mix, 0, 0);
             nude(game.playerPedId(), model);
-
+            spawnFaceFeature();
         }
     });
 }
 
+let faceFeatureSlot = 0;
 
+export async function spawnFaceFeature(slot = 0) {
+    let start = 0;
+    let end = 5;
+    let size = 5;
+    await spawnPeds(model, start, end, size, (pedAndPos) => {
+        game.setPedHeadBlendData(pedAndPos.ped, shapeMother, shapeFather, 0, skinMother, skinFather, 0, mix, mix, 0, 0);
+        for(let i = 0; i < slot; i++){
+            game.setPedFaceFeature(pedAndPos.ped, i,  faceFeature[i]);
+        }
+        let nbr = - 1 + (pedAndPos.index * 2 / (size - 1));
+        alt.log("index " + pedAndPos.index + " " + nbr);
+        game.setPedFaceFeature(pedAndPos.ped, slot, nbr);
+        
+        pedAndPos.onChoose = () => {
+            alt.log("feature machin choosed")
+            faceFeature[slot] = nbr;
+            game.setPedFaceFeature(game.playerPedId(), slot, faceFeature[0]);
+            deletePeds();
+            if(slot < 19)spawnFaceFeature(slot + 1);
+            else {}
+        }
+    });
+}

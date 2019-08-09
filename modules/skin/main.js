@@ -62,8 +62,6 @@ export let currentHairColor = {
 
 export let currentEyeColor = 0;
 
-setHeadBlendData(0, 0, 0, 0, 0.5, 0.5);
-
 export function saveSkin() {
     let a = [];
     currentComponentVariation.forEach((elem) => {
@@ -157,7 +155,6 @@ export function setHeadBlendData(shapeMother, shapeFather, skinMother, skinFater
         shapeMix: shapeMix,
         skinMix: skinMix
     };
-    alt.log(currentHeadBlendData)
     game.setPedHeadBlendData(game.playerPedId(), shapeMother, shapeFather, 0, skinMother, skinFater, 0, shapeMix, skinMix, 0, false);
 }
 

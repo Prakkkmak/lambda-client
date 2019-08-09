@@ -8,7 +8,7 @@ alt.onServer('setFreeze', (value) => {
 });
 
 alt.onServer('playerLoaded', () => {
-    skin.setHeadBlendData(0, 0, 0, 0, 0.5, 0.5);
+    //skin.setHeadBlendData(0, 0, 0, 0, 0.5, 0.5);
 });
 
 alt.onServer('setContextActions', (json) => {

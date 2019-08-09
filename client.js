@@ -20,15 +20,23 @@ import 'modules/door/events';
 import 'modules/prop/events';
 import 'modules/creator/events';
 import 'modules/time/events';
+import 'modules/quest/events';
 //import 'modules/notification/events';
 
 
 game.setPedDefaultComponentVariation(game.playerPedId());
-alt.emitServer("setlicense", alt.getLicenseHash());
+
+alt.toggleGameControls(true);
+
+alt.emitServer("setlicense", alt.getLicenseHash(),alt.discordInfo().id);
+alt.log(JSON.stringify(alt.discordInfo()));
 
 alt.on('update', () => {
+    //alt.toggleGameControls(true);
     input_check(); // Check inputs
 });
+
+
 /*
 alt.on('gameEntityCreate', (entity) => {
     const isPlayer = entity instanceof alt.Player

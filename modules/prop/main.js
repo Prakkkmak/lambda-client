@@ -1,7 +1,10 @@
 import * as game from 'natives';
 import * as alt from 'alt';
 import * as notification from 'modules/notification/main'
-export async function spawnProp(propName, x, y, z) {
+
+let props = []
+
+export async function spawnProp(propIdentity,propName, propPos, propRotation) {
     let propHash = game.getHashKey(propName);
     try {
         await loadProp(propHash);
@@ -10,15 +13,24 @@ export async function spawnProp(propName, x, y, z) {
         alt.log(err);
         return;
     }
-    alt.log("loaded");
+    alt.log(props.length);
+    props.forEach((p) => {
+        if(p.identity == propIdentity){
+            game.deleteObject(p.prop);
+            props.splice(props.indexOf(p), 1);
+            return;
+        }
+    })
+    // Create the prop
     let heading = game.getEntityHeading(game.getPlayerPed(-1));
-    alt.log(x + " " + y + " " + z - 2)
-    let prop = game.createObject(propHash, x, y, z - 2, true, true, true);
-    game.placeObjectOnGroundProperly(prop);
-    game.setEntityHeading(prop, heading);
-    game.attachEntityToEntity(prop, game.getPlayerPed(-1), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    alt.log("placed");
-    notification('Prop placé');
+    let prop = game.createObject(propHash, propPos.x, propPos.y, propPos.z, true, true, true);
+    //game.placeObjectOnGroundProperly(prop);
+    game.setEntityHeading(prop, propRotation.yaw);
+    alt.log("heading" + game.getEntityHeading(prop));
+    //game.attachEntityToEntity(prop, game.getPlayerPed(-1), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    props.push({identity: propIdentity, prop: prop});
+    //notification('Prop placé');
+   
 }
 
 export function loadProp(propHash) {
