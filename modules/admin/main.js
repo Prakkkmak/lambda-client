@@ -5,7 +5,7 @@ import * as character from 'modules/character/main';
 import * as camera from 'modules/camera/main';
 import * as physics from 'modules/physics/main';
 
-let invicible = false;
+let invincible = false;
 
 let spec = false;
 let specCamOffset =
@@ -16,34 +16,26 @@ let specCamOffset =
 };
 let specEntity = 0;
 let beforeSpecPos = undefined;
-
+/*
 export function enableInvisibility() {
     game.setEntityVisible(game.playerPedId(), false);
 }
 export function disableInvisibility() {
     game.setEntityVisible(game.playerPedId(), true);
-}
+}*/
 export function toggleInvisibility() {
-    if (game.isEntityVisible(game.playerPedId())) {
-        enableInvisibility();
-    } else {
-        disableInvisibility();
-    }
+    game.setEntityVisible(game.playerPedId(), !game.isEntityVisible(game.playerPedId()));
 }
-
+/*
 export function enableInvicibility() {
-    game.setEntityInvincible(game.playerPedId(), true);
+    game.setPlayerInvincible(game.playerPedId(), true);
 }
 export function disableInvicibility() {
-    game.setEntityInvincible(game.playerId(), false);
-}
-export function toggleInvicibility() {
-    if (invicible) {
-        disableInvicibility();
-
-    } else {
-        enableInvicibility();
-    }
+    game.setPlayerInvincible(game.playerId(), false);
+}*/
+export function toggleInvincibility() {
+    alt.log("toggle invincibility triggered");
+    game.setPlayerInvincible(game.playerId(), !game.getPlayerInvincible());
 }
 
 

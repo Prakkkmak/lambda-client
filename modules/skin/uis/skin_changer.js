@@ -97,7 +97,7 @@ function changeSelected(dec) {
     }
     if (selected > MAX_OVERLAY && selected <= MAX_SELECTED) {
         i -= MAX_OVERLAY + 1;
-        skin.setFaceFeature(i, Math.round(skin.currentFaceFeature[i] += dec) / 10);
+        skin.setFaceFeature(i, Math.round((skin.currentFaceFeature[i] += (dec / 10)) * 10 ) /10 );
         alt.emit('chatmessage', 'skin manager',
             selected_strings[selected] +
             " : " +

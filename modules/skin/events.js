@@ -28,9 +28,11 @@ alt.onServer('setEyeColor', (color) => {
 });
 
 alt.onServer('setShape', (mother, father, mix) => {
+    alt.log("setShape");
     skin.setHeadBlendData(mother, father, skin.currentHeadBlendData.skinMother, skin.currentHeadBlendData.skinFater, mix, skin.currentHeadBlendData.skinMix);
 });
 alt.onServer('setSkin', (mother, father, mix) => {
+    alt.log("setSkin");
     skin.setHeadBlendData(skin.currentHeadBlendData.shapeMother, skin.currentHeadBlendData.shapeFather, mother, father, skin.currentHeadBlendData.shapeMix, mix)
 });
 

@@ -9,8 +9,8 @@ alt.onServer('setInvicibility', (state) => {
         admin.disableInvicibility();
     }
 });
-alt.onServer('toggleInvicibility', () => {
-    admin.toggleInvicibility();
+alt.onServer('toggleInvincibility', () => {
+    admin.toggleInvincibility();
 });
 
 alt.onServer('setInvisibility', (state) => {

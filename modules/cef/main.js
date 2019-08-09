@@ -79,7 +79,7 @@ export function disableControls()
     if(controls)
     {
         alt.log('disable controls');
-        alt.toggleGameControls(false);
+        //alt.toggleGameControls(false);
         controls = false;
     }
 }
