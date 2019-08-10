@@ -108,7 +108,7 @@ export function setComponentVariation(index, drawable, texture, palette) { // Ar
     currentComponentVariation[index].drawable = drawable;
     currentComponentVariation[index].texture = texture;
     currentComponentVariation[index].palette = palette;
-    game.setPedComponentVariation(game.playerPedId(), index, drawable, texture, palette);
+    game.setPedComponentVariation(alt.Player.local.scriptID, index, drawable, texture, palette);
 }
 
 export function setProps(args) {
@@ -127,7 +127,7 @@ export function setProp(index, drawable, texture) {
     currentPropIndex[index].texture = texture;
     if (index == 3) index = 6;
     if (index == 4) index = 7;
-    game.setPedPropIndex(game.playerPedId(), index, drawable, texture, true);
+    game.setPedPropIndex(alt.Player.local.scriptID, index, drawable, texture, true);
 }
 
 export function setHairColor(colorID, highlightColorID) {
@@ -138,13 +138,13 @@ export function setHairColor(colorID, highlightColorID) {
         taint: highlightColorID
     }
     //alt.log("color " + currentHairColor);
-    game.setPedHairColor(game.playerPedId(), colorID, highlightColorID);
+    game.setPedHairColor(alt.Player.local.scriptID, colorID, highlightColorID);
 }
 
 export function setEyeColor(colorID) {
     if (colorID < 0) colorID = 0;
     currentEyeColor = colorID;
-    game.setPedEyeColor(game.playerPedId(), currentEyeColor);
+    game.setPedEyeColor(alt.Player.local.scriptID, currentEyeColor);
 }
 export function setHeadBlendData(shapeMother, shapeFather, skinMother, skinFater, shapeMix, skinMix) {
     currentHeadBlendData = {
@@ -177,11 +177,11 @@ export function setHeadOverlay(i, index, opacity, firstcolor, secondcolor) {
     currentHeadOverlay[i].opacity = opacity;
     currentHeadOverlay[i].firstcolor = firstcolor;
     currentHeadOverlay[i].secondcolor = secondcolor;
-    game.setPedHeadOverlay(game.playerPedId(), i, index, opacity);
+    game.setPedHeadOverlay(alt.Player.local.scriptID, i, index, opacity);
     var colortype = 0;
     if (i == 2 || i == 1 || i == 10) colortype = 1;
     if (i == 5 || i == 8) colortype = 2;
-    game.setPedHeadOverlayColor(game.playerPedId(), i, colortype, firstcolor, secondcolor);
+    game.setPedHeadOverlayColor(alt.Player.local.scriptID, i, colortype, firstcolor, secondcolor);
 }
 
 export function setFaceFeatures(args) {
@@ -197,7 +197,7 @@ export function setFaceFeature(index, value) {
     if (value < -1) value = -1;
     if (value > 1) value = 1;
     currentFaceFeature[index] = value;
-    game.setPedFaceFeature(game.playerPedId(), index, value);
+    game.setPedFaceFeature(alt.Player.local.scriptID, index, value);
 }
 
 export function setModel(model) {
@@ -250,7 +250,7 @@ export function loadCharacterCustom() {
         cef.getView('charactercustom').view.execJS(`add_colorpicker('${id}','${container}',${size},[${colors}], ${callback})`);
     };
     events['camFocusBodypart'] = (bodypart, offset, fov, easeTime) => {
-        camera.createCam('charactercustom').focusOnBone(bodypart, offset, fov, easeTime, game.playerPedId(), true);
+        camera.createCam('charactercustom').focusOnBone(bodypart, offset, fov, easeTime, alt.Player.local.scriptID, true);
     };
     events['setModel'] = (model) => {
         setModel(model).then(() => {
@@ -260,7 +260,7 @@ export function loadCharacterCustom() {
             } else if (model.toLowerCase() == 'female') {
                 setHeadBlendData(0, 21, 0, 15, 1, 0);
             }
-            game.setPedDefaultComponentVariation(game.playerPedId());
+            game.setPedDefaultComponentVariation(alt.Player.local.scriptID);
         });
 
     }
@@ -290,10 +290,10 @@ loadCharacterCustom();
 
 export function setFaceFeatures(args) {
     for (let i = 0; i < 40; i += 2) {
-        game.setPedFaceFeature(game.playerPedId(), args[i], args[i + 1]);
+        game.setPedFaceFeature(alt.Player.local.scriptID, args[i], args[i + 1]);
     }
 }
 
 export function setFaceFeature(index, value) {
-    game.setPedFaceFeature(game.playerPedId(), index, value);
+    game.setPedFaceFeature(alt.Player.local.scriptID, index, value);
 }*/

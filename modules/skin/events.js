@@ -1,5 +1,6 @@
 import * as skin from "modules/skin/main"
 import * as alt from 'alt';
+import * as cef from "modules/cef/main";
 // args are drawable, texture, palette
 alt.onServer('setComponent', (index, drawable, texture, palette) => {
     skin.setComponentVariation(index, drawable, texture, palette);
@@ -49,4 +50,11 @@ alt.onServer('setHeadOverlays', (args) => {
 
 alt.onServer('setHeadOverlay', (i, index, opacity, firstcolor, secondcolor) => {
     skin.setHeadOverlay(i, index, opacity, firstcolor, secondcolor);
+});
+
+
+
+alt.onServer('playerFirstConnect', () => {
+    
+    cef.getView('charactercustom').open();
 });

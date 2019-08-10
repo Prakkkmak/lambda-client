@@ -12,6 +12,7 @@ import * as physics from 'modules/physics/main';
 import * as camera from 'modules/camera/main';
 import * as graphics from 'modules/graphics/main';
 import * as selection from 'modules/selection/main';
+import * as audio from 'modules/audio/main';
 
 const key_codes =
 {
@@ -89,9 +90,9 @@ alt.on('keydown', (key) => {
         inputs_action[key]();
     }
 
-    if (key == 119) {
-        cef.toggleConsole();
-    }
+    // if (key == 119) {
+    //     cef.toggleConsole();
+    // }
 });
 
 export function input_check() {

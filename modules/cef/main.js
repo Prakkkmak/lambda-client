@@ -102,28 +102,28 @@ export function enableControls()
         controls = true;
     }
 }
-export function openConsole()
-{
-    disableControls();
-    alt.log('Open Console');
-    altConsole = true;
-}
-export function closeConsole()
-{
-    enableControls();
-    alt.log('Close Console');
-    altConsole = false;
-}
-export function toggleConsole()
-{
-    if(altConsole)
-    {
-        closeConsole();
-    } else 
-    {
-        openConsole();
-    }
-}
+// export function openConsole()
+// {
+//     disableControls();
+//     alt.log('Open Console');
+//     altConsole = true;
+// }
+// export function closeConsole()
+// {
+//     enableControls();
+//     alt.log('Close Console');
+//     altConsole = false;
+// }
+// export function toggleConsole()
+// {
+//     if(altConsole)
+//     {
+//         closeConsole();
+//     } else 
+//     {
+//         openConsole();
+//     }
+// }
 
 export class CEF
 {
@@ -138,7 +138,7 @@ export class CEF
 
     isOpened()
     {
-        return this.view !== null;
+        return this.view != null;
     }
 
     open(callback = function() {})
@@ -151,47 +151,53 @@ export class CEF
                 this.view.on(key, this.events[key]);
             });
                 
-            this.view.on('onLoad', () => {
-                this.show();
+            this.view.on('onLoad', (arg) => {
+                alt.log( this.id + ': onLoad called ');
+                this.show(true);
                 callback();
             });
             
         } else {
             this.show();
-
             callback();
         }
     }
-    show()
+    show(load = false)
     {
-        alt.log(this.id + ': Show called')
-        this.view.isVisible = true;
-        this.view.focus();
-        if(this.hasFlag(eCefFlags.SHOW_CURSOR))
+        if(!this.view.isVisible || load) 
         {
-            showCursor();
+            alt.log(this.id + ': Show called');
+            this.view.focus();
+    
+            this.view.isVisible = true;
+            if(this.hasFlag(eCefFlags.SHOW_CURSOR))
+            {
+                showCursor();
+            }
+    
+            if(this.hasFlag(eCefFlags.FREEZE_PLAYER))
+            {
+                disableControls();
+            }
         }
 
-        if(this.hasFlag(eCefFlags.FREEZE_PLAYER))
-        {
-            disableControls();
-        }
     }
 
     hide()
     {
+        alt.log(this.id + ': hide called')
+
         this.view.isVisible = false;
         this.view.unfocus();
+
         hideCursor();
         enableControls();
     }
     
     close(callback = function() {})
     {
-        this.hide();
         if(this.isOpened()) 
         {   
-            
             this.view.destroy();
         }
         

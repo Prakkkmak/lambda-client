@@ -7,6 +7,10 @@ let sphere = false;
 export function enableDebugSphere() {
     sphere = !sphere;
 }
+export function getRotation() {
+    let vector3Rotation = game.getEntityRotation(alt.Player.local.scriptID, 2);
+    let yaw = vector3Rotation.z * Math.PI / 180
+}
 export function updateClose() {
     let yaw = position_utils.getRotation();
     let frontPos = position_utils.positionInAngle(alt.Player.local.pos, -yaw, 0.7);

@@ -1,138 +1,4 @@
-window.addEventListener('load', () =>{
-    //Evènement appelé quand la page est chargée
-    showOneMenu('identity');
-    alt.emit('onLoad');
-});
-
-
 const delay = ms => new Promise(res => setTimeout(res, ms));
-
-const headoverlay_indices = 
-{
-    "blemishes": 0,
-    "facialhair" : 1,
-    "eyebrows": 2
-};
-const component_indices = 
-{
-    "face": 0,
-    "mask": 1,
-    "hair": 2,
-    "torso": 3,
-    "legs": 4,
-    "bags": 5,
-    "foot": 6,
-    "accessories": 7,
-    "undershirt": 8,
-    "bodyarmor": 9,
-    "decals": 10,
-    "tops": 11
-};
-const facefeature_indices = 
-{
-    "nose_width" : 0,
-    "nose_peak_hight" : 1,
-    "nose_peak_lenght" : 2,
-    "nose_bone_high" : 3,
-    "nose_peak_lowering" : 4,
-    "nose_bone_twist" : 5,
-    "eyebrown_high" : 6,
-    "eyebrown_forward" : 7,
-    "cheeks_bone_high" : 8,
-    "cheeks_bone_width" : 9,
-    "cheeks_width" : 10,
-    "eyes_opening" : 11,
-    "lips_thickness" : 12,
-    "jaw_bone_width" : 13,
-    "jaw_bone_back_lenght" : 14,
-    "chimp_bone_lowering" : 15,
-    "chimp_bone_lenght" : 16,
-    "chimp_bone_width" : 17,
-    "chimp_hole" : 18,
-    "neck_thikness" : 19,
-};
-const eye_colors =
-[
-    '#a29c5d',
-    '#809a65',
-    '#99ccff',
-    '#004d99',
-    '#956b50',
-    '#533b2d'
-];
-
-const menus = [
-    "identity",
-    "facetraits",
-    "hair"
-];
-const campositions = [
-    {
-        bone: "SKEL_Spine2",
-        fov: 30,
-        offset: {
-            x: 0,
-            y: 5, 
-            z: 0
-        }
-    },
-    {
-        bone: "IK_Head",
-        fov: 15,
-        offset: {
-            x: 0,
-            y: 2, 
-            z: 0
-        }
-    },
-    {
-        bone: "IK_Head",
-        fov: 20,
-        offset: {
-            x: 1,
-            y: 1, 
-            z: 0.5
-        }
-    }
-];
-
-function showOneMenu(menu_id)
-{
-    menus.forEach((menu) => {
-        if (menu == menu_id)
-        {
-            showMenu(menu);
-        } else 
-        {
-            hideMenu(menu);
-        }
-    });
-}
-function showMenu(menu_id)
-{
-    if(campositions[menus.indexOf(menu_id)] != null) alt.emit('camFocusBodypart', campositions[menus.indexOf(menu_id)].bone, campositions[menus.indexOf(menu_id)].offset, campositions[menus.indexOf(menu_id)].fov, 500);
-    document.querySelector('.menu#'+menu_id).style.display = 'block';
-}
-function hideMenu(menu_id)
-{
-    document.querySelector('.menu#'+menu_id).style.display = 'none';
-}
-function updateComponent(type,key, value)
-{
-    if(type == "headoverlay")
-    {
-        alt.emit('setHeadOverlay', headoverlay_indices[key], value);
-    } else if(type == "component")
-    {
-        alt.emit('setComponent', component_indices[key], value, 0, 0);
-    } else if(type == "facefeature")
-    {
-        alt.emit('setFaceFeature', facefeature_indices[key], value);
-    } else if(type == "eyes")
-    {
-        alt.emit('setEyeColor', value);
-    }
-}
 
 async function add_colorpicker(colorpicker_id, container, el_height, elements, callback)
 {
@@ -295,3 +161,104 @@ async function add_colorpicker(colorpicker_id, container, el_height, elements, c
 }
 
 
+
+function add_input_text(parent, label)
+{
+    let flex_container = document.createElement('div');
+    flex_container.setAttribute('class', 'flex-container');
+
+    parent.appendChild(flex_container);
+    
+    let span = document.createElement('span');
+    span.innerHTML = label;
+
+    let input_text = document.createElement('input');
+    input_text.setAttribute('type', 'text');
+
+    flex_container.appendChild(span);
+    flex_container.appendChild(input_text);
+
+    input_text.addEventListener('input', (event) => {
+        flex_container.dataset.cmdArg = event.target.value;
+    });
+}
+function add_command_button(parent, label, command)
+{
+    let flex_container = document.createElement('div');
+    flex_container.setAttribute('class', 'flex-container');
+
+    parent.appendChild(flex_container);
+    
+    let button = document.createElement('button');
+    button.innerHTML = label;
+
+    flex_container.appendChild(button);
+
+    button.addEventListener('click', (event) => {
+        let cmd = command;
+        let completed = true;
+
+        for(let i=1;i<parent.childElementCount-1;i++)
+        {
+            let child = parent.children[i];
+            if(child.dataset.cmdArg == undefined)
+            {
+                completed = false;
+            } else if(child.dataset.cmdArg == "" || child.dataset.cmdArg.replace(/\s/g, '').length == 0)
+            {
+                completed = false;
+            }
+
+            cmd += " " + child.dataset.cmdArg;
+        }
+
+        if(completed)
+        {
+            console.log(cmd);
+            alt.emit('hide');
+        } else {
+            console.log('Uncomplete');
+        }
+    });
+}
+function add_header(parent, label)
+{
+    let flex_container = document.createElement('div');
+    flex_container.setAttribute('class', 'flex-container container-header');
+
+    parent.appendChild(flex_container);    
+
+    let span = document.createElement('span');
+    span.innerHTML = label;
+    span.style.color = '#f1c40f';
+    span.style.fontSize = '24px';
+
+    let close = document.createElement('img');
+    close.src = 'imgs/red_cross.png';
+    close.width = 24;
+    close.height = 24;
+    close.style.cursor = 'pointer';
+    close.style.flexShrink = 5;
+
+    close.addEventListener('click', () => {
+        alt.emit('hide');
+    });
+
+    flex_container.appendChild(span);
+    flex_container.appendChild(close);
+}
+function create_command_menu(title, command, parameters)
+{
+    let menu = document.querySelector('.menu');
+    add_header(menu, title);
+    
+    for(let i=0;i<parameters.length;i++)
+    {
+        if(parameters[i].type == "text")
+        {
+            add_input_text(menu, parameters[i].label);
+        }
+    }
+
+    add_command_button(menu, 'Exécuter', command);
+}
