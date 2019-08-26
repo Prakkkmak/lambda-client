@@ -35,6 +35,18 @@ alt.onServer('setInteraction', (a,b,c,d) => {
     });
 });
 
+alt.onServer('consoleLog', (text) => {
+    alt.log(text);
+});
+
+alt.onServer('consoleError', (text) => {
+    alt.logError(text);
+});
+
+alt.onServer('consoleWarning', (text) => {
+    alt.logWarning(text);
+});
+
 // alt.on('consoleCommand', (command, ...args) => {
 //     if(command == 'interaction')
 //     {
